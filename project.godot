@@ -20,6 +20,10 @@ window/size/height=576
 window/size/resizable=false
 window/stretch/aspect="keep"
 
+[input_devices]
+
+buffering/agile_event_flushing=true
+
 [physics]
 
 common/enable_pause_aware_picking=true
