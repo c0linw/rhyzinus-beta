@@ -14,6 +14,10 @@ config/name="Rhyzinus-beta"
 run/main_scene="res://Scenes/Game.tscn"
 config/icon="res://icon.png"
 
+[autoload]
+
+SceneSwitcher="*res://Scripts/scene_switcher.gd"
+
 [display]
 
 window/size/height=576
