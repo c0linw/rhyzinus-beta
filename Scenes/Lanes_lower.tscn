@@ -1,10 +1,12 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [sub_resource type="SpatialMaterial" id=1]
 
 [sub_resource type="CubeMesh" id=2]
 material = SubResource( 1 )
 size = Vector3( 0.05, 0.05, 1 )
+
+[sub_resource type="SpatialMaterial" id=3]
 
 [node name="Lanes_lower" type="Spatial"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, 0 )
@@ -76,6 +78,7 @@ material/0 = null
 
 [node name="End_left" type="MeshInstance" parent="."]
 transform = Transform( 1, 8.35187e-23, -4.74593e-30, 0, -4.37114e-08, -1.3, -8.35187e-23, 1, -5.68248e-08, 0, 0.625, -24 )
+material_override = SubResource( 3 )
 mesh = SubResource( 2 )
 material/0 = null
 

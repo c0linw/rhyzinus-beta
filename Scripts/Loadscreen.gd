@@ -55,7 +55,7 @@ func process_chart_line(line: String, receiver: Node) -> bool:
 		var timing_type: String = "velocity" if timing_data[6] == "0" else "bpm"
 		if timing_type == "bpm":
 			var timing_point: Dictionary = {
-				"time": int(timing_data[0]),
+				"time": get_time(timing_data[0]),
 				"beat_length": float(timing_data[1]), # beat length, in milliseconds
 				"meter": int(timing_data[2]), # ignored if type == 1
 				"type": timing_type
@@ -63,7 +63,7 @@ func process_chart_line(line: String, receiver: Node) -> bool:
 			receiver.timing_points.append(timing_point)
 		else:
 			var timing_point: Dictionary = {
-				"time": int(timing_data[0]),
+				"time": get_time(timing_data[0]),
 				"velocity": -100.0/float(timing_data[1]),
 				"type": timing_type
 			}
@@ -78,34 +78,31 @@ func process_chart_line(line: String, receiver: Node) -> bool:
 		var note_type: String = get_note_type(note_data)
 		if note_type == "tap": # tap note
 			var note: Dictionary = {
-				"lane": get_lane(int(note_data[0])),
-				"time": int(note_data[2]),
+				"lane": get_lane(note_data[0]),
+				"time": get_time(note_data[2]),
 				"type": note_type
 			}
 			receiver.notes.append(note)
 			return true
 		elif note_type == "hold_start": # hold note
 			var start: Dictionary = {
-				"lane": get_lane(int(note_data[0])),
-				"time": int(note_data[2]),
-				"end_time": int(note_data[5].split(":")[0]),
+				"lane": get_lane(note_data[0]),
+				"time": get_time(note_data[2]),
+				"end_time": get_time(note_data[5].split(":")[0]),
 				"type": "hold_start"
 			}
-			var end: Dictionary = {
-				"lane": start.lane,
-				"time": int(note_data[5].split(":")[0]), # the first value of the comma-separated stuff at the end
-				"type": "hold_end"
-			}
 			receiver.notes.append(start)
-			receiver.notes.append(end)
 			return true
 		else:
 			print("invalid note type ", note_type)
 			return false
 	return true
 
-func get_lane(x: int) -> int:
-	return x * NUM_LANES_IN_SOURCE / 512
+func get_lane(x: String) -> int:
+	return int(x) * NUM_LANES_IN_SOURCE / 512
+	
+func get_time(x: String) -> float:
+	return float(x) / 1000.0
 	
 func get_note_type(data: Array) -> String:
 	var hold_flag: int = 1 << 7 # check the 7th bit, equivalent to 128
