@@ -15,6 +15,7 @@ class TimeSorter:
 		"tap": 2,
 		"hold_start": 2,
 		"hold_end": 2,
+		"hold": 2,
 	}
 	
 	static func sort_ascending(a: Dictionary, b: Dictionary) -> bool:
@@ -74,7 +75,24 @@ func process_objects_for_gameplay():
 		else:
 			processed_notes.append(object)
 	
-	notes = processed_notes
+	# merge hold ends with hold starts
+	var processed_notes_with_holds: Array = []
+	for i in processed_notes.size():
+		var note: Dictionary = processed_notes[i]
+		if note["type"] == "hold_start":
+			var new_note: Dictionary = {
+				"lane": note["lane"],
+				"time": note["time"],
+				"type": "hold",
+				"position": note["position"],
+				"end_time": note["end_time"],
+				"end_position": get_end_position(note, i, processed_notes)
+			}
+			processed_notes_with_holds.append(new_note)
+		else:
+			processed_notes_with_holds.append(note)
+	
+	notes = processed_notes_with_holds
 	timing_points = processed_timing_points
 	
 func export_data() -> Dictionary:
@@ -86,3 +104,17 @@ func export_data() -> Dictionary:
 		"notes": notes,
 		"timing_points": timing_points
 	}
+
+func get_end_position(note: Dictionary, start_index: int, array_to_search: Array):
+	var i: int = start_index + 1
+	while i < array_to_search.size():
+		var note_to_compare: Dictionary = array_to_search[i]
+		i += 1
+		if note_to_compare["lane"] != note["lane"]:
+			continue
+		if note_to_compare["type"] != "hold_end":
+			continue
+		if note_to_compare["time"] >= note["time"]:
+			return note_to_compare["position"]
+		i += 1
+	return null

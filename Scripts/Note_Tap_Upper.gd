@@ -1,5 +1,5 @@
 extends Note
-
+class_name NoteTapUpper
 
 # Declare member variables here. Examples:
 # var a = 2

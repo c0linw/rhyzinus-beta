@@ -22,11 +22,14 @@ var chart_position: float = 0.0
 var ObjNoteTap = preload("res://Scenes/Note_Tap.tscn")
 var ObjNoteTapSide = preload("res://Scenes/Note_Tap_Side.tscn")
 var ObjNoteTapUpper = preload("res://Scenes/Note_Tap_Upper.tscn")
+var ObjNoteHold = preload("res://Scenes/Note_Hold.tscn")
+var ObjNoteHoldSide = preload("res://Scenes/Note_Hold_Side.tscn")
+var ObjNoteHoldUpper = preload("res://Scenes/Note_Hold_Upper.tscn")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	######## TODO: set options by passing them in
-	note_speed = 9.0
+	note_speed = 10.0
 	lane_depth = 24.0
 	
 	########
@@ -87,6 +90,15 @@ func spawn_note(note_data: Dictionary):
 			note_instance = ObjNoteTapUpper.instance()
 		else:
 			note_instance = ObjNoteTap.instance()
+	elif note_data["type"] == "hold":
+		if note_data["lane"] == 0 || note_data["lane"] == 7:
+			note_instance = ObjNoteHoldSide.instance()
+		elif note_data["lane"] > 9:
+			note_instance = ObjNoteHoldUpper.instance()
+		else:
+			note_instance = ObjNoteHold.instance()
+		note_instance.end_time = note_data["end_time"]
+		note_instance.end_position = note_data["end_position"]
 	else:
 		return
 	note_instance.time = note_data["time"]

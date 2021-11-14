@@ -15,13 +15,43 @@ _global_script_classes=[ {
 "path": "res://Scripts/Note.gd"
 }, {
 "base": "Note",
+"class": "NoteHold",
+"language": "GDScript",
+"path": "res://Scripts/Note_Hold.gd"
+}, {
+"base": "Note",
+"class": "NoteHoldSide",
+"language": "GDScript",
+"path": "res://Scripts/Note_Hold_Side.gd"
+}, {
+"base": "Note",
+"class": "NoteHoldUpper",
+"language": "GDScript",
+"path": "res://Scripts/Note_Hold_Upper.gd"
+}, {
+"base": "Note",
 "class": "NoteTap",
 "language": "GDScript",
 "path": "res://Scripts/Note_Tap.gd"
+}, {
+"base": "Note",
+"class": "NoteTapSide",
+"language": "GDScript",
+"path": "res://Scripts/Note_Tap_Side.gd"
+}, {
+"base": "Note",
+"class": "NoteTapUpper",
+"language": "GDScript",
+"path": "res://Scripts/Note_Tap_Upper.gd"
 } ]
 _global_script_class_icons={
 "Note": "",
-"NoteTap": ""
+"NoteHold": "",
+"NoteHoldSide": "",
+"NoteHoldUpper": "",
+"NoteTap": "",
+"NoteTapSide": "",
+"NoteTapUpper": ""
 }
 
 [application]

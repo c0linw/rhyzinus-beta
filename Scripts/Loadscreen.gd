@@ -91,7 +91,13 @@ func process_chart_line(line: String, receiver: Node) -> bool:
 				"end_time": get_time(note_data[5].split(":")[0]),
 				"type": "hold_start"
 			}
+			var end: Dictionary = {
+				"lane": start.lane,
+				"time": get_time(note_data[5].split(":")[0]), # the first value of the comma-separated stuff at the end
+				"type": "hold_end"
+			}
 			receiver.notes.append(start)
+			receiver.notes.append(end)
 			return true
 		else:
 			print("invalid note type ", note_type)
