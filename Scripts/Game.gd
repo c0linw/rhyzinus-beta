@@ -44,10 +44,10 @@ func _ready():
 	scrollmod_list = chart_data["timing_points"]
 	
 	$Conductor.set_bpm(starting_bpm)
-	$Conductor.stream = load("res://Songs/audio.mp3")
+	$Conductor.stream = load("res://Songs/neutralizeptbmix/neutralizeptbmix.mp3")
 	$Conductor.volume_db = -10.0
 
-	$Conductor.play_from_beat(0,0)
+	$Conductor.play_from_beat(0, 0)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):

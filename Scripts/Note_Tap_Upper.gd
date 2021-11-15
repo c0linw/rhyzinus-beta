@@ -17,4 +17,4 @@ func _ready():
 
 func render(song_chart_position: float, lane_depth: float, base_note_screen_time: float):
 	if lane > 9:
-		translation = Vector3((lane-10)*1.5+0.75,0,-lane_depth*(chart_position-song_chart_position)/base_note_screen_time)
+		translation = Vector3((lane-10)*1.25+0.625,0,-lane_depth*(chart_position-song_chart_position)/base_note_screen_time)

@@ -2,7 +2,7 @@ extends Node2D
 # Loads the chart data from a file into the chart_data object, then switches the scene to Game
 
 var audio_path: String
-var chart_path: String = "res://Songs/test.txt"
+var chart_path: String = "res://Songs/neutralizeptbmix/neutralizeptbmix.txt"
 var current_section: String = ""
 const NUM_LANES_IN_SOURCE: int = 14 # defaults to 14 key osu mania file, but supports anything 12 or above
 

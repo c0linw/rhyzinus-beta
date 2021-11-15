@@ -23,7 +23,7 @@ current = true
 [node name="Lanes_lower" parent="." instance=ExtResource( 1 )]
 
 [node name="Lanes_upper" parent="." instance=ExtResource( 3 )]
-transform = Transform( 1, 0, 0, 0, 0.999848, -0.0174524, 0, 0.0174524, 0.999848, -3, 1.75, -1 )
+transform = Transform( 1, 0, 0, 0, 0.999848, -0.0174524, 0, 0.0174524, 0.999848, -2.5, 2, -0.25 )
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource( 1 )

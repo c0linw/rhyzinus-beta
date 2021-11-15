@@ -59,16 +59,16 @@ func process_objects_for_gameplay():
 	var processed_notes: Array = []
 	var processed_timing_points: Array = []
 	for object in objects:
+		var time_delta: float = object["time"] - curr_time
+		var position_delta: float = time_delta * bpm_velocity * sv_velocity
+		curr_time += time_delta
+		curr_position += position_delta
 		if object["type"] == "bpm":
 			var new_bpm: float = (1.0 / object["beat_length"]) * 60000.0
 			bpm_velocity = new_bpm/starting_bpm
 			bpm = new_bpm
 		elif object["type"] == "velocity":
 			sv_velocity = object["velocity"]
-		var time_delta: float = object["time"] - curr_time
-		var position_delta: float = time_delta * bpm_velocity * sv_velocity
-		curr_time += time_delta
-		curr_position += position_delta
 		object["position"] = curr_position
 		if object["type"] == "bpm" || object["type"] == "velocity":
 			processed_timing_points.append(object)
