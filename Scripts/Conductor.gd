@@ -24,8 +24,8 @@ func set_bpm(num):
 	bpm = num
 	sec_per_beat = 60.0 / bpm
 
-func _process(_delta):
-	update_song_position()
+#func _process(_delta):
+#	update_song_position()
 
 
 func play_with_offset(secs):

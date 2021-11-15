@@ -51,6 +51,7 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+	$Conductor.update_song_position()
 	var timestamp = $Conductor.song_position
 	for sv in scrollmod_list:
 		if timestamp >= sv["time"]:

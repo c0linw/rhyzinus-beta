@@ -32,5 +32,5 @@ func judge(event_time: float):
 	elif event_time >= time-early_great && event_time <= time + late_great:
 		return [2, event_time - time]
 
-func render(chart_position: float, lane_depth: float, base_note_screen_time: float):
+func _render(chart_position: float, lane_depth: float, base_note_screen_time: float):
 	pass

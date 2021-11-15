@@ -57,7 +57,7 @@ _global_script_class_icons={
 [application]
 
 config/name="Rhyzinus-beta"
-run/main_scene="res://Scenes/Game.tscn"
+run/main_scene="res://Scenes/Loadscreen.tscn"
 config/icon="res://icon.png"
 
 [autoload]
@@ -67,7 +67,6 @@ SceneSwitcher="*res://Scripts/scene_switcher.gd"
 [display]
 
 window/size/height=576
-window/size/resizable=false
 window/stretch/aspect="keep"
 
 [input_devices]
