@@ -1,7 +1,9 @@
 extends Spatial
 
+# audio stuff
 var audio
 
+# gameplay stuff
 var offset: float
 var note_speed: float # speed range: 1.0 - 16.0
 var lane_depth: float

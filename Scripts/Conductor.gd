@@ -3,6 +3,9 @@ extends AudioStreamPlayer
 var bpm
 
 # Tracking the beat and song position
+var time_begin: float
+var time_delay: float
+
 var song_position: float = 0.0
 var song_position_in_beats = 1
 var sec_per_beat
@@ -40,6 +43,8 @@ func closest_beat(nth):
 
 
 func play_from_beat(beat, offset):
+	time_begin = OS.get_ticks_usec()
+	time_delay = AudioServer.get_time_to_next_mix() + AudioServer.get_output_latency()
 	play()
 	seek(beat * sec_per_beat)
 	beats_before_start = offset
@@ -59,8 +64,12 @@ func _on_StartTimer_timeout():
 
 func update_song_position():
 	if playing:
-		var new_position = get_playback_position() + AudioServer.get_time_since_last_mix()
-		new_position -= AudioServer.get_output_latency()
-		if new_position > song_position:
-			song_position = new_position
-		song_position_in_beats = int(floor(song_position / sec_per_beat)) + beats_before_start
+		var time = (OS.get_ticks_usec() - time_begin) / 1000000.0
+		# Compensate for latency.
+		time -= time_delay
+		song_position = max(0, time)
+#		var new_position = get_playback_position() + AudioServer.get_time_since_last_mix()
+#		new_position -= AudioServer.get_output_latency()
+#		if new_position > song_position:
+#			song_position = new_position
+#		song_position_in_beats = int(floor(song_position / sec_per_beat)) + beats_before_start
