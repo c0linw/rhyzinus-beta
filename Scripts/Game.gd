@@ -11,8 +11,11 @@ var base_note_screen_time: float
 
 var notes_to_spawn: Array = []
 var scrollmod_list: Array = []
+var barlines_to_spawn: Array = []
+
 var onscreen_notes: Array = []
 var onscreen_slides: Array = []
+var onscreen_barlines: Array = []
 
 var starting_bpm: float
 var bpm_velocity: float = 1.0
@@ -27,6 +30,8 @@ var ObjNoteTapUpper = preload("res://Scenes/Note_Tap_Upper.tscn")
 var ObjNoteHold = preload("res://Scenes/Note_Hold.tscn")
 var ObjNoteHoldSide = preload("res://Scenes/Note_Hold_Side.tscn")
 var ObjNoteHoldUpper = preload("res://Scenes/Note_Hold_Upper.tscn")
+var ObjBarline = preload("res://Scenes/Barline.tscn")
+var ObjBarlineUpper = preload("res://Scenes/Barline_Upper.tscn")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -44,6 +49,7 @@ func _ready():
 	starting_bpm = chart_data["starting_bpm"]
 	notes_to_spawn = chart_data["notes"]
 	scrollmod_list = chart_data["timing_points"]
+	barlines_to_spawn = chart_data["barlines"]
 	
 	$Conductor.set_bpm(starting_bpm)
 	$Conductor.stream = load("res://Songs/neutralizeptbmix/neutralizeptbmix.mp3")
@@ -63,11 +69,23 @@ func _process(delta):
 	
 	chart_position += (timestamp - last_timestamp) * bpm_velocity * sv_velocity
 	
+	for barline_data in barlines_to_spawn:
+		if chart_position >= barline_data["position"] - base_note_screen_time:
+			spawn_barline(barline_data)
+		else:
+			break # assumes all barlines are stored in ascending time
+	
 	for note_data in notes_to_spawn:
 		if chart_position >= note_data["position"] - base_note_screen_time:
 			spawn_note(note_data)
 		else:
 			break # assumes all notes are stored in ascending time
+			
+	for barline in onscreen_barlines:
+		if chart_position >= barline.chart_position:
+			remove_barline(barline)
+		else:
+			barline.render(chart_position, lane_depth, base_note_screen_time)
 			
 	for note in onscreen_notes:
 		note.render(chart_position, lane_depth, base_note_screen_time)
@@ -113,6 +131,19 @@ func spawn_note(note_data: Dictionary):
 		$Lanes_lower.add_child(note_instance)
 	else:
 		$Lanes_upper.add_child(note_instance)
+		
+func spawn_barline(barline_data: Dictionary):
+	var barline_instance = ObjBarline.instance()
+	barline_instance.time = barline_data["time"]
+	barline_instance.chart_position = barline_data["position"]
+	barlines_to_spawn.erase(barline_data)
+	onscreen_barlines.append(barline_instance)
+	$Lanes_lower.add_child(barline_instance)
+	
+func remove_barline(barline_to_remove):
+	$Lanes_lower.remove_child(barline_to_remove)
+	onscreen_barlines.erase(barline_to_remove)
+	barline_to_remove.queue_free()
 
 func _on_Conductor_finished():
 	pass # Replace with function body.

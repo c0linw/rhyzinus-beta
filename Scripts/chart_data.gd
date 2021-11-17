@@ -6,16 +6,18 @@ var offset: float = 0
 var starting_bpm: float
 var notes: Array = []
 var timing_points: Array = []
+var barlines: Array = []
 
 class TimeSorter:
 	# denotes the order in which these should be sorted, if there are objects with the same time
 	const type_enum: Dictionary = {
 		"bpm": 0, 
 		"velocity": 1,
-		"tap": 2,
-		"hold_start": 2,
-		"hold_end": 2,
-		"hold": 2,
+		"barline": 2,
+		"tap": 3,
+		"hold_start": 3,
+		"hold_end": 3,
+		"hold": 3
 	}
 	
 	static func sort_ascending(a: Dictionary, b: Dictionary) -> bool:
@@ -43,7 +45,7 @@ func _ready():
 	# "position" is used by the renderer, and is subject to scroll speed changes.
 # replaces the notes and timing_points arrays with their updated versions
 func process_objects_for_gameplay():
-	timing_points.sort_custom(TimeSorter, "sort_ascending_with_type_priority")
+	timing_points = generate_barlines(timing_points)
 	starting_bpm = (1.0 / timing_points[0].beat_length) * 60000.0
 	# make a new (sorted) array containing all the objects
 	var objects: Array = timing_points.duplicate()
@@ -58,6 +60,7 @@ func process_objects_for_gameplay():
 	var curr_position: float = 0.0
 	var processed_notes: Array = []
 	var processed_timing_points: Array = []
+	var processed_barlines: Array = []
 	for object in objects:
 		var time_delta: float = object["time"] - curr_time
 		var position_delta: float = time_delta * bpm_velocity * sv_velocity
@@ -72,6 +75,8 @@ func process_objects_for_gameplay():
 		object["position"] = curr_position
 		if object["type"] == "bpm" || object["type"] == "velocity":
 			processed_timing_points.append(object)
+		elif object["type"] == "barline":
+			processed_barlines.append(object)
 		else:
 			processed_notes.append(object)
 	
@@ -94,6 +99,7 @@ func process_objects_for_gameplay():
 	
 	notes = processed_notes_with_holds
 	timing_points = processed_timing_points
+	barlines = processed_barlines
 	
 func export_data() -> Dictionary:
 	process_objects_for_gameplay()
@@ -102,7 +108,8 @@ func export_data() -> Dictionary:
 		"offset": offset,
 		"starting_bpm": starting_bpm,
 		"notes": notes,
-		"timing_points": timing_points
+		"timing_points": timing_points,
+		"barlines": barlines
 	}
 
 func get_end_position(note: Dictionary, start_index: int, array_to_search: Array):
@@ -118,3 +125,30 @@ func get_end_position(note: Dictionary, start_index: int, array_to_search: Array
 			return note_to_compare["position"]
 		i += 1
 	return null
+	
+func generate_barlines(data: Array) -> Array:
+	data.sort_custom(TimeSorter, "sort_ascending_with_type_priority")
+	var return_data: Array = data.duplicate()
+	var timestamp: float = data[0]["time"]
+	var beat_length: float = data[0].beat_length / 1000.0
+	var meter: int = data[0]["meter"]
+	var beat: int = 0
+	var index: int = 0
+	while timestamp <= data[len(data)-1]["time"]:
+		if beat % meter == 0:
+			return_data.append({
+				"time": timestamp,
+				"type": "barline"
+			})
+		var next_beat_time: float = timestamp + beat_length
+		if index+1 < len(data) && data[index+1]["type"] == "bpm" && next_beat_time >= data[index+1]:
+			timestamp = data[index+1]["time"]
+			beat_length = data[index+1]["beat_length"]
+			meter = data[index+1]["meter"]
+			beat = 0
+			index += 1
+		else:
+			timestamp = next_beat_time
+			beat += 1
+			index += 1
+	return return_data
