@@ -70,6 +70,10 @@ func _ready():
 	if chart_data == null :
 		print("failed to load chart data!")
 		return
+	var options = SceneSwitcher.get_param("options")
+	if options == null :
+		print("failed to load options!")
+		return
 	starting_bpm = chart_data["starting_bpm"]
 	notes_to_spawn = chart_data["notes"]
 	scrollmod_list = chart_data["timing_points"]
@@ -84,7 +88,7 @@ func _ready():
 	$Conductor.stream = load("res://Songs/neutralizeptbmix/neutralizeptbmix.mp3")
 	$Conductor.volume_db = -10.0
 
-	$Conductor.play_from_beat(0, 0)
+	$Conductor.play_with_offset(options["audio_offset"] + chart_data["leadin_time"])
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):

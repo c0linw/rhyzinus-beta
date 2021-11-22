@@ -31,10 +31,13 @@ func set_bpm(num):
 #	update_song_position()
 
 
-func play_with_offset(secs):
-	$StartTimer.wait_time = secs
+func play_with_offset(offset: float):
+	$StartTimer.wait_time = offset
+	audio_offset = offset
+	time_begin = OS.get_ticks_usec()
+	time_delay = AudioServer.get_time_to_next_mix() + AudioServer.get_output_latency()
 	$StartTimer.start()
-
+	
 
 func closest_beat(nth):
 	closest = int(round((song_position / sec_per_beat) / nth) * nth) 
@@ -49,25 +52,15 @@ func play_from_beat(beat, offset):
 	seek(beat * sec_per_beat)
 	beats_before_start = offset
 
-
 func _on_StartTimer_timeout():
-	song_position_in_beats += 1
-	if song_position_in_beats < beats_before_start - 1:
-		$StartTimer.start()
-	elif song_position_in_beats == beats_before_start - 1:
-		$StartTimer.wait_time = $StartTimer.wait_time - (AudioServer.get_time_to_next_mix() +
-														AudioServer.get_output_latency())
-		$StartTimer.start()
-	else:
-		play()
-		$StartTimer.stop()
+	play()
+	$StartTimer.stop()
 
 func update_song_position():
-	if playing:
-		var time = (OS.get_ticks_usec() - time_begin) / 1000000.0
-		# Compensate for latency.
-		time -= time_delay
-		song_position = max(0, time)
+	var time = (OS.get_ticks_usec() - time_begin) / 1000000.0
+	# Compensate for latency.
+	time -= time_delay
+	song_position = max(0, time)
 #		var new_position = get_playback_position() + AudioServer.get_time_since_last_mix()
 #		new_position -= AudioServer.get_output_latency()
 #		if new_position > song_position:

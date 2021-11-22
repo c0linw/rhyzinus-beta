@@ -1,7 +1,7 @@
 extends Node
 # This object receives the parsed chart data and passes it to the gameplay scene
 
-var leadin_time: float = 0
+var leadin_time: float = 2.000
 var offset: float = 0
 var starting_bpm: float
 var notes: Array = []
@@ -40,6 +40,7 @@ func _ready():
 #func _process(delta):
 #	pass
 
+# Automatically adds 2 secs of lead-in time by default, but this can be changed
 # Generates "position" based on timing points
 	# "position" refers to the displayed "time" of the note. 
 	# "position" is used by the renderer, and is subject to scroll speed changes.
@@ -72,7 +73,8 @@ func process_objects_for_gameplay():
 			bpm = new_bpm
 		elif object["type"] == "velocity":
 			sv_velocity = object["velocity"]
-		object["position"] = curr_position
+		object["position"] = curr_position + leadin_time + offset
+		object["time"] = object["time"] + leadin_time + offset
 		if object["type"] == "bpm" || object["type"] == "velocity":
 			processed_timing_points.append(object)
 		elif object["type"] == "barline":

@@ -16,7 +16,8 @@ func _ready():
 		"audio_offset": 0.080,
 		"input_offset": 0.035
 	}
-	if SceneSwitcher.change_scene("res://Scenes/Game.tscn", {"chart_data": $chart_data.export_data(), "options_data": options}) != OK:
+	$chart_data.offset = options["audio_offset"]
+	if SceneSwitcher.change_scene("res://Scenes/Game.tscn", {"chart_data": $chart_data.export_data(), "options": options}) != OK:
 		print ("Error changing scene to Game")
 
 # loads the chart file and processes every line until the end. Returns true if successful.
