@@ -13,7 +13,7 @@ func _ready():
 		print("Chart loading failed!")
 	# TODO: switch scene to Game, passing in audio and chart_data object
 	var options: Dictionary = {
-		"audio_offset": 0.080,
+		"audio_offset": 0.100,
 		"input_offset": 0.035
 	}
 	$chart_data.offset = options["audio_offset"]

@@ -73,8 +73,8 @@ func process_objects_for_gameplay():
 			bpm = new_bpm
 		elif object["type"] == "velocity":
 			sv_velocity = object["velocity"]
-		object["position"] = curr_position + leadin_time + offset
-		object["time"] = object["time"] + leadin_time + offset
+		object["position"] = curr_position + offset
+		object["time"] = object["time"] + offset
 		if object["type"] == "bpm" || object["type"] == "velocity":
 			processed_timing_points.append(object)
 		elif object["type"] == "barline":

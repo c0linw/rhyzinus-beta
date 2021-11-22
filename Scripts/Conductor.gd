@@ -32,11 +32,11 @@ func set_bpm(num):
 
 
 func play_with_offset(offset: float):
-	$StartTimer.wait_time = offset
+	#$StartTimer.wait_time = offset
 	audio_offset = offset
 	time_begin = OS.get_ticks_usec()
 	time_delay = AudioServer.get_time_to_next_mix() + AudioServer.get_output_latency()
-	$StartTimer.start()
+	#$StartTimer.start()
 	
 
 func closest_beat(nth):
@@ -50,7 +50,6 @@ func play_from_beat(beat, offset):
 	time_delay = AudioServer.get_time_to_next_mix() + AudioServer.get_output_latency()
 	play()
 	seek(beat * sec_per_beat)
-	beats_before_start = offset
 
 func _on_StartTimer_timeout():
 	play()

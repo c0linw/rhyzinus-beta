@@ -88,7 +88,7 @@ func _ready():
 	$Conductor.stream = load("res://Songs/neutralizeptbmix/neutralizeptbmix.mp3")
 	$Conductor.volume_db = -10.0
 
-	$Conductor.play_with_offset(options["audio_offset"] + chart_data["leadin_time"])
+	$Conductor.play_from_beat(0,0)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
