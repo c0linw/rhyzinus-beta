@@ -12,7 +12,11 @@ func _ready():
 		 # TODO: return to menu if load was unsuccessful
 		print("Chart loading failed!")
 	# TODO: switch scene to Game, passing in audio and chart_data object
-	if SceneSwitcher.change_scene("res://Scenes/Game.tscn", {"chart_data": $chart_data.export_data()}) != OK:
+	var options: Dictionary = {
+		"audio_offset": 0.080,
+		"input_offset": 0.035
+	}
+	if SceneSwitcher.change_scene("res://Scenes/Game.tscn", {"chart_data": $chart_data.export_data(), "options_data": options}) != OK:
 		print ("Error changing scene to Game")
 
 # loads the chart file and processes every line until the end. Returns true if successful.

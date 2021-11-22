@@ -9,6 +9,7 @@
 
 [sub_resource type="SpatialMaterial" id=2]
 flags_transparent = true
+albedo_color = Color( 0.54902, 0.627451, 0.784314, 1 )
 albedo_texture = ExtResource( 6 )
 
 [sub_resource type="PlaneMesh" id=3]
@@ -16,6 +17,7 @@ size = Vector2( 1, 1 )
 
 [sub_resource type="SpatialMaterial" id=4]
 flags_transparent = true
+albedo_color = Color( 0.54902, 0.627451, 0.784314, 1 )
 albedo_texture = ExtResource( 6 )
 
 [sub_resource type="PlaneMesh" id=5]
@@ -23,6 +25,7 @@ size = Vector2( 1, 1 )
 
 [sub_resource type="SpatialMaterial" id=6]
 flags_transparent = true
+albedo_color = Color( 0.54902, 0.627451, 0.784314, 1 )
 albedo_texture = ExtResource( 6 )
 
 [sub_resource type="PlaneMesh" id=7]
@@ -30,6 +33,7 @@ size = Vector2( 1, 1 )
 
 [sub_resource type="SpatialMaterial" id=8]
 flags_transparent = true
+albedo_color = Color( 0.54902, 0.627451, 0.784314, 1 )
 albedo_texture = ExtResource( 6 )
 
 [sub_resource type="PlaneMesh" id=9]
@@ -37,6 +41,7 @@ size = Vector2( 1, 1 )
 
 [sub_resource type="SpatialMaterial" id=10]
 flags_transparent = true
+albedo_color = Color( 0.54902, 0.627451, 0.784314, 1 )
 albedo_texture = ExtResource( 6 )
 
 [sub_resource type="PlaneMesh" id=11]
@@ -44,6 +49,7 @@ size = Vector2( 1, 1 )
 
 [sub_resource type="SpatialMaterial" id=12]
 flags_transparent = true
+albedo_color = Color( 0.54902, 0.627451, 0.784314, 1 )
 albedo_texture = ExtResource( 6 )
 
 [sub_resource type="PlaneMesh" id=13]

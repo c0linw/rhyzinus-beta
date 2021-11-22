@@ -1,12 +1,14 @@
 extends Spatial
 
+# enums and constants
+enum {ENCRYPTED, CRACKED, DECRYPTED, FLAWLESS}
+
 # audio stuff
 var audio
 
 # gameplay stuff
 var offset: float
 var note_speed: float # speed range: 1.0 - 16.0
-var lane_depth: float
 var base_note_screen_time: float
 
 var notes_to_spawn: Array = []
@@ -23,6 +25,17 @@ var sv_velocity: float = 1.0
 var last_timestamp: float = 0.0
 var chart_position: float = 0.0
 
+# Measurements, useful for positioning-related calculations
+var lane_depth: float
+
+var lower_lane_width: float
+var lower_lane_left: Vector2
+var lower_lane_right: Vector2
+
+var upper_lane_width: float
+var upper_lane_left: Vector2
+var upper_lane_right: Vector2
+
 # Preload objects
 var ObjNoteTap = preload("res://Scenes/Note_Tap.tscn")
 var ObjNoteTapSide = preload("res://Scenes/Note_Tap_Side.tscn")
@@ -33,12 +46,16 @@ var ObjNoteHoldUpper = preload("res://Scenes/Note_Hold_Upper.tscn")
 var ObjBarline = preload("res://Scenes/Barline.tscn")
 var ObjBarlineUpper = preload("res://Scenes/Barline_Upper.tscn")
 var ObjNoteHitbox = preload("res://Scenes/Note_Hitbox.tscn")
+var ObjJudgementTexture = preload("res://Scenes/Judgement_Texture.tscn")
 
 # Input-related stuff
 var input_zones: Array = []
 var lane_zones: Array = []
-var lane_effects: Array = []
 var touch_bindings: Array = [] # keeps track of touch input events
+
+# Effects
+var lane_effects: Array = []
+var judgement_textures: Array = []
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -61,6 +78,7 @@ func _ready():
 	######## SETUP INPUT
 	setup_input()
 	setup_lane_effects()
+	setup_judgement_textures()
 	
 	$Conductor.set_bpm(starting_bpm)
 	$Conductor.stream = load("res://Songs/neutralizeptbmix/neutralizeptbmix.mp3")
@@ -69,7 +87,7 @@ func _ready():
 	$Conductor.play_from_beat(0, 0)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _process(_delta):
 	$Conductor.update_song_position()
 	var timestamp = $Conductor.song_position
 	for sv in scrollmod_list:
@@ -99,7 +117,11 @@ func _process(delta):
 			barline.render(chart_position, lane_depth, base_note_screen_time)
 			
 	for note in onscreen_notes:
-		note.render(chart_position, lane_depth, base_note_screen_time)
+		if timestamp >= note.time + note.late_cracked:
+			draw_judgement({"judgement": ENCRYPTED, "offset": 0}, note.lane)
+			delete_note(note)
+		else:
+			note.render(chart_position, lane_depth, base_note_screen_time)
 		
 	# reset then update
 	for effect in lane_effects:
@@ -190,63 +212,75 @@ func setup_input():
 	touch_bindings.resize(20)
 	
 	var a = $Lanes_lower.global_transform.origin
-	var lower_left: Vector2 = $Camera.unproject_position($Lanes_lower.global_transform.origin)
-	var lower_right: Vector2 = $Camera.unproject_position(Vector3(a.x + 6, a.y, a.z))
+	lower_lane_left = $Camera.unproject_position($Lanes_lower.global_transform.origin)
+	lower_lane_right = $Camera.unproject_position(Vector3(a.x + 6, a.y, a.z))
 	
 	var b = $Lanes_upper.global_transform.origin
-	var upper_left: Vector2 = $Camera.unproject_position(b)
-	var upper_right: Vector2 = $Camera.unproject_position(Vector3(b.x + 5, b.y, b.z))
+	upper_lane_left = $Camera.unproject_position(b)
+	upper_lane_right = $Camera.unproject_position(Vector3(b.x + 5, b.y, b.z))
 	
 	# actual width of a single lane
-	var lower_lane_width = (lower_right.x - lower_left.x) / 6
+	lower_lane_width = (lower_lane_right.x - lower_lane_left.x) / 6
 	# upper limit for floor note will be 60% of the way to the upper notes
-	var lower_lane_top = lower_left.y + (upper_left.y - lower_left.y) * 0.6
+	var lower_lane_top = lower_lane_left.y + (upper_lane_left.y - lower_lane_left.y) * 0.6
 	
 	# hitboxes for lane effects on non-note tap
 	for i in range(1, 7):
 		var hitbox: NoteHitbox = ObjNoteHitbox.instance()
-		var top_left = Vector2(lower_left.x + lower_lane_width*(i-1), lower_lane_top)
-		var bottom_right = Vector2(lower_left.x + lower_lane_width*i, view_coords.y)
-		var center = Vector2(lower_left.x + lower_lane_width*(i-0.5), lower_left.y)
+		var top_left = Vector2(lower_lane_left.x + lower_lane_width*(i-1), lower_lane_top)
+		var bottom_right = Vector2(lower_lane_left.x + lower_lane_width*i, view_coords.y)
+		var center = Vector2(lower_lane_left.x + lower_lane_width*(i-0.5), lower_lane_left.y)
 		hitbox.set_points(top_left, bottom_right, center)
 		lane_zones[i] = hitbox
 		$CanvasLayer.add_child(hitbox)
 		
 	for i in range(1, 7):
 		var hitbox: NoteHitbox = ObjNoteHitbox.instance()
-		var top_left = Vector2(lower_left.x + lower_lane_width*(i-1.5), lower_lane_top)
-		var bottom_right = Vector2(lower_left.x + lower_lane_width*(i + 0.5), view_coords.y)
-		var center = Vector2(lower_left.x + lower_lane_width*(i-0.5), lower_left.y)
+		var top_left = Vector2(lower_lane_left.x + lower_lane_width*(i-1.5), lower_lane_top)
+		var bottom_right = Vector2(lower_lane_left.x + lower_lane_width*(i + 0.5), view_coords.y)
+		var center = Vector2(lower_lane_left.x + lower_lane_width*(i-0.5), lower_lane_left.y)
 		hitbox.set_points(top_left, bottom_right, center)
 		input_zones[i] = hitbox
 		$CanvasLayer.add_child(hitbox)
 		
-	var upper_lane_width = (upper_right.x - upper_left.x) / 4
-	var upper_lane_top = upper_left.y - upper_lane_width*0.67
+	var upper_lane_width = (upper_lane_right.x - upper_lane_left.x) / 4
+	var upper_lane_top = upper_lane_left.y - upper_lane_width*0.67
 	for i in range(10, 14):
 		var hitbox: NoteHitbox = ObjNoteHitbox.instance()
-		var top_left = Vector2(upper_left.x + upper_lane_width*(i-10.25), upper_lane_top)
-		var bottom_right = Vector2(upper_left.x + upper_lane_width*(i-8.75), lower_lane_top + 1)
-		var center = Vector2(upper_left.x + upper_lane_width*(i-9.5), upper_left.y)
+		var top_left = Vector2(upper_lane_left.x + upper_lane_width*(i-10.25), upper_lane_top)
+		var bottom_right = Vector2(upper_lane_left.x + upper_lane_width*(i-8.75), lower_lane_top + 1)
+		var center = Vector2(upper_lane_left.x + upper_lane_width*(i-9.5), upper_lane_left.y)
 		hitbox.set_points(top_left, bottom_right, center)
 		input_zones[i] = hitbox
 		$CanvasLayer.add_child(hitbox)
 		
 	var left_hitbox: NoteHitbox = ObjNoteHitbox.instance()
-	var top_left = Vector2(lower_left.x - lower_lane_width*1.5, upper_left.y)
-	var bottom_right = Vector2(lower_left.x + lower_lane_width*0.5, view_coords.y)
-	var center = Vector2(lower_left.x - lower_lane_width*0.4, lower_left.y + (upper_left.y - lower_left.y)*0.4)
+	var top_left = Vector2(lower_lane_left.x - lower_lane_width*1.5, upper_lane_left.y)
+	var bottom_right = Vector2(lower_lane_left.x + lower_lane_width*0.5, view_coords.y)
+	var center = Vector2(lower_lane_left.x - lower_lane_width*0.4, lower_lane_left.y + (upper_lane_left.y - lower_lane_left.y)*0.4)
 	left_hitbox.set_points(top_left, bottom_right, center)
 	input_zones[0] = left_hitbox
 	$CanvasLayer.add_child(left_hitbox)
 	
 	var right_hitbox: NoteHitbox = ObjNoteHitbox.instance()
-	top_left = Vector2(lower_right.x - lower_lane_width*0.5, upper_right.y)
-	bottom_right = Vector2(lower_right.x + lower_lane_width*1.5, view_coords.y)
-	center = Vector2(lower_right.x + lower_lane_width*0.4, lower_right.y + (upper_right.y - lower_right.y)*0.4)
+	top_left = Vector2(lower_lane_right.x - lower_lane_width*0.5, upper_lane_right.y)
+	bottom_right = Vector2(lower_lane_right.x + lower_lane_width*1.5, view_coords.y)
+	center = Vector2(lower_lane_right.x + lower_lane_width*0.4, lower_lane_right.y + (upper_lane_right.y - lower_lane_right.y)*0.4)
 	right_hitbox.set_points(top_left, bottom_right, center)
-	input_zones[8] = right_hitbox
+	input_zones[7] = right_hitbox
 	$CanvasLayer.add_child(right_hitbox)
+	
+func setup_judgement_textures():
+	judgement_textures.resize(4)
+	var pics: Array = [
+		load("res://Textures/Gameplay/encrypted.png"),
+		load("res://Textures/Gameplay/cracked.png"),
+		load("res://Textures/Gameplay/decrypted.png"),
+		load("res://Textures/Gameplay/flawless.png")
+		]
+	for i in len(pics):
+		judgement_textures[i] = ImageTexture.new()
+		judgement_textures[i].create_from_image(pics[i].get_data())
 
 func _input(event):
 	if event is InputEventScreenTouch:
@@ -256,14 +290,38 @@ func _input(event):
 			touch_bindings[event.index] = event
 			for note in onscreen_notes:
 				if note.can_judge(event_time):
-					print("note hit! time = ", event_time)
-					# return
+					var result: Dictionary = note.judge(event_time)
+					draw_judgement(result, note.lane)
+					delete_note(note)
+					return
 		else: # touch release
 			touch_bindings[event.index] = null
 			return
 	elif event is InputEventScreenDrag:
 		touch_bindings[event.index] = event
 		return
+		
+func draw_judgement(data: Dictionary, lane: int):
+	var judgement = ObjJudgementTexture.instance()
+	var tex: ImageTexture
+	match data["judgement"]:
+		FLAWLESS: 
+			tex = judgement_textures[FLAWLESS]
+		DECRYPTED:
+			tex = judgement_textures[DECRYPTED]
+		CRACKED:
+			tex = judgement_textures[CRACKED]
+		ENCRYPTED:
+			tex = judgement_textures[ENCRYPTED]
+	judgement.setup(tex, lower_lane_width)
+	if input_zones[lane] == null:
+		return
+	judgement.position = Vector2(input_zones[lane].center.x - lower_lane_width/2, input_zones[lane].center.y - lower_lane_width/2)
+	$CanvasLayer.add_child(judgement)
+		
+func delete_note(note: Note):
+	onscreen_notes.erase(note)
+	note.queue_free()
 
 func _on_Conductor_finished():
 	pass # Replace with function body.

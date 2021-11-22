@@ -12,6 +12,8 @@ const late_decrypted: float = 0.050
 const early_cracked: float = 0.100
 const late_cracked: float = 0.100
 
+enum {ENCRYPTED, CRACKED, DECRYPTED, FLAWLESS}
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
@@ -23,14 +25,16 @@ func _ready():
 func can_judge(event_time: float):
 	return event_time >= time-early_cracked && event_time <= time + late_cracked
 
-# returns either null, or a tuple containing [judgement type, offset]
-func judge(event_time: float):
+# returns either null, or a dict containing the judgement and offset
+func judge(event_time: float) -> Dictionary:
 	if event_time >= time-early_flawless && event_time <= time + late_flawless:
-		return [0, event_time - time]
+		return {"judgement": FLAWLESS, "offset": event_time - time}
 	if event_time >= time-early_decrypted && event_time <= time + late_decrypted:
-		return [1, event_time - time]
+		return {"judgement": DECRYPTED, "offset": event_time - time}
 	elif event_time >= time-early_cracked && event_time <= time + late_cracked:
-		return [2, event_time - time]
+		return {"judgement": CRACKED, "offset": event_time - time}
+	else:
+		return {"judgement": ENCRYPTED, "offset": 0}
 
 func _render(chart_position: float, lane_depth: float, base_note_screen_time: float):
 	pass
