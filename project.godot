@@ -80,6 +80,10 @@ window/stretch/aspect="keep"
 buffering/agile_event_flushing=true
 pointing/emulate_touch_from_mouse=true
 
+[layer_names]
+
+3d_physics/layer_6="LaneEffect"
+
 [physics]
 
 common/enable_pause_aware_picking=true

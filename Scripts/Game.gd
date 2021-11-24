@@ -7,7 +7,7 @@ enum {ENCRYPTED, CRACKED, DECRYPTED, FLAWLESS}
 var audio
 
 # gameplay stuff
-var offset: float
+var audio_offset: float = 0.0
 var note_speed: float # speed range: 1.0 - 16.0
 var base_note_screen_time: float
 
@@ -52,15 +52,18 @@ var ObjJudgementTexture = preload("res://Scenes/Judgement_Texture.tscn")
 var input_zones: Array = []
 var lane_zones: Array = []
 var touch_bindings: Array = [] # keeps track of touch input events
+var input_offset: float = 0.0
 
 # Effects
 var lane_effects: Array = []
 var judgement_textures: Array = []
 
+signal note_judged(result)
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	######## TODO: set options by passing them in
-	note_speed = 10.0
+	note_speed = 3.0
 	lane_depth = 24.0
 	
 	######## SETUP OBJECTS
@@ -80,9 +83,15 @@ func _ready():
 	barlines_to_spawn = chart_data["barlines"]
 	
 	######## SETUP INPUT
+	input_offset = options["input_offset"]
 	setup_input()
 	setup_lane_effects()
 	setup_judgement_textures()
+	
+	var view_coords = get_viewport().size
+	var comboPosX = view_coords.x/2 - $CanvasLayer/ComboCounter.get_rect().size.x/2
+	var comboPosY = upper_lane_left.y + (lower_lane_left.y - upper_lane_left.y)*0.3 - $CanvasLayer/ComboCounter.get_rect().size.y/2
+	$CanvasLayer/ComboCounter.set_global_position(Vector2(comboPosX, comboPosY))
 	
 	$Conductor.set_bpm(starting_bpm)
 	$Conductor.stream = load("res://Songs/neutralizeptbmix/neutralizeptbmix.mp3")
@@ -93,6 +102,7 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
 	$Conductor.update_song_position()
+	var space_state := get_world().direct_space_state
 	var timestamp = $Conductor.song_position
 	for sv in scrollmod_list:
 		if timestamp >= sv["time"]:
@@ -122,7 +132,9 @@ func _process(_delta):
 			
 	for note in onscreen_notes:
 		if timestamp >= note.time + note.late_cracked:
-			draw_judgement({"judgement": ENCRYPTED, "offset": 0}, note.lane)
+			var result = {"judgement": ENCRYPTED, "offset": 0}
+			draw_judgement(result, note.lane)
+			emit_signal("note_judged", result)
 			delete_note(note)
 		else:
 			note.render(chart_position, lane_depth, base_note_screen_time)
@@ -131,15 +143,18 @@ func _process(_delta):
 	for effect in lane_effects:
 		if effect != null:
 			effect.visible = false
-		
+						
 	for event in touch_bindings:
 		if event != null:
-			for i in len(lane_zones):
-				var lane = lane_zones[i]
-				if lane != null and lane.area.has_point(event.position):
-					var effect: MeshInstance = lane_effects[i]
-					if effect != null:
-						effect.visible = true
+			var camera = $Camera
+			var from = camera.project_ray_origin(event.position)
+			var to = from + camera.project_ray_normal(event.position) * 1000
+			var result = space_state.intersect_ray(from, to, [], 32, false, true)
+			if result:
+				for i in len(lane_zones):
+					if lane_zones[i] != null and lane_zones[i].get_instance_id() == result["collider_id"]:
+						if lane_effects[i] != null:
+							lane_effects[i].visible = true
 	last_timestamp = timestamp
 
 func apply_timing_point(sv: Dictionary):
@@ -198,17 +213,31 @@ func remove_barline(barline_to_remove):
 	
 func setup_lane_effects():
 	lane_effects.resize(14)
+	lane_effects[0] = $Lanes_lower/LaneEffect0
 	lane_effects[1] = $Lanes_lower/LaneEffect1
 	lane_effects[2] = $Lanes_lower/LaneEffect2
 	lane_effects[3] = $Lanes_lower/LaneEffect3
 	lane_effects[4] = $Lanes_lower/LaneEffect4
 	lane_effects[5] = $Lanes_lower/LaneEffect5
 	lane_effects[6] = $Lanes_lower/LaneEffect6
+	lane_effects[7] = $Lanes_lower/LaneEffect7
 	
 	for o in lane_effects:
 		if o != null:
 			o.visible = false
+			
+	var view_coords = get_viewport().size
 	
+	# hitboxes for lane effects on non-note tap
+	lane_zones[0] = $Lanes_lower/LaneArea0
+	lane_zones[1] = $Lanes_lower/LaneArea1
+	lane_zones[2] = $Lanes_lower/LaneArea2
+	lane_zones[3] = $Lanes_lower/LaneArea3
+	lane_zones[4] = $Lanes_lower/LaneArea4
+	lane_zones[5] = $Lanes_lower/LaneArea5
+	lane_zones[6] = $Lanes_lower/LaneArea6
+	lane_zones[7] = $Lanes_lower/LaneArea7
+
 func setup_input():
 	var view_coords = get_viewport().size
 	input_zones.resize(14)
@@ -227,16 +256,6 @@ func setup_input():
 	lower_lane_width = (lower_lane_right.x - lower_lane_left.x) / 6
 	# upper limit for floor note will be 60% of the way to the upper notes
 	var lower_lane_top = lower_lane_left.y + (upper_lane_left.y - lower_lane_left.y) * 0.6
-	
-	# hitboxes for lane effects on non-note tap
-	for i in range(1, 7):
-		var hitbox: NoteHitbox = ObjNoteHitbox.instance()
-		var top_left = Vector2(lower_lane_left.x + lower_lane_width*(i-1), lower_lane_top)
-		var bottom_right = Vector2(lower_lane_left.x + lower_lane_width*i, view_coords.y)
-		var center = Vector2(lower_lane_left.x + lower_lane_width*(i-0.5), lower_lane_left.y)
-		hitbox.set_points(top_left, bottom_right, center)
-		lane_zones[i] = hitbox
-		$CanvasLayer.add_child(hitbox)
 		
 	for i in range(1, 7):
 		var hitbox: NoteHitbox = ObjNoteHitbox.instance()
@@ -296,6 +315,7 @@ func _input(event):
 				if note.can_judge(event_time):
 					var result: Dictionary = note.judge(event_time)
 					draw_judgement(result, note.lane)
+					emit_signal("note_judged", result)
 					delete_note(note)
 					return
 		else: # touch release

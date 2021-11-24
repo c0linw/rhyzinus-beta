@@ -8,8 +8,8 @@ var center: Vector2
 func _ready():
 	pass # Replace with function body.
 
-func _draw():
-	draw_rect(Rect2(get_center() - Vector2(4,4), Vector2(8,8)), Color.green)
+#func _draw():
+	#draw_rect(Rect2(get_center() - Vector2(4,4), Vector2(8,8)), Color.green)
 
 func set_points(upper_left: Vector2, lower_right: Vector2, center_point: Vector2):
 	area.position = upper_left
