@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=2]
+[gd_scene load_steps=31 format=2]
 
 [ext_resource path="res://Scenes/Lanes_Lower.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Images/gameplay-bg.jpg" type="Texture" id=2]
@@ -9,8 +9,10 @@
 [ext_resource path="res://Scripts/results_data.gd" type="Script" id=7]
 [ext_resource path="res://Scripts/ComboCounter.gd" type="Script" id=8]
 [ext_resource path="res://Fonts/Trebuchet_MS.ttf" type="DynamicFontData" id=9]
+[ext_resource path="res://Scripts/FramerateCounter.gd" type="Script" id=10]
 
 [sub_resource type="SpatialMaterial" id=14]
+render_priority = -1
 flags_transparent = true
 albedo_color = Color( 0.54902, 0.627451, 0.784314, 1 )
 albedo_texture = ExtResource( 6 )
@@ -19,6 +21,7 @@ albedo_texture = ExtResource( 6 )
 size = Vector2( 1, 1 )
 
 [sub_resource type="SpatialMaterial" id=2]
+render_priority = -1
 flags_transparent = true
 albedo_color = Color( 0.54902, 0.627451, 0.784314, 1 )
 albedo_texture = ExtResource( 6 )
@@ -27,6 +30,7 @@ albedo_texture = ExtResource( 6 )
 size = Vector2( 1, 1 )
 
 [sub_resource type="SpatialMaterial" id=4]
+render_priority = -1
 flags_transparent = true
 albedo_color = Color( 0.54902, 0.627451, 0.784314, 1 )
 albedo_texture = ExtResource( 6 )
@@ -35,6 +39,7 @@ albedo_texture = ExtResource( 6 )
 size = Vector2( 1, 1 )
 
 [sub_resource type="SpatialMaterial" id=6]
+render_priority = -1
 flags_transparent = true
 albedo_color = Color( 0.54902, 0.627451, 0.784314, 1 )
 albedo_texture = ExtResource( 6 )
@@ -43,6 +48,7 @@ albedo_texture = ExtResource( 6 )
 size = Vector2( 1, 1 )
 
 [sub_resource type="SpatialMaterial" id=8]
+render_priority = -1
 flags_transparent = true
 albedo_color = Color( 0.54902, 0.627451, 0.784314, 1 )
 albedo_texture = ExtResource( 6 )
@@ -51,6 +57,7 @@ albedo_texture = ExtResource( 6 )
 size = Vector2( 1, 1 )
 
 [sub_resource type="SpatialMaterial" id=10]
+render_priority = -1
 flags_transparent = true
 albedo_color = Color( 0.54902, 0.627451, 0.784314, 1 )
 albedo_texture = ExtResource( 6 )
@@ -59,6 +66,7 @@ albedo_texture = ExtResource( 6 )
 size = Vector2( 1, 1 )
 
 [sub_resource type="SpatialMaterial" id=12]
+render_priority = -1
 flags_transparent = true
 albedo_color = Color( 0.54902, 0.627451, 0.784314, 1 )
 albedo_texture = ExtResource( 6 )
@@ -67,6 +75,7 @@ albedo_texture = ExtResource( 6 )
 size = Vector2( 1, 1 )
 
 [sub_resource type="SpatialMaterial" id=16]
+render_priority = -1
 flags_transparent = true
 albedo_color = Color( 0.54902, 0.627451, 0.784314, 1 )
 albedo_texture = ExtResource( 6 )
@@ -84,10 +93,14 @@ ambient_light_color = Color( 1, 1, 1, 1 )
 glow_intensity = 0.6
 glow_blend_mode = 0
 
+[sub_resource type="DynamicFont" id=20]
+size = 64
+font_data = ExtResource( 9 )
+
 [sub_resource type="DynamicFont" id=19]
-size = 72
+size = 256
 outline_size = 2
-outline_color = Color( 0, 0.0196078, 0.180392, 1 )
+outline_color = Color( 0, 0.0431373, 0.396078, 1 )
 font_data = ExtResource( 9 )
 
 [node name="Game" type="Spatial"]
@@ -246,21 +259,33 @@ margin_left = 38.6252
 margin_top = 176.481
 margin_right = 168.625
 margin_bottom = 227.481
+custom_fonts/font = SubResource( 20 )
 align = 1
 valign = 1
+script = ExtResource( 10 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ComboCounter" type="Label" parent="CanvasLayer"]
-margin_left = 405.42
-margin_top = 373.98
-margin_right = 805.42
-margin_bottom = 473.98
+[node name="ComboCounter" type="Control" parent="CanvasLayer"]
+margin_left = 495.597
+margin_top = 323.418
+margin_right = 535.597
+margin_bottom = 363.418
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ComboCounterLabel" type="Label" parent="CanvasLayer/ComboCounter"]
+margin_left = -400.0
+margin_top = -200.0
+margin_right = 400.0
+margin_bottom = 200.0
 grow_horizontal = 2
 rect_pivot_offset = Vector2( 200, 50 )
-size_flags_horizontal = 4
-custom_colors/font_color = Color( 1, 1, 1, 1 )
+size_flags_horizontal = 2
+size_flags_vertical = 2
+custom_colors/font_color = Color( 0.584314, 0.882353, 1, 1 )
 custom_fonts/font = SubResource( 19 )
 align = 1
 script = ExtResource( 8 )
@@ -271,6 +296,6 @@ __meta__ = {
 [node name="result_data" type="Node" parent="."]
 script = ExtResource( 7 )
 
-[connection signal="note_judged" from="." to="CanvasLayer/ComboCounter" method="_on_Game_note_judged"]
+[connection signal="note_judged" from="." to="CanvasLayer/ComboCounter/ComboCounterLabel" method="_on_Game_note_judged"]
 [connection signal="note_judged" from="." to="result_data" method="_on_Game_note_judged"]
 [connection signal="finished" from="Conductor" to="." method="_on_Conductor_finished"]

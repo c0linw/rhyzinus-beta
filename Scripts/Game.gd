@@ -63,7 +63,7 @@ signal note_judged(result)
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	######## TODO: set options by passing them in
-	note_speed = 3.0
+	note_speed = 10.5
 	lane_depth = 24.0
 	
 	######## SETUP OBJECTS
@@ -87,11 +87,7 @@ func _ready():
 	setup_input()
 	setup_lane_effects()
 	setup_judgement_textures()
-	
-	var view_coords = get_viewport().size
-	var comboPosX = view_coords.x/2 - $CanvasLayer/ComboCounter.get_rect().size.x/2
-	var comboPosY = upper_lane_left.y + (lower_lane_left.y - upper_lane_left.y)*0.3 - $CanvasLayer/ComboCounter.get_rect().size.y/2
-	$CanvasLayer/ComboCounter.set_global_position(Vector2(comboPosX, comboPosY))
+	setup_combo_counter()
 	
 	$Conductor.set_bpm(starting_bpm)
 	$Conductor.stream = load("res://Songs/neutralizeptbmix/neutralizeptbmix.mp3")
@@ -130,8 +126,23 @@ func _process(_delta):
 		else:
 			barline.render(chart_position, lane_depth, base_note_screen_time)
 			
+	# reset, then update hold status
+	for hold in get_tree().get_nodes_in_group("holds"):
+		hold.held = false
+		
+	for hold in get_tree().get_nodes_in_group("holds"):
+		if hold.activated:
+			for input in touch_bindings:
+				if input != null and input_zones[hold.lane].area.has_point(input.position):
+					hold.held = true
+					break
+	
+	# check for notes that are too late, then render the rest
 	for note in onscreen_notes:
-		if timestamp >= note.time + note.late_cracked:
+		if note.is_in_group("holds") and timestamp >= note.end_time:
+			delete_note(note)
+			# TODO: register ending
+		elif timestamp >= note.time + note.late_cracked and !note.is_in_group("holds"):
 			var result = {"judgement": ENCRYPTED, "offset": 0}
 			draw_judgement(result, note.lane)
 			emit_signal("note_judged", result)
@@ -155,6 +166,7 @@ func _process(_delta):
 					if lane_zones[i] != null and lane_zones[i].get_instance_id() == result["collider_id"]:
 						if lane_effects[i] != null:
 							lane_effects[i].visible = true
+							break
 	last_timestamp = timestamp
 
 func apply_timing_point(sv: Dictionary):
@@ -304,6 +316,15 @@ func setup_judgement_textures():
 	for i in len(pics):
 		judgement_textures[i] = ImageTexture.new()
 		judgement_textures[i].create_from_image(pics[i].get_data())
+		
+func setup_combo_counter():
+	var view_coords = get_viewport().size
+	var comboScale = get_viewport().size.y/256 * 0.15
+	var comboPosX = view_coords.x/2
+	var comboPosY = upper_lane_left.y + (lower_lane_left.y - upper_lane_left.y)*0.35
+	$CanvasLayer/ComboCounter.rect_scale = Vector2(comboScale, comboScale)
+	$CanvasLayer/ComboCounter.set_global_position(Vector2(comboPosX, comboPosY))
+	
 
 func _input(event):
 	if event is InputEventScreenTouch:
@@ -311,18 +332,59 @@ func _input(event):
 		var event_time = $Conductor.song_position
 		if event.pressed: # tap
 			touch_bindings[event.index] = event
+			var candidate_notes: Array # use this to improve hit registration for notes with overlapping hitboxes
+			var first_note_time = null
+			# multiple notes can be candidates if they have the same timestamp and have a hitbox that covers the touch
 			for note in onscreen_notes:
 				if note.can_judge(event_time):
+					if input_zones[note.lane].area.has_point(event.position):
+						if first_note_time == null:
+							first_note_time = note.time
+						elif note.time > first_note_time:
+							break
+						candidate_notes.append(note)
+				elif note.time > event_time:
+					break
+			
+			match len(candidate_notes):
+				0:
+					return
+				1:
+					var note = candidate_notes[0]
 					var result: Dictionary = note.judge(event_time)
 					draw_judgement(result, note.lane)
 					emit_signal("note_judged", result)
-					delete_note(note)
+					if note.is_in_group("holds"):
+						note.activated = true
+					else:
+						delete_note(note)
+					return
+				_:
+					# tiebreaker for notes with same time and overlapping zone
+					var min_dist_sq = null
+					var closest_note = null
+					for note in candidate_notes:
+						if closest_note == null:
+							min_dist_sq = event.position.distance_squared_to(input_zones[note.lane].center)
+							closest_note = note
+						else:
+							var curr_dist_sq = event.position.distance_squared_to(input_zones[note.lane].center)
+							if curr_dist_sq < min_dist_sq:
+								min_dist_sq = curr_dist_sq
+								closest_note = note
+					var result: Dictionary = closest_note.judge(event_time)
+					draw_judgement(result, closest_note.lane)
+					emit_signal("note_judged", result)
+					if closest_note.is_in_group("holds"):
+						closest_note.activated = true
+					else:
+						delete_note(closest_note)
 					return
 		else: # touch release
 			touch_bindings[event.index] = null
 			return
 	elif event is InputEventScreenDrag:
-		touch_bindings[event.index] = event
+		touch_bindings[event.index] = event # updates position
 		return
 		
 func draw_judgement(data: Dictionary, lane: int):

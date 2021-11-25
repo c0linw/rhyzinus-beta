@@ -24,12 +24,12 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Scripts/Note_Hold.gd"
 }, {
-"base": "Note",
+"base": "NoteHold",
 "class": "NoteHoldSide",
 "language": "GDScript",
 "path": "res://Scripts/Note_Hold_Side.gd"
 }, {
-"base": "Note",
+"base": "NoteHold",
 "class": "NoteHoldUpper",
 "language": "GDScript",
 "path": "res://Scripts/Note_Hold_Upper.gd"
@@ -66,6 +66,10 @@ config/name="Rhyzinus-beta"
 run/main_scene="res://Scenes/Loadscreen.tscn"
 config/icon="res://icon.png"
 
+[audio]
+
+output_latency=10
+
 [autoload]
 
 SceneSwitcher="*res://Scripts/scene_switcher.gd"
@@ -83,6 +87,7 @@ pointing/emulate_touch_from_mouse=true
 [layer_names]
 
 3d_physics/layer_6="LaneEffect"
+3d_physics/layer_7="Holds"
 
 [physics]
 
