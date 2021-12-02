@@ -7,29 +7,54 @@ var time_begin: float
 var time_delay: float
 
 var song_position: float = 0.0
-var song_position_in_beats = 1
-var sec_per_beat
+var song_position_in_beats = 0
+var sec_per_beat = 0
 var last_reported_beat = 0
 var beats_before_start = 0
 var song_offset = 0
 var audio_offset = 0
-var timing_points: Array = []
+var beat_data: Array = []
 
 # Determining how close to the beat an event is
 var closest = 0
 var time_off_beat = 0.0
 
+class TimeSorter:
+	# denotes the order in which these should be sorted, if there are objects with the same time
+	const type_enum: Dictionary = {
+		"bpm": 0, 
+		"velocity": 1,
+		"barline": 2,
+		"tap": 3,
+		"hold_start": 3,
+		"hold_end": 3,
+		"hold": 3
+	}
+	
+	static func sort_ascending(a: Dictionary, b: Dictionary) -> bool:
+		return a["time"] < b["time"]
+		
+	# use this after adding the timing points and notes into one array
+	static func sort_ascending_with_type_priority(a: Dictionary, b: Dictionary) -> bool:
+		if a["time"] < b["time"]:
+			return true
+		elif a["time"] == b["time"]:
+			return type_enum[a["type"]] < type_enum[b["type"]]
+		else:
+			return false
 
 func _ready():
 	pass
 	
-func set_bpm(num):
+func set_bpm(num: float):
 	bpm = num
 	sec_per_beat = 60.0 / bpm
+	
+func set_beat_length(num: float):
+	sec_per_beat = num
+	bpm = (60.0 / num)
 
-#func _process(_delta):
-#	update_song_position()
-
+# func _process(_delta):
 
 func play_with_offset(offset: float):
 	#$StartTimer.wait_time = offset

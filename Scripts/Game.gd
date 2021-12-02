@@ -14,6 +14,7 @@ var base_note_screen_time: float
 var notes_to_spawn: Array = []
 var scrollmod_list: Array = []
 var barlines_to_spawn: Array = []
+var beat_data: Array = []
 
 var onscreen_notes: Array = []
 var onscreen_slides: Array = []
@@ -59,6 +60,7 @@ var lane_effects: Array = []
 var judgement_textures: Array = []
 
 signal note_judged(result)
+signal beat(measure, beat)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -81,6 +83,7 @@ func _ready():
 	notes_to_spawn = chart_data["notes"]
 	scrollmod_list = chart_data["timing_points"]
 	barlines_to_spawn = chart_data["barlines"]
+	beat_data = chart_data["beats"]
 	
 	######## SETUP INPUT
 	input_offset = options["input_offset"]
@@ -89,7 +92,6 @@ func _ready():
 	setup_judgement_textures()
 	setup_combo_counter()
 	
-	$Conductor.set_bpm(starting_bpm)
 	$Conductor.stream = load("res://Songs/neutralizeptbmix/neutralizeptbmix.mp3")
 	$Conductor.volume_db = -10.0
 
@@ -126,11 +128,9 @@ func _process(_delta):
 		else:
 			barline.render(chart_position, lane_depth, base_note_screen_time)
 			
-	# reset, then update hold status
+	# reset, then update hold status		
 	for hold in get_tree().get_nodes_in_group("holds"):
 		hold.held = false
-		
-	for hold in get_tree().get_nodes_in_group("holds"):
 		if hold.activated:
 			for input in touch_bindings:
 				if input != null and input_zones[hold.lane].area.has_point(input.position):
@@ -139,16 +139,31 @@ func _process(_delta):
 	
 	# check for notes that are too late, then render the rest
 	for note in onscreen_notes:
-		if note.is_in_group("holds") and timestamp >= note.end_time:
+		if note.is_in_group("holds") and timestamp > note.end_time + input_offset:
 			delete_note(note)
 			# TODO: register ending
-		elif timestamp >= note.time + note.late_cracked and !note.is_in_group("holds"):
-			var result = {"judgement": ENCRYPTED, "offset": 0}
-			draw_judgement(result, note.lane)
-			emit_signal("note_judged", result)
-			delete_note(note)
+		elif timestamp >= note.time + note.late_cracked + input_offset:
+			if note.is_in_group("holds") and note.activated:
+				note.render(chart_position, lane_depth, base_note_screen_time)
+			else:
+				var result = {"judgement": ENCRYPTED, "offset": 0}
+				draw_judgement(result, note.lane)
+				emit_signal("note_judged", result)
+				delete_note(note)
 		else:
 			note.render(chart_position, lane_depth, base_note_screen_time)
+			
+	for beat in beat_data:
+		if timestamp >= beat["time"]:
+			emit_signal("beat", beat["measure"], beat["beat"])
+			print("signal: %s, %s" % [beat["measure"], beat["beat"]])
+			# TODO: judge beat on hold
+			for hold in get_tree().get_nodes_in_group("holds"):
+				if hold.held: 
+					pass
+			beat_data.erase(beat)
+		else: 
+			break
 		
 	# reset then update
 	for effect in lane_effects:
@@ -211,15 +226,21 @@ func spawn_note(note_data: Dictionary):
 		$Lanes_upper.add_child(note_instance)
 		
 func spawn_barline(barline_data: Dictionary):
-	var barline_instance = ObjBarline.instance()
-	barline_instance.time = barline_data["time"]
-	barline_instance.chart_position = barline_data["position"]
+	var barline_lower = ObjBarline.instance()
+	barline_lower.time = barline_data["time"]
+	barline_lower.chart_position = barline_data["position"]
 	barlines_to_spawn.erase(barline_data)
-	onscreen_barlines.append(barline_instance)
-	$Lanes_lower.add_child(barline_instance)
+	onscreen_barlines.append(barline_lower)
+	$Lanes_lower.add_child(barline_lower)
+	
+	var barline_upper = ObjBarlineUpper.instance()
+	barline_upper.time = barline_data["time"]
+	barline_upper.chart_position = barline_data["position"]
+	barlines_to_spawn.erase(barline_data)
+	onscreen_barlines.append(barline_upper)
+	$Lanes_upper.add_child(barline_upper)
 	
 func remove_barline(barline_to_remove):
-	$Lanes_lower.remove_child(barline_to_remove)
 	onscreen_barlines.erase(barline_to_remove)
 	barline_to_remove.queue_free()
 	
@@ -319,17 +340,18 @@ func setup_judgement_textures():
 		
 func setup_combo_counter():
 	var view_coords = get_viewport().size
-	var comboScale = get_viewport().size.y/256 * 0.15
+	var fontSize = get_viewport().size.y * 0.15
+	var outline = fontSize * 0.02
 	var comboPosX = view_coords.x/2
 	var comboPosY = upper_lane_left.y + (lower_lane_left.y - upper_lane_left.y)*0.35
-	$CanvasLayer/ComboCounter.rect_scale = Vector2(comboScale, comboScale)
+	$CanvasLayer/ComboCounter/ComboCounterLabel.get_font("font").size = fontSize
 	$CanvasLayer/ComboCounter.set_global_position(Vector2(comboPosX, comboPosY))
 	
 
 func _input(event):
 	if event is InputEventScreenTouch:
 		$Conductor.update_song_position()
-		var event_time = $Conductor.song_position
+		var event_time = $Conductor.song_position - input_offset
 		if event.pressed: # tap
 			touch_bindings[event.index] = event
 			var candidate_notes: Array # use this to improve hit registration for notes with overlapping hitboxes

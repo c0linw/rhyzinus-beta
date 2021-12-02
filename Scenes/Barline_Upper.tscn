@@ -8,7 +8,7 @@ albedo_color = Color( 0.631373, 0.631373, 0.631373, 1 )
 [sub_resource type="PlaneMesh" id=2]
 size = Vector2( 1, 1 )
 
-[node name="Barline_Upper" type="Spatial"]
+[node name="Barline_Upper" type="Spatial" groups=["upper"]]
 script = ExtResource( 1 )
 
 [node name="MeshInstance" type="MeshInstance" parent="."]

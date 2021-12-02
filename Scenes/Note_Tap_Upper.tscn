@@ -19,7 +19,7 @@ size = Vector2( 1, 1 )
 
 [sub_resource type="SpatialMaterial" id=8]
 flags_transparent = true
-albedo_color = Color( 0.12549, 0.25098, 1, 1 )
+albedo_color = Color( 0.13, 0.25, 1, 0.75 )
 albedo_texture = ExtResource( 2 )
 
 [sub_resource type="PlaneMesh" id=7]

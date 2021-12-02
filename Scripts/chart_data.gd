@@ -7,6 +7,7 @@ var starting_bpm: float
 var notes: Array = []
 var timing_points: Array = []
 var barlines: Array = []
+var beat_data: Array = []
 
 class TimeSorter:
 	# denotes the order in which these should be sorted, if there are objects with the same time
@@ -92,7 +93,7 @@ func process_objects_for_gameplay():
 				"time": note["time"],
 				"type": "hold",
 				"position": note["position"],
-				"end_time": note["end_time"],
+				"end_time": note["end_time"] + offset,
 				"end_position": get_end_position(note, i, processed_notes)
 			}
 			processed_notes_with_holds.append(new_note)
@@ -103,6 +104,8 @@ func process_objects_for_gameplay():
 	timing_points = processed_timing_points
 	barlines = processed_barlines
 	
+	generate_beats(processed_timing_points)
+	
 func export_data() -> Dictionary:
 	process_objects_for_gameplay()
 	return {
@@ -111,7 +114,8 @@ func export_data() -> Dictionary:
 		"starting_bpm": starting_bpm,
 		"notes": notes,
 		"timing_points": timing_points,
-		"barlines": barlines
+		"barlines": barlines,
+		"beats": beat_data
 	}
 
 func get_end_position(note: Dictionary, start_index: int, array_to_search: Array):
@@ -154,3 +158,40 @@ func generate_barlines(data: Array) -> Array:
 			beat += 1
 			index += 1
 	return return_data
+
+func generate_beats(timing_points: Array):
+	var data: Array = timing_points.duplicate()
+	data.sort_custom(TimeSorter, "sort_ascending_with_type_priority")
+	var beat_output: Array = []
+	var timestamp: float = data[0]["time"]
+	var beat_length: float = data[0].beat_length / 1000.0
+	var meter: int = data[0]["meter"]
+	var measure: int = 1
+	var beat = 1
+	beat_output.append({
+			"time": timestamp,
+			"measure": measure,
+			"beat": beat
+		})
+	var index: int = 0
+	while timestamp <= data[len(data)-1]["time"]:
+		if beat % meter == 0:
+			measure += 1
+			beat = 0
+		var next_beat_time: float = timestamp + beat_length
+		if index+1 < len(data) && data[index+1]["type"] == "bpm" && next_beat_time >= data[index+1]:
+			timestamp = data[index+1]["time"]
+			beat_length = data[index+1]["beat_length"]
+			meter = data[index+1]["meter"]
+			beat = 0
+			index += 1
+		else:
+			timestamp = next_beat_time
+			beat += 1
+			index += 1
+		beat_output.append({
+			"time": timestamp,
+			"measure": measure,
+			"beat": beat
+		})
+	beat_data = beat_output
