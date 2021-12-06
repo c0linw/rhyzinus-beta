@@ -129,13 +129,16 @@ func _process(_delta):
 			barline.render(chart_position, lane_depth, base_note_screen_time)
 			
 	# reset, then update hold status		
+	var candidate_holds: Array = []
 	for hold in get_tree().get_nodes_in_group("holds"):
 		hold.held = false
 		if hold.activated:
-			for input in touch_bindings:
-				if input != null and input_zones[hold.lane].area.has_point(input.position):
-					hold.held = true
-					break
+			candidate_holds.append(hold)
+	for input in touch_bindings:
+		if input != null:
+			var nearest_hold: NoteHold = pop_nearest_note(input, candidate_holds)
+			if nearest_hold != null:
+				nearest_hold.held = true
 	
 	# check for notes that are too late, then render the rest
 	for note in onscreen_notes:
@@ -157,15 +160,20 @@ func _process(_delta):
 		if timestamp >= beat["time"]:
 			emit_signal("beat", beat["measure"], beat["beat"])
 			print("signal: %s, %s" % [beat["measure"], beat["beat"]])
-			# TODO: judge beat on hold
 			for hold in get_tree().get_nodes_in_group("holds"):
-				if hold.held: 
-					pass
+				if hold.activated and timestamp > hold.time + hold.late_cracked and timestamp < hold.end_time - hold.late_cracked:
+					var result: Dictionary
+					if hold.held:
+						result = {"judgement": FLAWLESS, "offset": 0}
+					else:
+						result = {"judgement": ENCRYPTED, "offset": 0}
+					draw_judgement(result, hold.lane)
+					emit_signal("note_judged", result)
 			beat_data.erase(beat)
 		else: 
 			break
 		
-	# reset then update
+	# reset then update lane effects
 	for effect in lane_effects:
 		if effect != null:
 			effect.visible = false
@@ -430,6 +438,27 @@ func draw_judgement(data: Dictionary, lane: int):
 func delete_note(note: Note):
 	onscreen_notes.erase(note)
 	note.queue_free()
+	
+# returns and removes the nearest note that can judge the input, or returns null otherwise
+func pop_nearest_note(input: InputEvent, candidates: Array):
+	if input == null:
+		return null
+	var min_dist_sq = null
+	var closest_note = null
+	for note in candidates:
+		if !input_zones[note.lane].area.has_point(input.position):
+			continue
+		if closest_note == null:
+			min_dist_sq = input.position.distance_squared_to(input_zones[note.lane].center)
+			closest_note = note
+		else:
+			var curr_dist_sq = input.position.distance_squared_to(input_zones[note.lane].center)
+			if curr_dist_sq < min_dist_sq:
+				min_dist_sq = curr_dist_sq
+				closest_note = note
+	if closest_note != null:
+		candidates.erase(closest_note)
+	return closest_note
 
 func _on_Conductor_finished():
 	pass # Replace with function body.

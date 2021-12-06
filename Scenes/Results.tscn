@@ -1,0 +1,176 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Images/gameplay-bg.jpg" type="Texture" id=1]
+[ext_resource path="res://Fonts/new_dynamicfont.tres" type="DynamicFont" id=2]
+
+[node name="Results" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Gameplay_bg" type="TextureRect" parent="."]
+self_modulate = Color( 0.247059, 0.247059, 0.247059, 1 )
+show_behind_parent = true
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource( 1 )
+expand = true
+stretch_mode = 7
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ResultsDisplay" type="Control" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -20.0
+margin_top = -20.0
+margin_right = 20.0
+margin_bottom = 20.0
+
+[node name="Score" type="MarginContainer" parent="ResultsDisplay"]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ResultsDisplay"]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PlayerInfo" type="MarginContainer" parent="ResultsDisplay/VBoxContainer"]
+margin_right = 132.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ResultsDisplay/VBoxContainer"]
+margin_top = 4.0
+margin_right = 132.0
+margin_bottom = 132.0
+
+[node name="ScoreAndNoteInfo" type="VBoxContainer" parent="ResultsDisplay/VBoxContainer/HBoxContainer"]
+margin_right = 128.0
+margin_bottom = 128.0
+
+[node name="ScoreInfo" type="HBoxContainer" parent="ResultsDisplay/VBoxContainer/HBoxContainer/ScoreAndNoteInfo"]
+margin_right = 128.0
+
+[node name="NoteStats" type="MarginContainer" parent="ResultsDisplay/VBoxContainer/HBoxContainer/ScoreAndNoteInfo"]
+margin_top = 4.0
+margin_right = 128.0
+margin_bottom = 128.0
+custom_constants/margin_right = 8
+custom_constants/margin_top = 8
+custom_constants/margin_left = 8
+custom_constants/margin_bottom = 8
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ResultsDisplay/VBoxContainer/HBoxContainer/ScoreAndNoteInfo/NoteStats"]
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 120.0
+margin_bottom = 116.0
+
+[node name="NoteCounts" type="VBoxContainer" parent="ResultsDisplay/VBoxContainer/HBoxContainer/ScoreAndNoteInfo/NoteStats/HBoxContainer"]
+margin_right = 16.0
+margin_bottom = 108.0
+
+[node name="FlawlessCount" type="Label" parent="ResultsDisplay/VBoxContainer/HBoxContainer/ScoreAndNoteInfo/NoteStats/HBoxContainer/NoteCounts"]
+margin_right = 16.0
+margin_bottom = 24.0
+custom_fonts/font = ExtResource( 2 )
+text = "0 "
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="DecryptedCount" type="Label" parent="ResultsDisplay/VBoxContainer/HBoxContainer/ScoreAndNoteInfo/NoteStats/HBoxContainer/NoteCounts"]
+margin_top = 28.0
+margin_right = 16.0
+margin_bottom = 52.0
+custom_fonts/font = ExtResource( 2 )
+text = "0 "
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CrackedCount" type="Label" parent="ResultsDisplay/VBoxContainer/HBoxContainer/ScoreAndNoteInfo/NoteStats/HBoxContainer/NoteCounts"]
+margin_top = 56.0
+margin_right = 16.0
+margin_bottom = 80.0
+custom_fonts/font = ExtResource( 2 )
+text = "0 "
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="EncryptedCount" type="Label" parent="ResultsDisplay/VBoxContainer/HBoxContainer/ScoreAndNoteInfo/NoteStats/HBoxContainer/NoteCounts"]
+margin_top = 84.0
+margin_right = 16.0
+margin_bottom = 108.0
+custom_fonts/font = ExtResource( 2 )
+text = "0 "
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="NoteNames" type="VBoxContainer" parent="ResultsDisplay/VBoxContainer/HBoxContainer/ScoreAndNoteInfo/NoteStats/HBoxContainer"]
+margin_left = 20.0
+margin_right = 112.0
+margin_bottom = 108.0
+custom_constants/separation = 4
+
+[node name="Flawless" type="Label" parent="ResultsDisplay/VBoxContainer/HBoxContainer/ScoreAndNoteInfo/NoteStats/HBoxContainer/NoteNames"]
+margin_right = 92.0
+margin_bottom = 24.0
+custom_fonts/font = ExtResource( 2 )
+text = "Flawless"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Decrypted" type="Label" parent="ResultsDisplay/VBoxContainer/HBoxContainer/ScoreAndNoteInfo/NoteStats/HBoxContainer/NoteNames"]
+margin_top = 28.0
+margin_right = 92.0
+margin_bottom = 52.0
+custom_fonts/font = ExtResource( 2 )
+text = "Decrypted"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Cracked" type="Label" parent="ResultsDisplay/VBoxContainer/HBoxContainer/ScoreAndNoteInfo/NoteStats/HBoxContainer/NoteNames"]
+margin_top = 56.0
+margin_right = 92.0
+margin_bottom = 80.0
+custom_fonts/font = ExtResource( 2 )
+text = "Cracked"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Encrypted" type="Label" parent="ResultsDisplay/VBoxContainer/HBoxContainer/ScoreAndNoteInfo/NoteStats/HBoxContainer/NoteNames"]
+margin_top = 84.0
+margin_right = 92.0
+margin_bottom = 108.0
+custom_fonts/font = ExtResource( 2 )
+text = "Encrypted"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AssistantInfo" type="VBoxContainer" parent="ResultsDisplay/VBoxContainer/HBoxContainer"]
+margin_left = 132.0
+margin_right = 132.0
+margin_bottom = 128.0
