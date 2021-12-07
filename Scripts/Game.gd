@@ -17,7 +17,6 @@ var barlines_to_spawn: Array = []
 var beat_data: Array = []
 
 var onscreen_notes: Array = []
-var onscreen_slides: Array = []
 var onscreen_barlines: Array = []
 
 var starting_bpm: float
@@ -142,19 +141,26 @@ func _process(_delta):
 	
 	# check for notes that are too late, then render the rest
 	for note in onscreen_notes:
+		note.render(chart_position, lane_depth, base_note_screen_time)
 		if note.is_in_group("holds") and timestamp > note.end_time + input_offset:
-			delete_note(note)
-			# TODO: register ending
+			if note.held:
+				var result = {"judgement": FLAWLESS, "offset": 0}
+				draw_judgement(result, note.lane)
+				emit_signal("note_judged", result)
+				delete_note(note)
+			if !note.held and timestamp > note.end_time + note.late_cracked + input_offset:
+				var result = {"judgement": ENCRYPTED, "offset": 0}
+				draw_judgement(result, note.lane)
+				emit_signal("note_judged", result)
+				delete_note(note)
 		elif timestamp >= note.time + note.late_cracked + input_offset:
 			if note.is_in_group("holds") and note.activated:
-				note.render(chart_position, lane_depth, base_note_screen_time)
+				pass
 			else:
 				var result = {"judgement": ENCRYPTED, "offset": 0}
 				draw_judgement(result, note.lane)
 				emit_signal("note_judged", result)
 				delete_note(note)
-		else:
-			note.render(chart_position, lane_depth, base_note_screen_time)
 			
 	for beat in beat_data:
 		if timestamp >= beat["time"]:
@@ -411,6 +417,16 @@ func _input(event):
 						delete_note(closest_note)
 					return
 		else: # touch release
+			var candidate_holds: Array
+			for note in onscreen_notes:
+				if note.is_in_group("holds") and event_time >= note.end_time - note.early_cracked + input_offset and note.activated:
+					candidate_holds.append(note)
+			var judged_note = pop_nearest_note(event, candidate_holds)
+			if judged_note != null:
+				var result = {"judgement": FLAWLESS, "offset": 0}
+				draw_judgement(result, judged_note.lane)
+				emit_signal("note_judged", result)
+				delete_note(judged_note)
 			touch_bindings[event.index] = null
 			return
 	elif event is InputEventScreenDrag:
