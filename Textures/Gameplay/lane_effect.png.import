@@ -2,8 +2,8 @@
 
 importer="texture"
 type="StreamTexture"
-path.s3tc="res://.import/lane_effect.png-766fea69730c712dc912de1f231ec6f6.s3tc.stex"
-path.etc2="res://.import/lane_effect.png-766fea69730c712dc912de1f231ec6f6.etc2.stex"
+path.s3tc="res://.import/lane_effect.png-3d7bcd986ea6540c5d6a0fe4eab385b3.s3tc.stex"
+path.etc2="res://.import/lane_effect.png-3d7bcd986ea6540c5d6a0fe4eab385b3.etc2.stex"
 metadata={
 "imported_formats": [ "s3tc", "etc2" ],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://Textures/lane_effect.png"
-dest_files=[ "res://.import/lane_effect.png-766fea69730c712dc912de1f231ec6f6.s3tc.stex", "res://.import/lane_effect.png-766fea69730c712dc912de1f231ec6f6.etc2.stex" ]
+source_file="res://Textures/Gameplay/lane_effect.png"
+dest_files=[ "res://.import/lane_effect.png-3d7bcd986ea6540c5d6a0fe4eab385b3.s3tc.stex", "res://.import/lane_effect.png-3d7bcd986ea6540c5d6a0fe4eab385b3.etc2.stex" ]
 
 [params]
 
