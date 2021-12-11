@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Images/gameplay-bg.jpg" type="Texture" id=1]
 [ext_resource path="res://Scenes/UI/PlayerInfo.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Scenes/Results/Notecounts.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Scenes/Results/SongScore.tscn" type="PackedScene" id=4]
 
 [node name="Results" type="Control"]
 anchor_right = 1.0
@@ -50,3 +51,19 @@ margin_top = 8.0
 margin_right = 32.0
 margin_bottom = 32.0
 size_flags_vertical = 3
+
+[node name="MarginContainer2" type="MarginContainer" parent="."]
+anchor_top = 0.5
+anchor_bottom = 0.5
+margin_top = -12.0
+margin_right = 24.0
+margin_bottom = 12.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SongScore" parent="MarginContainer2" instance=ExtResource( 4 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 24.0
+margin_bottom = 24.0

@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Fonts/new_dynamicfont.tres" type="DynamicFont" id=1]
 [ext_resource path="res://Textures/Result/score_rank_r_plus_rainbow.png" type="Texture" id=2]
 [ext_resource path="res://Textures/UI/notecounts_border.png" type="Texture" id=3]
+[ext_resource path="res://Scenes/Results/notecount_flawless.tres" type="DynamicFont" id=4]
 
 [node name="NoteCounts" type="Control"]
 anchor_right = 1.0
@@ -12,29 +13,23 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="."]
 anchor_top = 1.0
-anchor_right = 1.0
 anchor_bottom = 1.0
-margin_top = -140.0
+margin_top = -264.0
+margin_right = 638.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
+custom_constants/margin_left = 16
+custom_constants/margin_bottom = 64
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer"]
-margin_right = 510.0
-margin_bottom = 140.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Border" type="TextureRect" parent="HBoxContainer/MarginContainer"]
-margin_right = 510.0
-margin_bottom = 140.0
+[node name="Border" type="TextureRect" parent="MarginContainer"]
+margin_left = 16.0
+margin_right = 638.0
+margin_bottom = 200.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 texture = ExtResource( 3 )
@@ -43,18 +38,19 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/MarginContainer"]
-margin_right = 510.0
-margin_bottom = 140.0
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+margin_left = 16.0
+margin_right = 638.0
+margin_bottom = 200.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="NoteStats" type="MarginContainer" parent="HBoxContainer/MarginContainer/HBoxContainer"]
-margin_right = 253.0
-margin_bottom = 140.0
+[node name="NoteStats" type="MarginContainer" parent="MarginContainer/HBoxContainer"]
+margin_right = 309.0
+margin_bottom = 200.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_constants/margin_right = 16
@@ -65,20 +61,33 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/MarginContainer/HBoxContainer/NoteStats"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/NoteStats"]
 margin_left = 16.0
 margin_top = 16.0
-margin_right = 237.0
-margin_bottom = 124.0
+margin_right = 293.0
+margin_bottom = 184.0
 
-[node name="NoteCounts" type="VBoxContainer" parent="HBoxContainer/MarginContainer/HBoxContainer/NoteStats/HBoxContainer"]
-margin_right = 16.0
-margin_bottom = 108.0
+[node name="NoteCounts" type="VBoxContainer" parent="MarginContainer/HBoxContainer/NoteStats/HBoxContainer"]
+margin_right = 27.0
+margin_bottom = 168.0
 size_flags_vertical = 3
 
-[node name="FlawlessCount" type="Label" parent="HBoxContainer/MarginContainer/HBoxContainer/NoteStats/HBoxContainer/NoteCounts"]
-margin_right = 16.0
-margin_bottom = 24.0
+[node name="FlawlessCount" type="Label" parent="MarginContainer/HBoxContainer/NoteStats/HBoxContainer/NoteCounts"]
+margin_right = 27.0
+margin_bottom = 39.0
+size_flags_vertical = 3
+custom_colors/font_color = Color( 0.678431, 0.960784, 1, 1 )
+custom_fonts/font = ExtResource( 4 )
+text = "0 "
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="DecryptedCount" type="Label" parent="MarginContainer/HBoxContainer/NoteStats/HBoxContainer/NoteCounts"]
+margin_top = 43.0
+margin_right = 27.0
+margin_bottom = 82.0
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 1 )
 text = "0 "
@@ -87,10 +96,10 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="DecryptedCount" type="Label" parent="HBoxContainer/MarginContainer/HBoxContainer/NoteStats/HBoxContainer/NoteCounts"]
-margin_top = 28.0
-margin_right = 16.0
-margin_bottom = 52.0
+[node name="CrackedCount" type="Label" parent="MarginContainer/HBoxContainer/NoteStats/HBoxContainer/NoteCounts"]
+margin_top = 86.0
+margin_right = 27.0
+margin_bottom = 125.0
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 1 )
 text = "0 "
@@ -99,10 +108,10 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="CrackedCount" type="Label" parent="HBoxContainer/MarginContainer/HBoxContainer/NoteStats/HBoxContainer/NoteCounts"]
-margin_top = 56.0
-margin_right = 16.0
-margin_bottom = 80.0
+[node name="EncryptedCount" type="Label" parent="MarginContainer/HBoxContainer/NoteStats/HBoxContainer/NoteCounts"]
+margin_top = 129.0
+margin_right = 27.0
+margin_bottom = 168.0
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 1 )
 text = "0 "
@@ -111,39 +120,28 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="EncryptedCount" type="Label" parent="HBoxContainer/MarginContainer/HBoxContainer/NoteStats/HBoxContainer/NoteCounts"]
-margin_top = 84.0
-margin_right = 16.0
-margin_bottom = 108.0
-size_flags_vertical = 3
-custom_fonts/font = ExtResource( 1 )
-text = "0 "
-valign = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="NoteNames" type="VBoxContainer" parent="HBoxContainer/MarginContainer/HBoxContainer/NoteStats/HBoxContainer"]
-margin_left = 20.0
-margin_right = 112.0
-margin_bottom = 108.0
+[node name="NoteNames" type="VBoxContainer" parent="MarginContainer/HBoxContainer/NoteStats/HBoxContainer"]
+margin_left = 31.0
+margin_right = 178.0
+margin_bottom = 168.0
 custom_constants/separation = 4
 
-[node name="Flawless" type="Label" parent="HBoxContainer/MarginContainer/HBoxContainer/NoteStats/HBoxContainer/NoteNames"]
-margin_right = 92.0
-margin_bottom = 24.0
+[node name="Flawless" type="Label" parent="MarginContainer/HBoxContainer/NoteStats/HBoxContainer/NoteNames"]
+margin_right = 147.0
+margin_bottom = 39.0
 size_flags_vertical = 3
-custom_fonts/font = ExtResource( 1 )
+custom_colors/font_color = Color( 0.678431, 0.960784, 1, 1 )
+custom_fonts/font = ExtResource( 4 )
 text = "Flawless"
 valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Decrypted" type="Label" parent="HBoxContainer/MarginContainer/HBoxContainer/NoteStats/HBoxContainer/NoteNames"]
-margin_top = 28.0
-margin_right = 92.0
-margin_bottom = 52.0
+[node name="Decrypted" type="Label" parent="MarginContainer/HBoxContainer/NoteStats/HBoxContainer/NoteNames"]
+margin_top = 43.0
+margin_right = 147.0
+margin_bottom = 82.0
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 1 )
 text = "Decrypted"
@@ -152,10 +150,10 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Cracked" type="Label" parent="HBoxContainer/MarginContainer/HBoxContainer/NoteStats/HBoxContainer/NoteNames"]
-margin_top = 56.0
-margin_right = 92.0
-margin_bottom = 80.0
+[node name="Cracked" type="Label" parent="MarginContainer/HBoxContainer/NoteStats/HBoxContainer/NoteNames"]
+margin_top = 86.0
+margin_right = 147.0
+margin_bottom = 125.0
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 1 )
 text = "Cracked"
@@ -164,10 +162,10 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Encrypted" type="Label" parent="HBoxContainer/MarginContainer/HBoxContainer/NoteStats/HBoxContainer/NoteNames"]
-margin_top = 84.0
-margin_right = 92.0
-margin_bottom = 108.0
+[node name="Encrypted" type="Label" parent="MarginContainer/HBoxContainer/NoteStats/HBoxContainer/NoteNames"]
+margin_top = 129.0
+margin_right = 147.0
+margin_bottom = 168.0
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 1 )
 text = "Encrypted"
@@ -176,10 +174,10 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ScoreRank" type="MarginContainer" parent="HBoxContainer/MarginContainer/HBoxContainer"]
-margin_left = 257.0
-margin_right = 510.0
-margin_bottom = 140.0
+[node name="ScoreRank" type="MarginContainer" parent="MarginContainer/HBoxContainer"]
+margin_left = 313.0
+margin_right = 622.0
+margin_bottom = 200.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_constants/margin_right = 16
@@ -187,27 +185,27 @@ custom_constants/margin_top = 16
 custom_constants/margin_left = 16
 custom_constants/margin_bottom = 16
 
-[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/MarginContainer/HBoxContainer/ScoreRank"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/ScoreRank"]
 margin_left = 16.0
 margin_top = 16.0
-margin_right = 237.0
-margin_bottom = 124.0
+margin_right = 293.0
+margin_bottom = 184.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.0
 
-[node name="AnalysisRank" type="Label" parent="HBoxContainer/MarginContainer/HBoxContainer/ScoreRank/VBoxContainer"]
-margin_right = 221.0
-margin_bottom = 24.0
+[node name="AnalysisRank" type="Label" parent="MarginContainer/HBoxContainer/ScoreRank/VBoxContainer"]
+margin_right = 277.0
+margin_bottom = 39.0
 size_flags_horizontal = 3
 size_flags_vertical = 1
 custom_fonts/font = ExtResource( 1 )
 text = "Analysis Rank:"
 
-[node name="TextureRect" type="TextureRect" parent="HBoxContainer/MarginContainer/HBoxContainer/ScoreRank/VBoxContainer"]
-margin_top = 28.0
-margin_right = 221.0
-margin_bottom = 80.0
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/HBoxContainer/ScoreRank/VBoxContainer"]
+margin_top = 43.0
+margin_right = 277.0
+margin_bottom = 125.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 texture = ExtResource( 2 )
@@ -217,19 +215,12 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label" type="Label" parent="HBoxContainer/MarginContainer/HBoxContainer/ScoreRank/VBoxContainer"]
-margin_top = 84.0
-margin_right = 221.0
-margin_bottom = 108.0
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/ScoreRank/VBoxContainer"]
+margin_top = 129.0
+margin_right = 277.0
+margin_bottom = 168.0
 size_flags_horizontal = 3
 size_flags_vertical = 1
 custom_fonts/font = ExtResource( 1 )
 text = "Full Chain"
 align = 2
-
-[node name="Spacer" type="Control" parent="HBoxContainer"]
-margin_left = 514.0
-margin_right = 1024.0
-margin_bottom = 140.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
