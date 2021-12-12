@@ -15,6 +15,9 @@ func _ready():
 #func _process(delta):
 #	pass
 
+func can_judge(event_time: float):
+	return event_time >= time-early_cracked
+
 func render(song_chart_position: float, lane_depth: float, base_note_screen_time: float):
 	var head: float = chart_position
 	var tail: float

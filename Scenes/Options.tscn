@@ -1,8 +1,165 @@
-[gd_scene format=2]
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Fonts/new_dynamicfont.tres" type="DynamicFont" id=1]
+[ext_resource path="res://Images/gameplay-bg.jpg" type="Texture" id=2]
 
 [node name="Options" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GridContainer" type="GridContainer" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+custom_constants/vseparation = 4
+custom_constants/hseparation = 4
+columns = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="NoteSpeedLabel" type="Label" parent="GridContainer"]
+margin_top = 3.0
+margin_right = 179.0
+margin_bottom = 42.0
+custom_fonts/font = ExtResource( 1 )
+text = "Note Speed"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VSeparator" type="VSeparator" parent="GridContainer"]
+margin_left = 183.0
+margin_right = 215.0
+margin_bottom = 45.0
+custom_constants/separation = 32
+
+[node name="Button" type="Button" parent="GridContainer"]
+margin_left = 219.0
+margin_right = 248.0
+margin_bottom = 45.0
+size_flags_horizontal = 0
+size_flags_vertical = 3
+custom_fonts/font = ExtResource( 1 )
+text = "<"
+
+[node name="SpeedNumber" type="Label" parent="GridContainer"]
+margin_left = 252.0
+margin_top = 3.0
+margin_right = 289.0
+margin_bottom = 42.0
+custom_fonts/font = ExtResource( 1 )
+text = " 0 "
+
+[node name="Button2" type="Button" parent="GridContainer"]
+margin_left = 293.0
+margin_right = 322.0
+margin_bottom = 45.0
+size_flags_vertical = 3
+custom_fonts/font = ExtResource( 1 )
+text = ">"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AudioOffsetLabel" type="Label" parent="GridContainer"]
+margin_top = 52.0
+margin_right = 179.0
+margin_bottom = 91.0
+custom_fonts/font = ExtResource( 1 )
+text = "Audio Offset"
+
+[node name="VSeparator2" type="VSeparator" parent="GridContainer"]
+margin_left = 183.0
+margin_top = 49.0
+margin_right = 215.0
+margin_bottom = 94.0
+custom_constants/separation = 32
+
+[node name="Button3" type="Button" parent="GridContainer"]
+margin_left = 219.0
+margin_top = 49.0
+margin_right = 248.0
+margin_bottom = 94.0
+size_flags_horizontal = 0
+size_flags_vertical = 3
+custom_fonts/font = ExtResource( 1 )
+text = "<"
+
+[node name="AudioNumber" type="Label" parent="GridContainer"]
+margin_left = 252.0
+margin_top = 52.0
+margin_right = 289.0
+margin_bottom = 91.0
+custom_fonts/font = ExtResource( 1 )
+text = " 0 "
+
+[node name="Button4" type="Button" parent="GridContainer"]
+margin_left = 293.0
+margin_top = 49.0
+margin_right = 322.0
+margin_bottom = 94.0
+size_flags_vertical = 3
+custom_fonts/font = ExtResource( 1 )
+text = ">"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="InputOffsetLabel" type="Label" parent="GridContainer"]
+margin_top = 101.0
+margin_right = 179.0
+margin_bottom = 140.0
+custom_fonts/font = ExtResource( 1 )
+text = "Input Offset"
+
+[node name="VSeparator3" type="VSeparator" parent="GridContainer"]
+margin_left = 183.0
+margin_top = 98.0
+margin_right = 215.0
+margin_bottom = 143.0
+custom_constants/separation = 32
+
+[node name="Button5" type="Button" parent="GridContainer"]
+margin_left = 219.0
+margin_top = 98.0
+margin_right = 248.0
+margin_bottom = 143.0
+size_flags_horizontal = 0
+size_flags_vertical = 3
+custom_fonts/font = ExtResource( 1 )
+text = "<"
+
+[node name="InputNumber" type="Label" parent="GridContainer"]
+margin_left = 252.0
+margin_top = 101.0
+margin_right = 289.0
+margin_bottom = 140.0
+custom_fonts/font = ExtResource( 1 )
+text = " 0 "
+
+[node name="Button6" type="Button" parent="GridContainer"]
+margin_left = 293.0
+margin_top = 98.0
+margin_right = 322.0
+margin_bottom = 143.0
+size_flags_vertical = 3
+custom_fonts/font = ExtResource( 1 )
+text = ">"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Gameplay_bg" type="TextureRect" parent="."]
+self_modulate = Color( 0.247059, 0.247059, 0.247059, 1 )
+show_behind_parent = true
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource( 2 )
+expand = true
+stretch_mode = 7
 __meta__ = {
 "_edit_use_anchors_": false
 }

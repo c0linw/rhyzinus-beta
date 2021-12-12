@@ -92,6 +92,7 @@ func _ready():
 	setup_combo_counter()
 	
 	$Conductor.stream = load("res://Songs/neutralizeptbmix/neutralizeptbmix.mp3")
+	$Conductor.stream.loop = false
 	$Conductor.volume_db = -10.0
 
 	$Conductor.play_from_beat(0,0)
@@ -481,4 +482,6 @@ func pop_nearest_note(input: InputEvent, candidates: Array):
 	return closest_note
 
 func _on_Conductor_finished():
+	print("Conductor finished!")
+	$Conductor.stop()
 	SceneSwitcher.change_scene("res://Scenes/Results.tscn", {"result_data": $result_data.results})
