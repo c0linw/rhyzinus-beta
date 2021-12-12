@@ -154,8 +154,13 @@ func _process(_delta):
 				emit_signal("note_judged", result)
 				delete_note(note)
 		elif timestamp >= note.time + note.late_cracked + input_offset:
-			if note.is_in_group("holds") and note.activated:
-				pass
+			if note.is_in_group("holds"):
+				if !note.head_passed:
+					if !note.activated:
+						var result = {"judgement": ENCRYPTED, "offset": 0}
+						draw_judgement(result, note.lane)
+						emit_signal("note_judged", result)
+					note.head_passed = true
 			else:
 				var result = {"judgement": ENCRYPTED, "offset": 0}
 				draw_judgement(result, note.lane)
@@ -165,11 +170,10 @@ func _process(_delta):
 	for beat in beat_data:
 		if timestamp >= beat["time"]:
 			emit_signal("beat", beat["measure"], beat["beat"])
-			print("signal: %s, %s" % [beat["measure"], beat["beat"]])
 			for hold in get_tree().get_nodes_in_group("holds"):
-				if hold.activated and timestamp > hold.time + hold.late_cracked and timestamp < hold.end_time - hold.late_cracked:
+				if timestamp > hold.time + hold.late_cracked and timestamp < hold.end_time - hold.late_cracked:
 					var result: Dictionary
-					if hold.held:
+					if hold.activated and hold.held:
 						result = {"judgement": FLAWLESS, "offset": 0}
 					else:
 						result = {"judgement": ENCRYPTED, "offset": 0}
@@ -477,4 +481,4 @@ func pop_nearest_note(input: InputEvent, candidates: Array):
 	return closest_note
 
 func _on_Conductor_finished():
-	pass # Replace with function body.
+	SceneSwitcher.change_scene("res://Scenes/Results.tscn", {"result_data": $result_data.results})

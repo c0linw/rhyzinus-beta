@@ -1,6 +1,14 @@
 extends Node
 
-var results: Array = []
+# enums and constants
+enum {ENCRYPTED, CRACKED, DECRYPTED, FLAWLESS}
+
+var results: Dictionary = {
+	ENCRYPTED: [],
+	CRACKED: [],
+	DECRYPTED: [],
+	FLAWLESS: []
+}
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -12,5 +20,5 @@ func _ready():
 #	pass
 
 
-func _on_Game_note_judged(result):
-	pass # Replace with function body.
+func _on_Game_note_judged(input):
+	results[input.judgement].append(input.offset)

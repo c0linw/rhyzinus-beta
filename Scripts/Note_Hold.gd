@@ -5,6 +5,7 @@ var end_time: float
 var end_position: float
 var held: bool = false
 var activated: bool = false
+var head_passed: bool = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
