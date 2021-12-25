@@ -64,11 +64,11 @@ signal beat(measure, beat)
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	######## TODO: set options by passing them in
-	note_speed = 10.5
+	note_speed = 8.7
 	lane_depth = 24.0
 	
 	######## SETUP OBJECTS
-	base_note_screen_time = (12.0 - note_speed) / 2.0 # TODO: find formula that scales better
+	base_note_screen_time = (3 + (10-note_speed)) / note_speed 
 	
 	var chart_data = SceneSwitcher.get_param("chart_data")
 	if chart_data == null :
@@ -167,19 +167,25 @@ func _process(_delta):
 				draw_judgement(result, note.lane)
 				emit_signal("note_judged", result)
 				delete_note(note)
-			
+		
+	# check hold ticks
+	for hold in get_tree().get_nodes_in_group("holds"):
+		for tick in hold.ticks:
+			if timestamp >= tick:
+				var result: Dictionary
+				if hold.activated and hold.held:
+					result = {"judgement": FLAWLESS, "offset": 0}
+				else:
+					result = {"judgement": ENCRYPTED, "offset": 0}
+				draw_judgement(result, hold.lane)
+				emit_signal("note_judged", result)
+				hold.ticks.erase(tick)
+			else:
+				break
+		
 	for beat in beat_data:
 		if timestamp >= beat["time"]:
 			emit_signal("beat", beat["measure"], beat["beat"])
-			for hold in get_tree().get_nodes_in_group("holds"):
-				if timestamp > hold.time + hold.late_cracked and timestamp < hold.end_time - hold.late_cracked:
-					var result: Dictionary
-					if hold.activated and hold.held:
-						result = {"judgement": FLAWLESS, "offset": 0}
-					else:
-						result = {"judgement": ENCRYPTED, "offset": 0}
-					draw_judgement(result, hold.lane)
-					emit_signal("note_judged", result)
 			beat_data.erase(beat)
 		else: 
 			break
@@ -232,6 +238,7 @@ func spawn_note(note_data: Dictionary):
 			note_instance = ObjNoteHold.instance()
 		note_instance.end_time = note_data["end_time"]
 		note_instance.end_position = note_data["end_position"]
+		note_instance.ticks = note_data["ticks"]
 	else:
 		return
 	note_instance.time = note_data["time"]

@@ -83,7 +83,7 @@ func process_objects_for_gameplay():
 		else:
 			processed_notes.append(object)
 	
-	# merge hold ends with hold starts
+	# merge hold ends with hold starts, and add hold ticks
 	var processed_notes_with_holds: Array = []
 	for i in processed_notes.size():
 		var note: Dictionary = processed_notes[i]
@@ -94,8 +94,57 @@ func process_objects_for_gameplay():
 				"type": "hold",
 				"position": note["position"],
 				"end_time": note["end_time"] + offset,
-				"end_position": get_end_position(note, i, processed_notes)
+				"end_position": get_end_position(note, i, processed_notes),
+				"ticks": []
 			}
+			
+			# get index of closest bpm marker:
+			# for i in processed timing points.size():
+				# if the marker's time is later than the new_note["time"], break
+				# if the marker is not a bpm marker, continue
+				# if the marker is a bpm marker, set the index
+			var curr_timing_index: int = 0
+			for j in processed_timing_points.size():
+				if processed_timing_points[j]["time"] > new_note["time"]:
+					break
+				if processed_timing_points[j]["type"] != "bpm":
+					continue
+				curr_timing_index = j
+			
+			# while the current beat is before (end_time - early_cracked):
+				# add the beat to the ticks array
+				# increment beat by using timing point info
+				# if this new beat is later than the "next" bpm marker, use that instead, and set the current index to that marker's index
+			var curr_beat_length: float = processed_timing_points[curr_timing_index]["beat_length"]/1000.0
+			# the initial tick is the first one after the hold's start
+			var curr_tick: float = new_note["time"] + curr_beat_length
+			# this tick is either start + beat_length, or the time of the next bpm change, whichever comes first
+			if curr_timing_index < processed_timing_points.size() - 1:
+				while curr_timing_index < processed_timing_points.size() - 1:
+					curr_timing_index += 1
+					if processed_timing_points[curr_timing_index]["time"] >= curr_tick + curr_beat_length:
+						break
+					if processed_timing_points[curr_timing_index]["type"] != "bpm":
+						continue
+					curr_beat_length = processed_timing_points[curr_timing_index]
+					curr_tick = processed_timing_points[curr_timing_index]["time"]
+
+			# generate ticks until a leniency window before the end
+			while curr_tick < new_note["end_time"] - 0.100:
+				new_note["ticks"].append(curr_tick)
+				var next_tick: float = curr_tick + curr_beat_length
+				# tick is either curr + beat_length, or the time of the next bpm change, whichever comes first
+				if curr_timing_index < processed_timing_points.size() - 1:
+					while curr_timing_index < processed_timing_points.size() - 1:
+						curr_timing_index += 1
+						if processed_timing_points[curr_timing_index]["time"] >= next_tick:
+							break
+						if processed_timing_points[curr_timing_index]["type"] != "bpm":
+							continue
+						curr_beat_length = processed_timing_points[curr_timing_index]
+						next_tick = processed_timing_points[curr_timing_index]["time"]
+				curr_tick = next_tick
+			
 			processed_notes_with_holds.append(new_note)
 		else:
 			processed_notes_with_holds.append(note)
@@ -140,7 +189,9 @@ func generate_barlines(data: Array) -> Array:
 	var meter: int = data[0]["meter"]
 	var beat: int = 0
 	var index: int = 0
-	while timestamp <= data[len(data)-1]["time"]:
+	# use either the last note or the last timing point's time
+	var end_time: float = max(data[len(data)-1]["time"], notes[len(notes)-1]["time"])
+	while timestamp <= end_time:
 		if beat % meter == 0:
 			return_data.append({
 				"time": timestamp,
@@ -174,7 +225,9 @@ func generate_beats(timing_points: Array):
 			"beat": beat
 		})
 	var index: int = 0
-	while timestamp <= data[len(data)-1]["time"]:
+	# use either the last note or the last timing point's time
+	var end_time: float = max(data[len(data)-1]["time"], notes[len(notes)-1]["time"])
+	while timestamp <= end_time:
 		if beat % meter == 0:
 			measure += 1
 			beat = 0
