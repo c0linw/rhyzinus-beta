@@ -1,0 +1,23 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Textures/UI/song_border.png" type="Texture" id=1]
+[ext_resource path="res://Scripts/SongListElement.gd" type="Script" id=2]
+
+[node name="SongListElement" type="TextureButton"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -458.0
+margin_bottom = 116.0
+grow_horizontal = 0
+focus_mode = 0
+mouse_filter = 1
+size_flags_horizontal = 8
+texture_normal = ExtResource( 1 )
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="focus_entered" from="." to="." method="_on_SongListElement_focus_entered"]
+[connection signal="focus_exited" from="." to="." method="_on_SongListElement_focus_exited"]
+[connection signal="pressed" from="." to="." method="_on_SongListElement_pressed"]
