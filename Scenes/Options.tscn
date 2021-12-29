@@ -1,18 +1,43 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Fonts/new_dynamicfont.tres" type="DynamicFont" id=1]
 [ext_resource path="res://Images/gameplay-bg.jpg" type="Texture" id=2]
+[ext_resource path="res://Scripts/Options.gd" type="Script" id=3]
+[ext_resource path="res://Scripts/SpeedNumber.gd" type="Script" id=4]
+
+[sub_resource type="StyleBoxEmpty" id=1]
+
+[sub_resource type="StyleBoxEmpty" id=2]
+
+[sub_resource type="StyleBoxEmpty" id=3]
 
 [node name="Options" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+mouse_filter = 2
+script = ExtResource( 3 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="GridContainer" type="GridContainer" parent="."]
-margin_right = 40.0
-margin_bottom = 40.0
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_left = -354.0
+margin_top = -71.5
+margin_bottom = 71.5
+mouse_filter = 2
+custom_constants/margin_right = 32
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GridContainer" type="GridContainer" parent="MarginContainer"]
+margin_right = 322.0
+margin_bottom = 143.0
+mouse_filter = 2
 custom_constants/vseparation = 4
 custom_constants/hseparation = 4
 columns = 5
@@ -20,7 +45,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="NoteSpeedLabel" type="Label" parent="GridContainer"]
+[node name="NoteSpeedLabel" type="Label" parent="MarginContainer/GridContainer"]
 margin_top = 3.0
 margin_right = 179.0
 margin_bottom = 42.0
@@ -30,13 +55,14 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="VSeparator" type="VSeparator" parent="GridContainer"]
+[node name="VSeparator" type="VSeparator" parent="MarginContainer/GridContainer"]
 margin_left = 183.0
 margin_right = 215.0
 margin_bottom = 45.0
 custom_constants/separation = 32
+custom_styles/separator = SubResource( 1 )
 
-[node name="Button" type="Button" parent="GridContainer"]
+[node name="NoteSpeedDecrement" type="Button" parent="MarginContainer/GridContainer"]
 margin_left = 219.0
 margin_right = 248.0
 margin_bottom = 45.0
@@ -45,15 +71,16 @@ size_flags_vertical = 3
 custom_fonts/font = ExtResource( 1 )
 text = "<"
 
-[node name="SpeedNumber" type="Label" parent="GridContainer"]
+[node name="SpeedNumber" type="Label" parent="MarginContainer/GridContainer"]
 margin_left = 252.0
 margin_top = 3.0
 margin_right = 289.0
 margin_bottom = 42.0
 custom_fonts/font = ExtResource( 1 )
 text = " 0 "
+script = ExtResource( 4 )
 
-[node name="Button2" type="Button" parent="GridContainer"]
+[node name="NoteSpeedIncrement" type="Button" parent="MarginContainer/GridContainer"]
 margin_left = 293.0
 margin_right = 322.0
 margin_bottom = 45.0
@@ -64,21 +91,22 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="AudioOffsetLabel" type="Label" parent="GridContainer"]
+[node name="AudioOffsetLabel" type="Label" parent="MarginContainer/GridContainer"]
 margin_top = 52.0
 margin_right = 179.0
 margin_bottom = 91.0
 custom_fonts/font = ExtResource( 1 )
 text = "Audio Offset"
 
-[node name="VSeparator2" type="VSeparator" parent="GridContainer"]
+[node name="VSeparator2" type="VSeparator" parent="MarginContainer/GridContainer"]
 margin_left = 183.0
 margin_top = 49.0
 margin_right = 215.0
 margin_bottom = 94.0
 custom_constants/separation = 32
+custom_styles/separator = SubResource( 2 )
 
-[node name="Button3" type="Button" parent="GridContainer"]
+[node name="AudioOffsetDecrement" type="Button" parent="MarginContainer/GridContainer"]
 margin_left = 219.0
 margin_top = 49.0
 margin_right = 248.0
@@ -88,7 +116,7 @@ size_flags_vertical = 3
 custom_fonts/font = ExtResource( 1 )
 text = "<"
 
-[node name="AudioNumber" type="Label" parent="GridContainer"]
+[node name="AudioNumber" type="Label" parent="MarginContainer/GridContainer"]
 margin_left = 252.0
 margin_top = 52.0
 margin_right = 289.0
@@ -96,7 +124,7 @@ margin_bottom = 91.0
 custom_fonts/font = ExtResource( 1 )
 text = " 0 "
 
-[node name="Button4" type="Button" parent="GridContainer"]
+[node name="AudioOffsetIncrement" type="Button" parent="MarginContainer/GridContainer"]
 margin_left = 293.0
 margin_top = 49.0
 margin_right = 322.0
@@ -108,21 +136,22 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="InputOffsetLabel" type="Label" parent="GridContainer"]
+[node name="InputOffsetLabel" type="Label" parent="MarginContainer/GridContainer"]
 margin_top = 101.0
 margin_right = 179.0
 margin_bottom = 140.0
 custom_fonts/font = ExtResource( 1 )
 text = "Input Offset"
 
-[node name="VSeparator3" type="VSeparator" parent="GridContainer"]
+[node name="VSeparator3" type="VSeparator" parent="MarginContainer/GridContainer"]
 margin_left = 183.0
 margin_top = 98.0
 margin_right = 215.0
 margin_bottom = 143.0
 custom_constants/separation = 32
+custom_styles/separator = SubResource( 3 )
 
-[node name="Button5" type="Button" parent="GridContainer"]
+[node name="InputOffsetDecrement" type="Button" parent="MarginContainer/GridContainer"]
 margin_left = 219.0
 margin_top = 98.0
 margin_right = 248.0
@@ -132,7 +161,7 @@ size_flags_vertical = 3
 custom_fonts/font = ExtResource( 1 )
 text = "<"
 
-[node name="InputNumber" type="Label" parent="GridContainer"]
+[node name="InputNumber" type="Label" parent="MarginContainer/GridContainer"]
 margin_left = 252.0
 margin_top = 101.0
 margin_right = 289.0
@@ -140,7 +169,7 @@ margin_bottom = 140.0
 custom_fonts/font = ExtResource( 1 )
 text = " 0 "
 
-[node name="Button6" type="Button" parent="GridContainer"]
+[node name="InputOffsetIncrement" type="Button" parent="MarginContainer/GridContainer"]
 margin_left = 293.0
 margin_top = 98.0
 margin_right = 322.0
@@ -157,9 +186,14 @@ self_modulate = Color( 0.247059, 0.247059, 0.247059, 1 )
 show_behind_parent = true
 anchor_right = 1.0
 anchor_bottom = 1.0
+mouse_filter = 2
 texture = ExtResource( 2 )
 expand = true
 stretch_mode = 7
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[connection signal="note_speed_changed" from="." to="MarginContainer/GridContainer/SpeedNumber" method="_on_Options_note_speed_changed"]
+[connection signal="pressed" from="MarginContainer/GridContainer/NoteSpeedDecrement" to="." method="_on_NoteSpeedDecrement_pressed"]
+[connection signal="pressed" from="MarginContainer/GridContainer/NoteSpeedIncrement" to="." method="_on_NoteSpeedIncrement_pressed"]
