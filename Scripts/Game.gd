@@ -90,6 +90,7 @@ func _ready():
 	setup_lane_effects()
 	setup_judgement_textures()
 	setup_combo_counter()
+	setup_timing_indicator()
 	
 	$Conductor.stream = load("res://Songs/neutralizeptbmix/neutralizeptbmix.mp3")
 	$Conductor.stream.loop = false
@@ -372,6 +373,15 @@ func setup_combo_counter():
 	var comboPosY = upper_lane_left.y + (lower_lane_left.y - upper_lane_left.y)*0.35
 	$CanvasLayer/ComboCounter/ComboCounterLabel.get_font("font").size = fontSize
 	$CanvasLayer/ComboCounter.set_global_position(Vector2(comboPosX, comboPosY))
+	
+func setup_timing_indicator():
+	var view_coords = get_viewport().size
+	var fontSize = get_viewport().size.y * 0.05
+	var outline = fontSize * 0.02
+	var comboPosX = view_coords.x/2
+	var comboPosY = upper_lane_left.y + (lower_lane_left.y - upper_lane_left.y)*0.35 - get_viewport().size.y * 0.1
+	$CanvasLayer/TimingIndicator/TimingLabel.get_font("font").size = fontSize
+	$CanvasLayer/TimingIndicator.set_global_position(Vector2(comboPosX, comboPosY))
 	
 
 func _input(event):

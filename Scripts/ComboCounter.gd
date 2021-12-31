@@ -20,7 +20,7 @@ func _process(_delta):
 
 
 func _on_Game_note_judged(result: Dictionary):
-	if result["judgement"] != 0:
+	if result["judgement"] != ENCRYPTED:
 		current_combo += 1
 	else:
 		best_combo = current_combo

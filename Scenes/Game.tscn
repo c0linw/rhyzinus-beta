@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=2]
+[gd_scene load_steps=33 format=2]
 
 [ext_resource path="res://Scenes/Lanes_Lower.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Images/gameplay-bg.jpg" type="Texture" id=2]
@@ -10,6 +10,7 @@
 [ext_resource path="res://Scripts/ComboCounter.gd" type="Script" id=8]
 [ext_resource path="res://Fonts/Trebuchet_MS.ttf" type="DynamicFontData" id=9]
 [ext_resource path="res://Scripts/FramerateCounter.gd" type="Script" id=10]
+[ext_resource path="res://Scripts/TimingLabel.gd" type="Script" id=11]
 
 [sub_resource type="SpatialMaterial" id=14]
 render_priority = -1
@@ -101,6 +102,9 @@ font_data = ExtResource( 9 )
 size = 64
 outline_size = 2
 outline_color = Color( 0, 0.0431373, 0.396078, 1 )
+font_data = ExtResource( 9 )
+
+[sub_resource type="DynamicFont" id=21]
 font_data = ExtResource( 9 )
 
 [node name="Game" type="Spatial"]
@@ -294,9 +298,74 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="PauseContainer" type="MarginContainer" parent="CanvasLayer"]
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_left = -40.0
+margin_top = -20.0
+margin_bottom = 20.0
+custom_constants/margin_right = 16
+custom_constants/margin_top = 16
+custom_constants/margin_left = 16
+custom_constants/margin_bottom = 16
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PauseButton" type="TextureButton" parent="CanvasLayer/PauseContainer"]
+margin_left = 16.0
+margin_top = 16.0
+margin_right = 24.0
+margin_bottom = 24.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GaugeContainer" type="MarginContainer" parent="CanvasLayer"]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/GaugeContainer"]
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="TimingIndicator" type="Control" parent="CanvasLayer"]
+margin_left = 495.597
+margin_top = 323.418
+margin_right = 535.597
+margin_bottom = 363.418
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TimingLabel" type="Label" parent="CanvasLayer/TimingIndicator"]
+margin_left = -400.0
+margin_top = -200.0
+margin_right = 400.0
+margin_bottom = 200.0
+grow_horizontal = 2
+rect_pivot_offset = Vector2( 200, 50 )
+size_flags_horizontal = 2
+size_flags_vertical = 2
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_fonts/font = SubResource( 21 )
+text = "LATE"
+align = 1
+valign = 1
+script = ExtResource( 11 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="result_data" type="Node" parent="."]
 script = ExtResource( 7 )
 
 [connection signal="note_judged" from="." to="CanvasLayer/ComboCounter/ComboCounterLabel" method="_on_Game_note_judged"]
 [connection signal="note_judged" from="." to="result_data" method="_on_Game_note_judged"]
+[connection signal="note_judged" from="." to="CanvasLayer/TimingIndicator/TimingLabel" method="_on_Game_note_judged"]
 [connection signal="finished" from="Conductor" to="." method="_on_Conductor_finished"]
