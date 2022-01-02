@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/score_rank_a_blue.png-bbd20dbc4a19779b4ee53f1e4289a2fe.stex"
+path="res://.import/score_rank_a_blue.png-c326e34ecd347c9ca3ee6e39418cdd5d.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Textures/Result/score_rank_a_blue.png"
-dest_files=[ "res://.import/score_rank_a_blue.png-bbd20dbc4a19779b4ee53f1e4289a2fe.stex" ]
+source_file="res://textures/result/score_rank_a_blue.png"
+dest_files=[ "res://.import/score_rank_a_blue.png-c326e34ecd347c9ca3ee6e39418cdd5d.stex" ]
 
 [params]
 

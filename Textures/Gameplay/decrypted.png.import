@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/decrypted.png-22691792e8863bef2b4dfbf8cbcabefc.stex"
+path="res://.import/decrypted.png-db28af3489c086a64f907b251a62c1df.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Textures/Gameplay/decrypted.png"
-dest_files=[ "res://.import/decrypted.png-22691792e8863bef2b4dfbf8cbcabefc.stex" ]
+source_file="res://textures/gameplay/decrypted.png"
+dest_files=[ "res://.import/decrypted.png-db28af3489c086a64f907b251a62c1df.stex" ]
 
 [params]
 

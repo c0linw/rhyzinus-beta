@@ -1,10 +1,10 @@
 [gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://Fonts/new_dynamicfont.tres" type="DynamicFont" id=1]
-[ext_resource path="res://Textures/Result/score_rank_r_plus_rainbow.png" type="Texture" id=2]
-[ext_resource path="res://Textures/UI/notecounts_border.png" type="Texture" id=3]
-[ext_resource path="res://Scenes/Results/notecount_flawless.tres" type="DynamicFont" id=4]
-[ext_resource path="res://Scripts/Notecounts.gd" type="Script" id=5]
+[ext_resource path="res://fonts/new_dynamicfont.tres" type="DynamicFont" id=1]
+[ext_resource path="res://textures/result/score_rank_r_plus_rainbow.png" type="Texture" id=2]
+[ext_resource path="res://textures/ui/notecounts_border.png" type="Texture" id=3]
+[ext_resource path="res://scenes/results/notecount_flawless.tres" type="DynamicFont" id=4]
+[ext_resource path="res://scenes/results/notecounts.gd" type="Script" id=5]
 
 [node name="NoteCounts" type="Control"]
 anchor_right = 1.0

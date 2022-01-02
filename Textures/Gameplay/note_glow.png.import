@@ -2,8 +2,8 @@
 
 importer="texture"
 type="StreamTexture"
-path.s3tc="res://.import/note_glow.png-63a39d0edbcba9e6e79da9cfbe3534aa.s3tc.stex"
-path.etc2="res://.import/note_glow.png-63a39d0edbcba9e6e79da9cfbe3534aa.etc2.stex"
+path.s3tc="res://.import/note_glow.png-fb3f864b834d07c85c1f0d54a0f963e1.s3tc.stex"
+path.etc2="res://.import/note_glow.png-fb3f864b834d07c85c1f0d54a0f963e1.etc2.stex"
 metadata={
 "imported_formats": [ "s3tc", "etc2" ],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://Textures/Gameplay/note_glow.png"
-dest_files=[ "res://.import/note_glow.png-63a39d0edbcba9e6e79da9cfbe3534aa.s3tc.stex", "res://.import/note_glow.png-63a39d0edbcba9e6e79da9cfbe3534aa.etc2.stex" ]
+source_file="res://textures/gameplay/note_glow.png"
+dest_files=[ "res://.import/note_glow.png-fb3f864b834d07c85c1f0d54a0f963e1.s3tc.stex", "res://.import/note_glow.png-fb3f864b834d07c85c1f0d54a0f963e1.etc2.stex" ]
 
 [params]
 

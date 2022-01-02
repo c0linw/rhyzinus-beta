@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/encrypted.png-e66295cf2c3fd7b03beb1ce26c19257d.stex"
+path="res://.import/encrypted.png-be51771d84523966e63f60099876e060.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Textures/Gameplay/encrypted.png"
-dest_files=[ "res://.import/encrypted.png-e66295cf2c3fd7b03beb1ce26c19257d.stex" ]
+source_file="res://textures/gameplay/encrypted.png"
+dest_files=[ "res://.import/encrypted.png-be51771d84523966e63f60099876e060.stex" ]
 
 [params]
 

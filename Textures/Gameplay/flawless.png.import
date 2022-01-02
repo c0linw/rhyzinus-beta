@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/flawless.png-e7bd54892a2dd344597dbd512805b7c9.stex"
+path="res://.import/flawless.png-10230623115da336f138bf7dbbd2d3f5.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Textures/Gameplay/flawless.png"
-dest_files=[ "res://.import/flawless.png-e7bd54892a2dd344597dbd512805b7c9.stex" ]
+source_file="res://textures/gameplay/flawless.png"
+dest_files=[ "res://.import/flawless.png-10230623115da336f138bf7dbbd2d3f5.stex" ]
 
 [params]
 

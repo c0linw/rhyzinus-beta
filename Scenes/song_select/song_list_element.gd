@@ -21,11 +21,11 @@ func _on_SongListElement_pressed():
 
 
 func _on_SongListElement_focus_entered():
-	var tex = load("res://Textures/UI/song_border_selected.png")
+	var tex = load("res://textures/ui/song_border_selected.png")
 	set_normal_texture(tex)
 	emit_signal("song_selected", songname, levels)
 
 func _on_SongListElement_focus_exited():
 	set_focus_mode(Control.FOCUS_NONE)
-	var tex = load("res://Textures/UI/song_border.png")
+	var tex = load("res://textures/ui/song_border.png")
 	set_normal_texture(tex)

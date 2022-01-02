@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/cracked.png-ac8120b27b8e4e54cf99c0e65f0c0529.stex"
+path="res://.import/cracked.png-e63e2ff2498c74f60445d5c8911e253a.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Textures/Gameplay/cracked.png"
-dest_files=[ "res://.import/cracked.png-ac8120b27b8e4e54cf99c0e65f0c0529.stex" ]
+source_file="res://textures/gameplay/cracked.png"
+dest_files=[ "res://.import/cracked.png-e63e2ff2498c74f60445d5c8911e253a.stex" ]
 
 [params]
 

@@ -4,7 +4,7 @@ extends Control
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
-var ObjSongListElement = preload("res://Scenes/SongListElement.tscn")
+var ObjSongListElement = preload("res://scenes/song_select/song_list_element.tscn")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

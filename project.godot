@@ -12,42 +12,42 @@ _global_script_classes=[ {
 "base": "Spatial",
 "class": "Note",
 "language": "GDScript",
-"path": "res://Scripts/Note.gd"
+"path": "res://scenes/game/notes/note.gd"
 }, {
 "base": "Node2D",
 "class": "NoteHitbox",
 "language": "GDScript",
-"path": "res://Scripts/Note_Hitbox.gd"
+"path": "res://scenes/game/entities/note_hitbox.gd"
 }, {
 "base": "Note",
 "class": "NoteHold",
 "language": "GDScript",
-"path": "res://Scripts/Note_Hold.gd"
+"path": "res://scenes/game/notes/note_hold.gd"
 }, {
 "base": "NoteHold",
 "class": "NoteHoldSide",
 "language": "GDScript",
-"path": "res://Scripts/Note_Hold_Side.gd"
+"path": "res://scenes/game/notes/note_hold_side.gd"
 }, {
 "base": "NoteHold",
 "class": "NoteHoldUpper",
 "language": "GDScript",
-"path": "res://Scripts/Note_Hold_Upper.gd"
+"path": "res://scenes/game/notes/note_hold_upper.gd"
 }, {
 "base": "Note",
 "class": "NoteTap",
 "language": "GDScript",
-"path": "res://Scripts/Note_Tap.gd"
+"path": "res://scenes/game/notes/note_tap.gd"
 }, {
 "base": "Note",
 "class": "NoteTapSide",
 "language": "GDScript",
-"path": "res://Scripts/Note_Tap_Side.gd"
+"path": "res://scenes/game/notes/note_tap_side.gd"
 }, {
 "base": "Note",
 "class": "NoteTapUpper",
 "language": "GDScript",
-"path": "res://Scripts/Note_Tap_Upper.gd"
+"path": "res://scenes/game/notes/note_tap_upper.gd"
 } ]
 _global_script_class_icons={
 "Note": "",
@@ -63,7 +63,7 @@ _global_script_class_icons={
 [application]
 
 config/name="Rhyzinus-beta"
-run/main_scene="res://Scenes/Loadscreen.tscn"
+run/main_scene="res://scenes/game/loadscreen.tscn"
 run/delta_sync_after_draw=true
 config/icon="res://icon.png"
 
@@ -73,7 +73,7 @@ output_latency=10
 
 [autoload]
 
-SceneSwitcher="*res://Scripts/scene_switcher.gd"
+SceneSwitcher="*res://scripts/scene_switcher.gd"
 
 [display]
 

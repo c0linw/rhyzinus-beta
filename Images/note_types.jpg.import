@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/note_types.jpg-d61428a3004d8ff8b51e790b9c975b91.stex"
+path="res://.import/note_types.jpg-f3f5337d5ff8a84dac1444eb751f07cb.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Images/note_types.jpg"
-dest_files=[ "res://.import/note_types.jpg-d61428a3004d8ff8b51e790b9c975b91.stex" ]
+source_file="res://images/note_types.jpg"
+dest_files=[ "res://.import/note_types.jpg-f3f5337d5ff8a84dac1444eb751f07cb.stex" ]
 
 [params]
 

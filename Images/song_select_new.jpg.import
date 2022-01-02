@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/song_select_new.jpg-e7cc028a44960eb3034d29075a47dabb.stex"
+path="res://.import/song_select_new.jpg-5aeb30041dca3aa21b0ed6ff604e19d8.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Images/song_select_new.jpg"
-dest_files=[ "res://.import/song_select_new.jpg-e7cc028a44960eb3034d29075a47dabb.stex" ]
+source_file="res://images/song_select_new.jpg"
+dest_files=[ "res://.import/song_select_new.jpg-5aeb30041dca3aa21b0ed6ff604e19d8.stex" ]
 
 [params]
 

@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/score_rank_d_corrupt.png-a1a34f7e3f561ea88f72f1b0464e6faa.stex"
+path="res://.import/score_rank_d_corrupt.png-22bf29140e5b3db38356df2121c85af1.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Textures/Result/score_rank_d_corrupt.png"
-dest_files=[ "res://.import/score_rank_d_corrupt.png-a1a34f7e3f561ea88f72f1b0464e6faa.stex" ]
+source_file="res://textures/result/score_rank_d_corrupt.png"
+dest_files=[ "res://.import/score_rank_d_corrupt.png-22bf29140e5b3db38356df2121c85af1.stex" ]
 
 [params]
 

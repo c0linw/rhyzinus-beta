@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/notecounts_border.png-a0de7026c8ff8aab0f571e487c820ea4.stex"
+path="res://.import/notecounts_border.png-1b9d2d3ae42dceec685f4b866adc46ac.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Textures/UI/notecounts_border.png"
-dest_files=[ "res://.import/notecounts_border.png-a0de7026c8ff8aab0f571e487c820ea4.stex" ]
+source_file="res://textures/ui/notecounts_border.png"
+dest_files=[ "res://.import/notecounts_border.png-1b9d2d3ae42dceec685f4b866adc46ac.stex" ]
 
 [params]
 

@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/song_border.png-3ad9d59b321052a1ec11aac7e0d17b2a.stex"
+path="res://.import/song_border.png-80bb91e5452c9b3f2b1b0d022bb7ea46.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Textures/UI/song_border.png"
-dest_files=[ "res://.import/song_border.png-3ad9d59b321052a1ec11aac7e0d17b2a.stex" ]
+source_file="res://textures/ui/song_border.png"
+dest_files=[ "res://.import/song_border.png-80bb91e5452c9b3f2b1b0d022bb7ea46.stex" ]
 
 [params]
 

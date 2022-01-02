@@ -37,16 +37,16 @@ var upper_lane_left: Vector2
 var upper_lane_right: Vector2
 
 # Preload objects
-var ObjNoteTap = preload("res://Scenes/Note_Tap.tscn")
-var ObjNoteTapSide = preload("res://Scenes/Note_Tap_Side.tscn")
-var ObjNoteTapUpper = preload("res://Scenes/Note_Tap_Upper.tscn")
-var ObjNoteHold = preload("res://Scenes/Note_Hold.tscn")
-var ObjNoteHoldSide = preload("res://Scenes/Note_Hold_Side.tscn")
-var ObjNoteHoldUpper = preload("res://Scenes/Note_Hold_Upper.tscn")
-var ObjBarline = preload("res://Scenes/Barline.tscn")
-var ObjBarlineUpper = preload("res://Scenes/Barline_Upper.tscn")
-var ObjNoteHitbox = preload("res://Scenes/Note_Hitbox.tscn")
-var ObjJudgementTexture = preload("res://Scenes/Judgement_Texture.tscn")
+var ObjNoteTap = preload("res://scenes/game/notes/note_tap.tscn")
+var ObjNoteTapSide = preload("res://scenes/game/notes/note_tap_side.tscn")
+var ObjNoteTapUpper = preload("res://scenes/game/notes/note_tap_upper.tscn")
+var ObjNoteHold = preload("res://scenes/game/notes/note_hold.tscn")
+var ObjNoteHoldSide = preload("res://scenes/game/notes/note_hold_side.tscn")
+var ObjNoteHoldUpper = preload("res://scenes/game/notes/note_hold_upper.tscn")
+var ObjBarline = preload("res://scenes/game/entities/barline.tscn")
+var ObjBarlineUpper = preload("res://scenes/game/entities/barline_upper.tscn")
+var ObjNoteHitbox = preload("res://scenes/game/entities/note_hitbox.tscn")
+var ObjJudgementTexture = preload("res://scenes/game/entities/judgement_texture.tscn")
 
 # Input-related stuff
 var input_zones: Array = []
@@ -501,4 +501,7 @@ func pop_nearest_note(input: InputEvent, candidates: Array):
 func _on_Conductor_finished():
 	print("Conductor finished!")
 	$Conductor.stop()
-	SceneSwitcher.change_scene("res://Scenes/Results.tscn", {"result_data": $result_data.results})
+	var data: Dictionary = {
+		"result_data": $result_data.results, 
+		"best_combo": $CanvasLayer/ComboCounter/ComboCounterLabel.best_combo}
+	SceneSwitcher.change_scene("res://scenes/results/results.tscn", data)

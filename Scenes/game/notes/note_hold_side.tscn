@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=2]
 
-[ext_resource path="res://Scripts/Note_Hold_Side.gd" type="Script" id=1]
+[ext_resource path="res://scenes/game/notes/note_hold_side.gd" type="Script" id=1]
 
 [sub_resource type="SpatialMaterial" id=1]
 albedo_color = Color( 1.2, 1.12, 0, 1 )

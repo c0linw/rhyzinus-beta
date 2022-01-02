@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/gameplay-bg.jpg-9d38a44b3503b995d99fe592af6b79ca.stex"
+path="res://.import/gameplay-bg.jpg-e7a69a27d17b20c06fd54a90d7cdd4a4.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Images/gameplay-bg.jpg"
-dest_files=[ "res://.import/gameplay-bg.jpg-9d38a44b3503b995d99fe592af6b79ca.stex" ]
+source_file="res://images/gameplay-bg.jpg"
+dest_files=[ "res://.import/gameplay-bg.jpg-e7a69a27d17b20c06fd54a90d7cdd4a4.stex" ]
 
 [params]
 
@@ -28,6 +28,7 @@ process/fix_alpha_border=true
 process/premult_alpha=false
 process/HDR_as_SRGB=false
 process/invert_color=false
+process/normal_map_invert_y=false
 stream=false
 size_limit=0
 detect_3d=true

@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://Fonts/new_dynamicfont.tres" type="DynamicFont" id=1]
-[ext_resource path="res://Textures/Result/score_rank_r_rainbow.png" type="Texture" id=2]
+[ext_resource path="res://fonts/new_dynamicfont.tres" type="DynamicFont" id=1]
+[ext_resource path="res://textures/result/score_rank_r_rainbow.png" type="Texture" id=2]
 
 [node name="SongScore" type="Control"]
 anchor_right = 1.0
