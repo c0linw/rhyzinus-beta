@@ -1,7 +1,7 @@
 extends Spatial
 
 # enums and constants
-enum {ENCRYPTED, CRACKED, DECRYPTED, FLAWLESS}
+enum {NONE, ENCRYPTED, CRACKED, DECRYPTED, FLAWLESS}
 
 # audio stuff
 var audio
@@ -354,14 +354,15 @@ func setup_input():
 	$CanvasLayer.add_child(right_hitbox)
 	
 func setup_judgement_textures():
-	judgement_textures.resize(4)
+	judgement_textures.resize(5)
 	var pics: Array = [
+		null,
 		load("res://Textures/Gameplay/encrypted.png"),
 		load("res://Textures/Gameplay/cracked.png"),
 		load("res://Textures/Gameplay/decrypted.png"),
 		load("res://Textures/Gameplay/flawless.png")
 		]
-	for i in len(pics):
+	for i in range(1,5):
 		judgement_textures[i] = ImageTexture.new()
 		judgement_textures[i].create_from_image(pics[i].get_data())
 		
@@ -467,6 +468,8 @@ func draw_judgement(data: Dictionary, lane: int):
 			tex = judgement_textures[CRACKED]
 		ENCRYPTED:
 			tex = judgement_textures[ENCRYPTED]
+		NONE:
+			return
 	judgement.setup(tex, lower_lane_width)
 	if input_zones[lane] == null:
 		return

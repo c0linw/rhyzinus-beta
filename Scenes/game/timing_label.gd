@@ -1,6 +1,6 @@
 extends Label
 
-enum {ENCRYPTED, CRACKED, DECRYPTED, FLAWLESS}
+enum {NONE, ENCRYPTED, CRACKED, DECRYPTED, FLAWLESS}
 
 var decay = 0
 
@@ -17,6 +17,8 @@ func _process(delta):
 	decay -= delta
 
 func _on_Game_note_judged(result):
+	if result["judgement"] == NONE:
+		return
 	if result["judgement"] == CRACKED or result["judgement"] == DECRYPTED:
 		if result["offset"] < 0:
 			text = "EARLY"

@@ -3,7 +3,7 @@ extends Label
 var current_combo: int = 0
 var best_combo: int = 0
 
-enum {ENCRYPTED, CRACKED, DECRYPTED, FLAWLESS}
+enum {ENCRYPTED, CRACKED, DECRYPTED, FLAWLESS, NONE}
 
 
 # Called when the node enters the scene tree for the first time.
@@ -20,6 +20,8 @@ func _process(_delta):
 
 
 func _on_Game_note_judged(result: Dictionary):
+	if result["judgement"] == NONE:
+		return
 	if result["judgement"] != ENCRYPTED:
 		current_combo += 1
 	else:
