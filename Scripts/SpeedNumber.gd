@@ -17,5 +17,4 @@ func _ready():
 
 
 func _on_Options_note_speed_changed(new_speed):
-	print("speed changed!")
 	text = " %.01f " % new_speed

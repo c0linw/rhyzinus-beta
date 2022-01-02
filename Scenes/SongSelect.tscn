@@ -3,7 +3,7 @@
 [ext_resource path="res://Scenes/UI/PlayerInfo.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Fonts/new_dynamicfont.tres" type="DynamicFont" id=2]
 [ext_resource path="res://Images/gameplay-bg.jpg" type="Texture" id=3]
-[ext_resource path="res://Scenes/SongListElement.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Textures/Result/score_rank_d_corrupt.png" type="Texture" id=4]
 [ext_resource path="res://Scripts/SongSelect.gd" type="Script" id=5]
 [ext_resource path="res://Scripts/SongSelectScroll.gd" type="Script" id=7]
 
@@ -89,72 +89,61 @@ __meta__ = {
 }
 
 [node name="VBoxContainer" type="VBoxContainer" parent="SongSelectScroll"]
-margin_right = 458.0
-margin_bottom = 928.0
 grow_horizontal = 0
 custom_constants/separation = 0
 
-[node name="SongListElement" parent="SongSelectScroll/VBoxContainer" instance=ExtResource( 4 )]
-anchor_left = 0.0
-anchor_right = 0.0
-margin_left = 0.0
-margin_right = 458.0
+[node name="MarginContainer2" type="MarginContainer" parent="."]
+anchor_top = 0.5
+anchor_bottom = 0.5
+margin_left = 52.0
+margin_top = -275.0
+margin_right = 324.0
+margin_bottom = -3.0
+custom_constants/margin_right = 8
+custom_constants/margin_top = 8
+custom_constants/margin_left = 8
+custom_constants/margin_bottom = 8
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="SongListElement2" parent="SongSelectScroll/VBoxContainer" instance=ExtResource( 4 )]
-anchor_left = 0.0
-anchor_right = 0.0
-margin_left = 0.0
-margin_top = 116.0
-margin_right = 458.0
-margin_bottom = 232.0
+[node name="TextureRect" type="TextureRect" parent="MarginContainer2"]
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 264.0
+margin_bottom = 264.0
+rect_min_size = Vector2( 256, 256 )
+texture = ExtResource( 4 )
+expand = true
 
-[node name="SongListElement3" parent="SongSelectScroll/VBoxContainer" instance=ExtResource( 4 )]
-anchor_left = 0.0
-anchor_right = 0.0
-margin_left = 0.0
-margin_top = 232.0
-margin_right = 458.0
-margin_bottom = 348.0
+[node name="MarginContainer3" type="MarginContainer" parent="."]
+anchor_top = 0.5
+anchor_bottom = 0.5
+margin_left = 35.0
+margin_top = 32.0
+margin_right = 582.0
+margin_bottom = 327.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="SongListElement4" parent="SongSelectScroll/VBoxContainer" instance=ExtResource( 4 )]
-anchor_left = 0.0
-anchor_right = 0.0
-margin_left = 0.0
-margin_top = 348.0
-margin_right = 458.0
-margin_bottom = 464.0
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer3"]
+margin_right = 547.0
+margin_bottom = 295.0
 
-[node name="SongListElement5" parent="SongSelectScroll/VBoxContainer" instance=ExtResource( 4 )]
-anchor_left = 0.0
-anchor_right = 0.0
-margin_left = 0.0
-margin_top = 464.0
-margin_right = 458.0
-margin_bottom = 580.0
+[node name="ColorRect" type="ColorRect" parent="MarginContainer3/VBoxContainer"]
+margin_right = 547.0
+margin_bottom = 4.0
+rect_min_size = Vector2( 0, 4 )
 
-[node name="SongListElement6" parent="SongSelectScroll/VBoxContainer" instance=ExtResource( 4 )]
-anchor_left = 0.0
-anchor_right = 0.0
-margin_left = 0.0
-margin_top = 580.0
-margin_right = 458.0
-margin_bottom = 696.0
+[node name="Control" type="Control" parent="MarginContainer3/VBoxContainer"]
+margin_top = 8.0
+margin_right = 547.0
+margin_bottom = 287.0
+size_flags_vertical = 3
 
-[node name="SongListElement7" parent="SongSelectScroll/VBoxContainer" instance=ExtResource( 4 )]
-anchor_left = 0.0
-anchor_right = 0.0
-margin_left = 0.0
-margin_top = 696.0
-margin_right = 458.0
-margin_bottom = 812.0
-
-[node name="SongListElement8" parent="SongSelectScroll/VBoxContainer" instance=ExtResource( 4 )]
-anchor_left = 0.0
-anchor_right = 0.0
-margin_left = 0.0
-margin_top = 812.0
-margin_right = 458.0
-margin_bottom = 928.0
-
-[connection signal="scroll_ended" from="SongSelectScroll" to="SongSelectScroll" method="_on_SongSelectScroll_scroll_ended"]
-[connection signal="scroll_started" from="SongSelectScroll" to="SongSelectScroll" method="_on_SongSelectScroll_scroll_started"]
+[node name="ColorRect2" type="ColorRect" parent="MarginContainer3/VBoxContainer"]
+margin_top = 291.0
+margin_right = 547.0
+margin_bottom = 295.0
+rect_min_size = Vector2( 0, 4 )
