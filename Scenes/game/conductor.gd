@@ -5,6 +5,7 @@ var bpm
 # Tracking the beat and song position
 var time_begin: float
 var time_delay: float
+var last_paused: float
 
 var song_position: float = 0.0
 var song_position_in_beats = 0
@@ -90,3 +91,10 @@ func update_song_position():
 #		if new_position > song_position:
 #			song_position = new_position
 #		song_position_in_beats = int(floor(song_position / sec_per_beat)) + beats_before_start
+
+func _on_PausePopup_unpause():
+	time_begin = (time_begin + OS.get_ticks_usec() - last_paused)
+	time_delay = AudioServer.get_time_to_next_mix() + AudioServer.get_output_latency()
+
+func _on_Game_pause():
+	last_paused = OS.get_ticks_usec()

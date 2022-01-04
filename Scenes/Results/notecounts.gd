@@ -1,6 +1,6 @@
 extends Control
 
-enum {NONE, ENCRYPTED, CRACKED, DECRYPTED, FLAWLESS}
+enum {ENCRYPTED, CRACKED, DECRYPTED, FLAWLESS}
 
 # Declare member variables here. Examples:
 # var a = 2

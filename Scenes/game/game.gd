@@ -1,7 +1,7 @@
 extends Spatial
 
 # enums and constants
-enum {NONE, ENCRYPTED, CRACKED, DECRYPTED, FLAWLESS}
+enum {ENCRYPTED, CRACKED, DECRYPTED, FLAWLESS}
 
 # audio stuff
 var audio
@@ -60,6 +60,7 @@ var judgement_textures: Array = []
 
 signal note_judged(result)
 signal beat(measure, beat)
+signal pause
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -354,15 +355,14 @@ func setup_input():
 	$CanvasLayer.add_child(right_hitbox)
 	
 func setup_judgement_textures():
-	judgement_textures.resize(5)
+	judgement_textures.resize(4)
 	var pics: Array = [
-		null,
 		load("res://Textures/Gameplay/encrypted.png"),
 		load("res://Textures/Gameplay/cracked.png"),
 		load("res://Textures/Gameplay/decrypted.png"),
 		load("res://Textures/Gameplay/flawless.png")
 		]
-	for i in range(1,5):
+	for i in len(judgement_textures):
 		judgement_textures[i] = ImageTexture.new()
 		judgement_textures[i].create_from_image(pics[i].get_data())
 		
@@ -390,6 +390,15 @@ func _input(event):
 		$Conductor.update_song_position()
 		var event_time = $Conductor.song_position - input_offset
 		if event.pressed: # tap
+			# intercept pause button if available
+			if $CanvasLayer/PauseContainer/PauseButton.get_global_rect().has_point(event.position):
+				print("PAUSE!")
+				emit_signal("pause")
+				get_tree().paused = true
+				$CanvasLayer/PausePopup.show()
+				return
+			
+			# otherwise, process for gameplay
 			touch_bindings[event.index] = event
 			var candidate_notes: Array # use this to improve hit registration for notes with overlapping hitboxes
 			var first_note_time = null
@@ -410,9 +419,10 @@ func _input(event):
 					return
 				1:
 					var note = candidate_notes[0]
-					var result: Dictionary = note.judge(event_time)
-					draw_judgement(result, note.lane)
-					emit_signal("note_judged", result)
+					var result = note.judge(event_time)
+					if result != null:
+						draw_judgement(result, note.lane)
+						emit_signal("note_judged", result)
 					if note.is_in_group("holds"):
 						note.activated = true
 					else:
@@ -431,9 +441,10 @@ func _input(event):
 							if curr_dist_sq < min_dist_sq:
 								min_dist_sq = curr_dist_sq
 								closest_note = note
-					var result: Dictionary = closest_note.judge(event_time)
-					draw_judgement(result, closest_note.lane)
-					emit_signal("note_judged", result)
+					var result = closest_note.judge(event_time)
+					if result != null:
+						draw_judgement(result, closest_note.lane)
+						emit_signal("note_judged", result)
 					if closest_note.is_in_group("holds"):
 						closest_note.activated = true
 					else:
@@ -468,8 +479,6 @@ func draw_judgement(data: Dictionary, lane: int):
 			tex = judgement_textures[CRACKED]
 		ENCRYPTED:
 			tex = judgement_textures[ENCRYPTED]
-		NONE:
-			return
 	judgement.setup(tex, lower_lane_width)
 	if input_zones[lane] == null:
 		return
@@ -502,7 +511,6 @@ func pop_nearest_note(input: InputEvent, candidates: Array):
 	return closest_note
 
 func _on_Conductor_finished():
-	print("Conductor finished!")
 	$Conductor.stop()
 	var data: Dictionary = {
 		"result_data": $result_data.results, 

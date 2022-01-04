@@ -1,7 +1,7 @@
 extends Node
 
 # enums and constants
-enum {NONE, ENCRYPTED, CRACKED, DECRYPTED, FLAWLESS}
+enum {ENCRYPTED, CRACKED, DECRYPTED, FLAWLESS}
 
 var results: Dictionary = {
 	ENCRYPTED: [],
@@ -21,6 +21,4 @@ func _ready():
 
 
 func _on_Game_note_judged(input):
-	if input["judgement"] == NONE:
-		return
 	results[input.judgement].append(input.offset)

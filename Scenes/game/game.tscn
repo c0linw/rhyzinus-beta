@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=2]
+[gd_scene load_steps=38 format=2]
 
 [ext_resource path="res://scenes/game/results_data.gd" type="Script" id=1]
 [ext_resource path="res://scenes/game/timing_label.gd" type="Script" id=2]
@@ -11,6 +11,30 @@
 [ext_resource path="res://textures/gameplay/lane_effect.png" type="Texture" id=9]
 [ext_resource path="res://scenes/game/combo_counter.gd" type="Script" id=10]
 [ext_resource path="res://scenes/game/game.gd" type="Script" id=11]
+[ext_resource path="res://textures/ui/share.png" type="Texture" id=12]
+[ext_resource path="res://scenes/game/pause_button.gd" type="Script" id=13]
+[ext_resource path="res://scenes/game/pause_popup.gd" type="Script" id=14]
+
+[sub_resource type="DynamicFont" id=20]
+size = 64
+font_data = ExtResource( 8 )
+
+[sub_resource type="DynamicFont" id=19]
+size = 64
+outline_size = 2
+outline_color = Color( 0, 0.0431373, 0.396078, 1 )
+font_data = ExtResource( 8 )
+
+[sub_resource type="DynamicFont" id=21]
+font_data = ExtResource( 8 )
+
+[sub_resource type="DynamicFont" id=22]
+size = 144
+font_data = ExtResource( 8 )
+
+[sub_resource type="DynamicFont" id=23]
+size = 64
+font_data = ExtResource( 8 )
 
 [sub_resource type="SpatialMaterial" id=14]
 render_priority = -1
@@ -94,21 +118,175 @@ ambient_light_color = Color( 1, 1, 1, 1 )
 glow_intensity = 0.6
 glow_blend_mode = 0
 
-[sub_resource type="DynamicFont" id=20]
-size = 64
-font_data = ExtResource( 8 )
-
-[sub_resource type="DynamicFont" id=19]
-size = 64
-outline_size = 2
-outline_color = Color( 0, 0.0431373, 0.396078, 1 )
-font_data = ExtResource( 8 )
-
-[sub_resource type="DynamicFont" id=21]
-font_data = ExtResource( 8 )
-
 [node name="Game" type="Spatial"]
 script = ExtResource( 11 )
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="PauseControl" type="Control" parent="CanvasLayer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="FramerateCounter" type="Label" parent="CanvasLayer"]
+margin_left = 38.6252
+margin_top = 176.481
+margin_right = 168.625
+margin_bottom = 252.481
+custom_fonts/font = SubResource( 20 )
+align = 1
+valign = 1
+script = ExtResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ComboCounter" type="Control" parent="CanvasLayer"]
+margin_left = 495.597
+margin_top = 323.418
+margin_right = 535.597
+margin_bottom = 363.418
+mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ComboCounterLabel" type="Label" parent="CanvasLayer/ComboCounter"]
+margin_left = -400.0
+margin_top = -200.0
+margin_right = 400.0
+margin_bottom = 200.0
+grow_horizontal = 2
+rect_pivot_offset = Vector2( 200, 50 )
+size_flags_horizontal = 2
+size_flags_vertical = 2
+custom_colors/font_color = Color( 0.584314, 0.882353, 1, 1 )
+custom_fonts/font = SubResource( 19 )
+align = 1
+valign = 1
+script = ExtResource( 10 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PauseContainer" type="MarginContainer" parent="CanvasLayer"]
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_left = -160.0
+margin_top = -80.0
+margin_bottom = 80.0
+mouse_filter = 2
+custom_constants/margin_right = 16
+custom_constants/margin_top = 16
+custom_constants/margin_left = 16
+custom_constants/margin_bottom = 16
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PauseButton" type="TextureButton" parent="CanvasLayer/PauseContainer"]
+margin_left = 16.0
+margin_top = 16.0
+margin_right = 144.0
+margin_bottom = 144.0
+rect_min_size = Vector2( 128, 128 )
+mouse_filter = 1
+texture_normal = ExtResource( 12 )
+expand = true
+script = ExtResource( 13 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GaugeContainer" type="MarginContainer" parent="CanvasLayer"]
+margin_right = 40.0
+margin_bottom = 40.0
+mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/GaugeContainer"]
+margin_right = 40.0
+margin_bottom = 40.0
+mouse_filter = 2
+
+[node name="TimingIndicator" type="Control" parent="CanvasLayer"]
+margin_left = 495.597
+margin_top = 323.418
+margin_right = 535.597
+margin_bottom = 363.418
+mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TimingLabel" type="Label" parent="CanvasLayer/TimingIndicator"]
+margin_left = -400.0
+margin_top = -200.0
+margin_right = 400.0
+margin_bottom = 200.0
+grow_horizontal = 2
+rect_pivot_offset = Vector2( 200, 50 )
+size_flags_horizontal = 2
+size_flags_vertical = 2
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_fonts/font = SubResource( 21 )
+text = "LATE"
+align = 1
+valign = 1
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PausePopup" type="Popup" parent="CanvasLayer"]
+pause_mode = 2
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+script = ExtResource( 14 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="CanvasLayer/PausePopup"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -425.5
+margin_top = -246.0
+margin_right = 425.5
+margin_bottom = -78.0
+custom_colors/font_color = Color( 1, 0, 0, 1 )
+custom_fonts/font = SubResource( 22 )
+text = "GET GNOMED"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ResumeButton" type="Button" parent="CanvasLayer/PausePopup"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -115.0
+margin_top = -41.0
+margin_right = 115.0
+margin_bottom = 41.0
+custom_fonts/font = SubResource( 23 )
+text = "Resume"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Camera" type="Camera" parent="."]
 transform = Transform( 1, 0, 0, 0, 0.956305, 0.292372, 0, -0.292372, 0.956305, 0, 3.3, 5.5 )
@@ -238,6 +416,7 @@ environment = SubResource( 1 )
 [node name="Control" type="Control" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
+mouse_filter = 2
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -247,6 +426,7 @@ self_modulate = Color( 0.247059, 0.247059, 0.247059, 1 )
 show_behind_parent = true
 anchor_right = 1.0
 anchor_bottom = 1.0
+mouse_filter = 2
 texture = ExtResource( 7 )
 expand = true
 stretch_mode = 7
@@ -256,117 +436,16 @@ __meta__ = {
 
 [node name="Conductor" parent="." instance=ExtResource( 4 )]
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
-
-[node name="FramerateCounter" type="Label" parent="CanvasLayer"]
-margin_left = 38.6252
-margin_top = 176.481
-margin_right = 168.625
-margin_bottom = 227.481
-custom_fonts/font = SubResource( 20 )
-align = 1
-valign = 1
-script = ExtResource( 6 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="ComboCounter" type="Control" parent="CanvasLayer"]
-margin_left = 495.597
-margin_top = 323.418
-margin_right = 535.597
-margin_bottom = 363.418
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="ComboCounterLabel" type="Label" parent="CanvasLayer/ComboCounter"]
-margin_left = -400.0
-margin_top = -200.0
-margin_right = 400.0
-margin_bottom = 200.0
-grow_horizontal = 2
-rect_pivot_offset = Vector2( 200, 50 )
-size_flags_horizontal = 2
-size_flags_vertical = 2
-custom_colors/font_color = Color( 0.584314, 0.882353, 1, 1 )
-custom_fonts/font = SubResource( 19 )
-align = 1
-valign = 1
-script = ExtResource( 10 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="PauseContainer" type="MarginContainer" parent="CanvasLayer"]
-anchor_left = 1.0
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-margin_left = -40.0
-margin_top = -20.0
-margin_bottom = 20.0
-custom_constants/margin_right = 16
-custom_constants/margin_top = 16
-custom_constants/margin_left = 16
-custom_constants/margin_bottom = 16
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="PauseButton" type="TextureButton" parent="CanvasLayer/PauseContainer"]
-margin_left = 16.0
-margin_top = 16.0
-margin_right = 24.0
-margin_bottom = 24.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="GaugeContainer" type="MarginContainer" parent="CanvasLayer"]
-margin_right = 40.0
-margin_bottom = 40.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="TextureRect" type="TextureRect" parent="CanvasLayer/GaugeContainer"]
-margin_right = 40.0
-margin_bottom = 40.0
-
-[node name="TimingIndicator" type="Control" parent="CanvasLayer"]
-margin_left = 495.597
-margin_top = 323.418
-margin_right = 535.597
-margin_bottom = 363.418
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="TimingLabel" type="Label" parent="CanvasLayer/TimingIndicator"]
-margin_left = -400.0
-margin_top = -200.0
-margin_right = 400.0
-margin_bottom = 200.0
-grow_horizontal = 2
-rect_pivot_offset = Vector2( 200, 50 )
-size_flags_horizontal = 2
-size_flags_vertical = 2
-custom_colors/font_color = Color( 1, 1, 1, 1 )
-custom_fonts/font = SubResource( 21 )
-text = "LATE"
-align = 1
-valign = 1
-script = ExtResource( 2 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
 [node name="result_data" type="Node" parent="."]
 script = ExtResource( 1 )
 
 [connection signal="note_judged" from="." to="CanvasLayer/ComboCounter/ComboCounterLabel" method="_on_Game_note_judged"]
 [connection signal="note_judged" from="." to="CanvasLayer/TimingIndicator/TimingLabel" method="_on_Game_note_judged"]
 [connection signal="note_judged" from="." to="result_data" method="_on_Game_note_judged"]
+[connection signal="pause" from="." to="Conductor" method="_on_Game_pause"]
+[connection signal="mouse_entered" from="CanvasLayer/PauseContainer/PauseButton" to="CanvasLayer/PauseContainer/PauseButton" method="_on_PauseButton_mouse_entered"]
+[connection signal="pressed" from="CanvasLayer/PauseContainer/PauseButton" to="CanvasLayer/PauseContainer/PauseButton" method="_on_PauseButton_pressed"]
+[connection signal="unpause" from="CanvasLayer/PausePopup" to="Conductor" method="_on_PausePopup_unpause"]
+[connection signal="pressed" from="CanvasLayer/PausePopup/ResumeButton" to="CanvasLayer/PausePopup" method="_on_ResumeButton_pressed"]
 [connection signal="finished" from="Conductor" to="." method="_on_Conductor_finished"]
 [connection signal="finished" from="Conductor" to="CanvasLayer/ComboCounter/ComboCounterLabel" method="_on_Conductor_finished"]
