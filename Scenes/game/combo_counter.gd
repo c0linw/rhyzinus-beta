@@ -3,7 +3,7 @@ extends Label
 var current_combo: int = 0
 var best_combo: int = 0
 
-enum {ENCRYPTED, CRACKED, DECRYPTED, FLAWLESS, NONE}
+enum {NONE, ENCRYPTED, CRACKED, DECRYPTED, FLAWLESS}
 
 
 # Called when the node enters the scene tree for the first time.
