@@ -25,7 +25,7 @@ func _ready():
 func can_judge(event_time: float):
 	return event_time >= time-early_cracked && event_time <= time + late_cracked
 
-# returns either null, or a dict containing the judgement and offset
+# returns a dict containing the judgement and offset
 func judge(event_time: float):
 	if event_time >= time-early_flawless && event_time <= time + late_flawless:
 		return {"judgement": FLAWLESS, "offset": event_time - time}

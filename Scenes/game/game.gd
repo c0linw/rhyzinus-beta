@@ -54,6 +54,19 @@ var lane_zones: Array = []
 var touch_bindings: Array = [] # keeps track of touch input events
 var input_offset: float = 0.0
 
+var judgement_sources: Dictionary = {
+	"tap": 0,
+	"release": 0,
+	"end_miss": 0,
+	"end_hit": 0,
+	"start_hit": 0,
+	"start_hit_tiebreaker": 0,
+	"start_pass": 0,
+	"note_pass": 0,
+	"hold_tick": 0,
+	"tiebreaker": 0,
+}
+
 # Effects
 var lane_effects: Array = []
 var judgement_textures: Array = []
@@ -150,24 +163,28 @@ func _process(_delta):
 				var result = {"judgement": FLAWLESS, "offset": 0}
 				draw_judgement(result, note.lane)
 				emit_signal("note_judged", result)
+				judgement_sources["end_hit"] += 1
 				delete_note(note)
 			if !note.held and timestamp > note.end_time + note.late_cracked + input_offset:
 				var result = {"judgement": ENCRYPTED, "offset": 0}
 				draw_judgement(result, note.lane)
 				emit_signal("note_judged", result)
+				judgement_sources["end_miss"] += 1
 				delete_note(note)
 		elif timestamp >= note.time + note.late_cracked + input_offset:
 			if note.is_in_group("holds"):
-				if !note.head_passed:
+				if !note.head_judged:
 					if !note.activated:
 						var result = {"judgement": ENCRYPTED, "offset": 0}
 						draw_judgement(result, note.lane)
 						emit_signal("note_judged", result)
-					note.head_passed = true
+						judgement_sources["start_pass"] += 1
+					note.head_judged = true
 			else:
 				var result = {"judgement": ENCRYPTED, "offset": 0}
 				draw_judgement(result, note.lane)
 				emit_signal("note_judged", result)
+				judgement_sources["note_pass"] += 1
 				delete_note(note)
 		
 	# check hold ticks
@@ -181,6 +198,7 @@ func _process(_delta):
 					result = {"judgement": ENCRYPTED, "offset": 0}
 				draw_judgement(result, hold.lane)
 				emit_signal("note_judged", result)
+				judgement_sources["hold_tick"] += 1
 				hold.ticks.erase(tick)
 			else:
 				break
@@ -423,9 +441,11 @@ func _input(event):
 					if result != null:
 						draw_judgement(result, note.lane)
 						emit_signal("note_judged", result)
-					if note.is_in_group("holds"):
-						note.activated = true
-					else:
+						if note.is_in_group("holds"):
+							judgement_sources["start_hit"] += 1
+						else:
+							judgement_sources["tap"] += 1
+					if not note.is_in_group("holds"):
 						delete_note(note)
 					return
 				_:
@@ -445,9 +465,11 @@ func _input(event):
 					if result != null:
 						draw_judgement(result, closest_note.lane)
 						emit_signal("note_judged", result)
-					if closest_note.is_in_group("holds"):
-						closest_note.activated = true
-					else:
+						if closest_note.is_in_group("holds"):
+							judgement_sources["start_hit_tiebreaker"] += 1
+						else:
+							judgement_sources["tiebreaker"] += 1
+					if not closest_note.is_in_group("holds"):
 						delete_note(closest_note)
 					return
 		else: # touch release
@@ -460,6 +482,7 @@ func _input(event):
 				var result = {"judgement": FLAWLESS, "offset": 0}
 				draw_judgement(result, judged_note.lane)
 				emit_signal("note_judged", result)
+				judgement_sources["release"] += 1
 				delete_note(judged_note)
 			touch_bindings[event.index] = null
 			return
@@ -512,6 +535,8 @@ func pop_nearest_note(input: InputEvent, candidates: Array):
 
 func _on_Conductor_finished():
 	$Conductor.stop()
+	for key in judgement_sources:
+		print("%s: %d" % [key, judgement_sources[key]])
 	var data: Dictionary = {
 		"result_data": $result_data.results, 
 		"best_combo": $CanvasLayer/ComboCounter/ComboCounterLabel.best_combo}
