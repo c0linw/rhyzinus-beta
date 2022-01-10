@@ -1,0 +1,37 @@
+[
+	{
+		"title": "Neutralize (PTB10 Mix)",
+		"artist": "SiLiS",
+		"bpm": "175",
+		"path": "neutralizeptbmix",
+		"levels": [2,5,8,10]
+	},
+	{
+		"title": "Re:LOAD",
+		"artist": "5KiLOBYTE",
+		"bpm": "???",
+		"path": "reload",
+		"levels": [4,6,8,11]
+	},
+	{
+		"title": "Qos-Break",
+		"artist": "Sosop",
+		"bpm": "???",
+		"path": "qosbreak",
+		"levels": [3,5,9,11]
+	},
+	{
+		"title": "Trojancourse",
+		"artist": "SiLiS",
+		"bpm": "???",
+		"path": "trojancourse",
+		"levels": [3,6,8,10]
+	},
+	{
+		"title": "Autothysis",
+		"artist": "Rapidsystem",
+		"bpm": "???",
+		"path": "autothysis",
+		"levels": [4,7,10,12]
+	},
+]
