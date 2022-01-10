@@ -22,9 +22,8 @@ func _on_DifficultyButton_pressed():
 	emit_signal("difficulty_selected", difficulty)
 
 
-func _on_SongSelect_song_selected(levels: Array):
-	print("signal received")
-	$MarginContainer/Label.text = difficulty_names[difficulty] + " " + str(levels[difficulty])
+func _on_SongSelect_song_selected(song_data: Dictionary):
+	$MarginContainer/Label.text = difficulty_names[difficulty] + " " + str(song_data.levels[difficulty])
 		
 func _on_SongSelect_difficulty_set(signal_difficulty):
 	if signal_difficulty == difficulty:

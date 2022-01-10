@@ -10,11 +10,12 @@ var diff_buttons: Array
 var ObjSongListElement = preload("res://scenes/song_select/song_list_element.tscn")
 
 signal difficulty_set(difficulty)
-signal song_selected(levels)
+signal song_selected(song_data)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	var song_index = read_index("beta1")
+	var pack_name = "beta1"
+	var song_index = read_index(pack_name)
 	var first_song = null
 	if song_index != null:
 		for song in song_index:
@@ -35,6 +36,8 @@ func _ready():
 		node.connect("difficulty_selected", self, "_on_DifficultyButton_difficulty_selected")
 		self.connect("difficulty_set", node, "_on_SongSelect_difficulty_set")
 		self.connect("song_selected", node, "_on_SongSelect_song_selected")
+		
+	$MarginContainer2/HBoxContainer/JacketImage.set_pack(pack_name)
 	emit_signal("difficulty_set", ALPHA)
 	first_song.emit_signal("pressed")
 
@@ -42,9 +45,8 @@ func _ready():
 #func _process(delta):
 #	pass
 
-func _on_SongListElement_song_selected(songname: String, levels: Array):
-	print("sending signal")
-	emit_signal("song_selected", levels)
+func _on_SongListElement_song_selected(song_data: Dictionary):
+	emit_signal("song_selected", song_data)
 
 func _on_DifficultyButton_difficulty_selected(signal_difficulty):
 	selected_difficulty = signal_difficulty
