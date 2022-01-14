@@ -13,6 +13,7 @@ var normal_tex = preload("res://textures/ui/song_border.png")
 
 
 signal song_selected(song_data)
+signal play_song(song_data)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -23,6 +24,9 @@ func setup(song_data: Dictionary):
 	data = song_data
 
 func _on_SongListElement_pressed():
+	if get_focus_owner() == self:
+		emit_signal("play_song", data)
+		return
 	set_focus_mode(Control.FOCUS_ALL)
 	grab_focus()
 
@@ -34,7 +38,8 @@ func _on_SongListElement_focus_entered():
 	$VBoxContainer/ArtistContainer.add_constant_override("margin_left", 108)
 	$VBoxContainer/ArtistContainer/ArtistName.add_color_override("font_color", Color(0, 0, 0, 1))
 	emit_signal("song_selected", data)
-
+	
+	
 func _on_SongListElement_focus_exited():
 	set_focus_mode(Control.FOCUS_NONE)
 	$VBoxContainer/SongNameContainer.add_constant_override("margin_left", 24)

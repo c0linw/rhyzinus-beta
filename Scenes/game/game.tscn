@@ -443,7 +443,6 @@ script = ExtResource( 1 )
 [connection signal="note_judged" from="." to="CanvasLayer/TimingIndicator/TimingLabel" method="_on_Game_note_judged"]
 [connection signal="note_judged" from="." to="result_data" method="_on_Game_note_judged"]
 [connection signal="pause" from="." to="Conductor" method="_on_Game_pause"]
-[connection signal="mouse_entered" from="CanvasLayer/PauseContainer/PauseButton" to="CanvasLayer/PauseContainer/PauseButton" method="_on_PauseButton_mouse_entered"]
 [connection signal="pressed" from="CanvasLayer/PauseContainer/PauseButton" to="CanvasLayer/PauseContainer/PauseButton" method="_on_PauseButton_pressed"]
 [connection signal="unpause" from="CanvasLayer/PausePopup" to="Conductor" method="_on_PausePopup_unpause"]
 [connection signal="pressed" from="CanvasLayer/PausePopup/ResumeButton" to="CanvasLayer/PausePopup" method="_on_ResumeButton_pressed"]

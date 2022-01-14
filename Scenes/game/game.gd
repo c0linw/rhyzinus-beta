@@ -88,6 +88,12 @@ func _ready():
 	if chart_data == null :
 		print("failed to load chart data!")
 		return
+		
+	var audio_path = SceneSwitcher.get_param("audio_path")
+	if audio_path == null :
+		print("failed to get audio path!")
+		return
+		
 	var options = SceneSwitcher.get_param("options")
 	if options == null :
 		print("failed to load options!")
@@ -106,7 +112,7 @@ func _ready():
 	setup_combo_counter()
 	setup_timing_indicator()
 	
-	$Conductor.stream = load("res://Songs/neutralizeptbmix/neutralizeptbmix.mp3")
+	$Conductor.stream = load(audio_path)
 	$Conductor.stream.loop = false
 	$Conductor.volume_db = -10.0
 
@@ -410,10 +416,7 @@ func _input(event):
 		if event.pressed: # tap
 			# intercept pause button if available
 			if $CanvasLayer/PauseContainer/PauseButton.get_global_rect().has_point(event.position):
-				print("PAUSE!")
-				emit_signal("pause")
-				get_tree().paused = true
-				$CanvasLayer/PausePopup.show()
+				pause_game()
 				return
 			
 			# otherwise, process for gameplay
@@ -541,3 +544,12 @@ func _on_Conductor_finished():
 		"result_data": $result_data.results, 
 		"best_combo": $CanvasLayer/ComboCounter/ComboCounterLabel.best_combo}
 	SceneSwitcher.change_scene("res://scenes/results/results.tscn", data)
+	
+func pause_game():
+	emit_signal("pause")
+	get_tree().paused = true
+	$CanvasLayer/PausePopup.show()	
+	
+func _notification(what):
+	if what == MainLoop.NOTIFICATION_WM_FOCUS_OUT:
+		pause_game()

@@ -6,6 +6,7 @@ var selected_difficulty: int = ALPHA
 
 var song_folder: String = "res://songs/"
 var diff_buttons: Array
+var pack_name: String = "beta1"
 
 var ObjSongListElement = preload("res://scenes/song_select/song_list_element.tscn")
 
@@ -14,13 +15,13 @@ signal song_selected(song_data)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	var pack_name = "beta1"
 	var song_index = read_index(pack_name)
 	var first_song = null
 	if song_index != null:
 		for song in song_index:
 			var new_element = ObjSongListElement.instance()
 			new_element.connect("song_selected", self, "_on_SongListElement_song_selected")
+			new_element.connect("play_song", self, "_on_SongListElement_play_song")
 			new_element.setup(song)
 			$SongSelectScroll/VBoxContainer.add_child(new_element)
 			if first_song == null:
@@ -47,6 +48,14 @@ func _ready():
 
 func _on_SongListElement_song_selected(song_data: Dictionary):
 	emit_signal("song_selected", song_data)
+	
+func _on_SongListElement_play_song(song_data: Dictionary):
+	print("%s%s/%s/%s.txt" % [song_folder, pack_name, song_data.path, selected_difficulty])
+	var data: Dictionary = {
+		"chart_path": "%s%s/%s/%s.txt" % [song_folder, pack_name, song_data.path, selected_difficulty],
+		"audio_path": "%s%s/%s/audio.mp3" % [song_folder, pack_name, song_data.path]
+	}
+	SceneSwitcher.change_scene("res://scenes/game/loadscreen.tscn", data)
 
 func _on_DifficultyButton_difficulty_selected(signal_difficulty):
 	selected_difficulty = signal_difficulty

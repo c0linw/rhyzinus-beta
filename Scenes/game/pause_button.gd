@@ -18,10 +18,6 @@ func _ready():
 
 func _on_PauseButton_pressed():
 	print("pause button pressed!")
-
-
-func _on_PauseButton_mouse_entered():
-	print("test")
 	
 func _gui_input(event):
 	print("INPUT")

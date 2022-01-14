@@ -2,12 +2,14 @@ extends Node2D
 # Loads the chart data from a file into the chart_data object, then switches the scene to Game
 
 var audio_path: String
-var chart_path: String = "res://Songs/neutralizeptbmix/neutralizeptbmix.txt"
+var chart_path: String
 var current_section: String = ""
 const NUM_LANES_IN_SOURCE: int = 14 # defaults to 14 key osu mania file, but supports anything 12 or above
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	chart_path = SceneSwitcher.get_param("chart_path")
+	audio_path = SceneSwitcher.get_param("audio_path")
 	if not load_chart(chart_path, $chart_data):
 		 # TODO: return to menu if load was unsuccessful
 		print("Chart loading failed!")
@@ -17,7 +19,12 @@ func _ready():
 		"input_offset": 0.020
 	}
 	$chart_data.offset = options["audio_offset"]
-	if SceneSwitcher.change_scene("res://Scenes/Game/Game.tscn", {"chart_data": $chart_data.export_data(), "options": options}) != OK:
+	var data = {
+		"chart_data": $chart_data.export_data(), 
+		"audio_path": audio_path,
+		"options": options
+		}
+	if SceneSwitcher.change_scene("res://Scenes/Game/Game.tscn", data) != OK:
 		print ("Error changing scene to Game")
 
 # loads the chart file and processes every line until the end. Returns true if successful.

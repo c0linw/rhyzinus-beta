@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/audio.mp3-bc61b5208ef24854508d501015978e42.mp3str"
+
+[deps]
+
+source_file="res://songs/beta1/qosbreak/audio.mp3"
+dest_files=[ "res://.import/audio.mp3-bc61b5208ef24854508d501015978e42.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

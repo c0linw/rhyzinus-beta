@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/audio.mp3-6058078443c8e36aee4d3ee97fd5b2a9.mp3str"
+
+[deps]
+
+source_file="res://songs/beta1/trojancourse/audio.mp3"
+dest_files=[ "res://.import/audio.mp3-6058078443c8e36aee4d3ee97fd5b2a9.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0
