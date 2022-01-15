@@ -145,26 +145,32 @@ __meta__ = {
 }
 
 [node name="ComboCounter" type="Control" parent="CanvasLayer"]
-margin_left = 495.597
-margin_top = 323.418
-margin_right = 535.597
-margin_bottom = 363.418
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -20.0
+margin_right = 20.0
+margin_bottom = 40.0
 mouse_filter = 2
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="ComboCounterLabel" type="Label" parent="CanvasLayer/ComboCounter"]
-margin_left = -400.0
-margin_top = -200.0
-margin_right = 400.0
-margin_bottom = 200.0
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -68.0
+margin_top = -38.0
+margin_right = 68.0
+margin_bottom = 38.0
 grow_horizontal = 2
 rect_pivot_offset = Vector2( 200, 50 )
 size_flags_horizontal = 2
 size_flags_vertical = 2
 custom_colors/font_color = Color( 0.584314, 0.882353, 1, 1 )
 custom_fonts/font = SubResource( 19 )
+text = "1234"
 align = 1
 valign = 1
 script = ExtResource( 10 )
@@ -217,20 +223,25 @@ margin_bottom = 40.0
 mouse_filter = 2
 
 [node name="TimingIndicator" type="Control" parent="CanvasLayer"]
-margin_left = 495.597
-margin_top = 323.418
-margin_right = 535.597
-margin_bottom = 363.418
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -20.0
+margin_right = 20.0
+margin_bottom = 40.0
 mouse_filter = 2
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="TimingLabel" type="Label" parent="CanvasLayer/TimingIndicator"]
-margin_left = -400.0
-margin_top = -200.0
-margin_right = 400.0
-margin_bottom = 200.0
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -17.0
+margin_top = -10.0
+margin_right = 17.0
+margin_bottom = 10.0
 grow_horizontal = 2
 rect_pivot_offset = Vector2( 200, 50 )
 size_flags_horizontal = 2

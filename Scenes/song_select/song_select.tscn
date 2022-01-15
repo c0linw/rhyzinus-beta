@@ -81,6 +81,7 @@ size_flags_vertical = 3
 theme = SubResource( 6 )
 follow_focus = true
 scroll_horizontal_enabled = false
+scroll_deadzone = 16
 script = ExtResource( 7 )
 __meta__ = {
 "_edit_use_anchors_": false

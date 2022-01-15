@@ -78,7 +78,7 @@ signal pause
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	######## TODO: set options by passing them in
-	note_speed = 8.7
+	note_speed = 7.7
 	lane_depth = 24.0
 	
 	######## SETUP OBJECTS
@@ -381,32 +381,28 @@ func setup_input():
 func setup_judgement_textures():
 	judgement_textures.resize(4)
 	var pics: Array = [
-		load("res://Textures/Gameplay/encrypted.png"),
-		load("res://Textures/Gameplay/cracked.png"),
-		load("res://Textures/Gameplay/decrypted.png"),
-		load("res://Textures/Gameplay/flawless.png")
+		load("res://textures/gameplay/encrypted.png"),
+		load("res://textures/gameplay/cracked.png"),
+		load("res://textures/gameplay/decrypted.png"),
+		load("res://textures/gameplay/flawless.png")
 		]
 	for i in len(judgement_textures):
 		judgement_textures[i] = ImageTexture.new()
 		judgement_textures[i].create_from_image(pics[i].get_data())
 		
 func setup_combo_counter():
-	var view_coords = get_viewport().size
-	var fontSize = get_viewport().size.y * 0.15
+	var fontSize = (lower_lane_left.y - upper_lane_left.y) * 0.37
 	var outline = fontSize * 0.02
-	var comboPosX = view_coords.x/2
 	var comboPosY = upper_lane_left.y + (lower_lane_left.y - upper_lane_left.y)*0.35
 	$CanvasLayer/ComboCounter/ComboCounterLabel.get_font("font").size = fontSize
-	$CanvasLayer/ComboCounter.set_global_position(Vector2(comboPosX, comboPosY))
+	$CanvasLayer/ComboCounter.margin_top = comboPosY
 	
 func setup_timing_indicator():
-	var view_coords = get_viewport().size
-	var fontSize = get_viewport().size.y * 0.05
+	var fontSize = (lower_lane_left.y - upper_lane_left.y) * 0.13
 	var outline = fontSize * 0.02
-	var comboPosX = view_coords.x/2
-	var comboPosY = upper_lane_left.y + (lower_lane_left.y - upper_lane_left.y)*0.35 - get_viewport().size.y * 0.1
+	var timingPosY = $CanvasLayer/ComboCounter.get_global_position().y - get_viewport().size.y * 0.1
 	$CanvasLayer/TimingIndicator/TimingLabel.get_font("font").size = fontSize
-	$CanvasLayer/TimingIndicator.set_global_position(Vector2(comboPosX, comboPosY))
+	$CanvasLayer/TimingIndicator.margin_top = timingPosY
 	
 
 func _input(event):

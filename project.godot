@@ -63,7 +63,7 @@ _global_script_class_icons={
 [application]
 
 config/name="Rhyzinus-beta"
-run/main_scene="res://scenes/game/loadscreen.tscn"
+run/main_scene="res://scenes/song_select/song_select.tscn"
 run/delta_sync_after_draw=true
 config/icon="res://icon.png"
 
