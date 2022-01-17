@@ -24,6 +24,7 @@ func _ready():
 		"audio_path": audio_path,
 		"options": options
 		}
+	yield(get_tree(), "idle_frame")
 	if SceneSwitcher.change_scene("res://scenes/game/game.tscn", data) != OK:
 		print ("Error changing scene to Game")
 

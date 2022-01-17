@@ -77,6 +77,7 @@ signal pause
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	set_process(false)
 	######## TODO: set options by passing them in
 	note_speed = 7.7
 	lane_depth = 24.0
@@ -116,6 +117,8 @@ func _ready():
 	$Conductor.stream.loop = false
 	$Conductor.volume_db = -10.0
 
+	yield(get_tree(), "idle_frame")
+	set_process(true)
 	$Conductor.play_from_beat(0,0)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
