@@ -35,8 +35,8 @@ __meta__ = {
 }
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
-margin_right = 105.0
-margin_bottom = 40.0
+margin_right = 250.0
+margin_bottom = 55.0
 custom_constants/margin_right = 8
 custom_constants/margin_top = 8
 custom_constants/margin_left = 8
@@ -45,17 +45,18 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+[node name="BackButton" type="Button" parent="MarginContainer"]
 margin_left = 8.0
 margin_top = 8.0
-margin_right = 242.0
-margin_bottom = 47.0
-
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer"]
-margin_right = 234.0
-margin_bottom = 39.0
+margin_right = 254.0
+margin_bottom = 53.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
 custom_fonts/font = ExtResource( 2 )
 text = "<- Back to home"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Gameplay_bg" type="TextureRect" parent="."]
 self_modulate = Color( 0.392157, 0.392157, 0.392157, 1 )

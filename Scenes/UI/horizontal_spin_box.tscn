@@ -1,0 +1,66 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://scenes/ui/horizontal_spin_box.gd" type="Script" id=1]
+[ext_resource path="res://fonts/new_dynamicfont.tres" type="DynamicFont" id=2]
+
+[node name="HorizontalSpinBox" type="HBoxContainer"]
+margin_right = 40.0
+margin_bottom = 40.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SuperDecrement" type="Button" parent="."]
+visible = false
+margin_right = 46.0
+margin_bottom = 45.0
+custom_fonts/font = ExtResource( 2 )
+text = "<<"
+
+[node name="Decrement" type="Button" parent="."]
+margin_right = 49.0
+margin_bottom = 45.0
+custom_fonts/font = ExtResource( 2 )
+text = " < "
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+margin_left = 53.0
+margin_right = 69.0
+margin_bottom = 45.0
+custom_constants/margin_right = 8
+custom_constants/margin_left = 8
+
+[node name="ValueDisplay" type="Label" parent="MarginContainer"]
+margin_left = 8.0
+margin_top = 3.0
+margin_right = 8.0
+margin_bottom = 42.0
+custom_fonts/font = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Increment" type="Button" parent="."]
+margin_left = 73.0
+margin_right = 122.0
+margin_bottom = 45.0
+custom_fonts/font = ExtResource( 2 )
+text = " > "
+
+[node name="SuperIncrement" type="Button" parent="."]
+visible = false
+margin_left = 126.0
+margin_right = 172.0
+margin_bottom = 45.0
+custom_fonts/font = ExtResource( 2 )
+text = ">>"
+
+[connection signal="value_changed" from="." to="." method="_on_HorizontalSpinBox_value_changed"]
+[connection signal="pressed" from="SuperDecrement" to="." method="_on_SuperDecrement_pressed"]
+[connection signal="pressed" from="Decrement" to="." method="_on_Decrement_pressed"]
+[connection signal="pressed" from="Increment" to="." method="_on_Increment_pressed"]
+[connection signal="pressed" from="SuperIncrement" to="." method="_on_SuperIncrement_pressed"]

@@ -1,15 +1,9 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://fonts/new_dynamicfont.tres" type="DynamicFont" id=1]
+[ext_resource path="res://scenes/ui/horizontal_spin_box.tscn" type="PackedScene" id=1]
 [ext_resource path="res://images/gameplay-bg.jpg" type="Texture" id=2]
 [ext_resource path="res://scenes/options/options.gd" type="Script" id=3]
-[ext_resource path="res://scenes/options/speed_number.gd" type="Script" id=4]
-
-[sub_resource type="StyleBoxEmpty" id=1]
-
-[sub_resource type="StyleBoxEmpty" id=2]
-
-[sub_resource type="StyleBoxEmpty" id=3]
+[ext_resource path="res://fonts/new_dynamicfont.tres" type="DynamicFont" id=4]
 
 [node name="Options" type="Control"]
 anchor_right = 1.0
@@ -20,169 +14,108 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
 anchor_left = 1.0
-anchor_top = 0.5
 anchor_right = 1.0
-anchor_bottom = 0.5
-margin_left = -354.0
-margin_top = -71.5
-margin_bottom = 71.5
-mouse_filter = 2
+anchor_bottom = 1.0
+margin_left = -653.0
+margin_top = 81.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
+margin_right = 653.0
+margin_bottom = 45.0
 custom_constants/margin_right = 32
-__meta__ = {
-"_edit_use_anchors_": false
-}
+custom_constants/margin_left = 32
 
-[node name="GridContainer" type="GridContainer" parent="MarginContainer"]
-margin_right = 322.0
-margin_bottom = 143.0
-mouse_filter = 2
-custom_constants/vseparation = 4
-custom_constants/hseparation = 4
-columns = 5
-__meta__ = {
-"_edit_use_anchors_": false
-}
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/MarginContainer"]
+margin_left = 32.0
+margin_right = 621.0
+margin_bottom = 45.0
 
-[node name="NoteSpeedLabel" type="Label" parent="MarginContainer/GridContainer"]
+[node name="Label" type="Label" parent="VBoxContainer/MarginContainer/HBoxContainer"]
 margin_top = 3.0
-margin_right = 179.0
+margin_right = 463.0
 margin_bottom = 42.0
-custom_fonts/font = ExtResource( 1 )
+size_flags_horizontal = 3
+custom_fonts/font = ExtResource( 4 )
 text = "Note Speed"
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
-[node name="VSeparator" type="VSeparator" parent="MarginContainer/GridContainer"]
-margin_left = 183.0
-margin_right = 215.0
+[node name="HorizontalSpinBox" parent="VBoxContainer/MarginContainer/HBoxContainer" instance=ExtResource( 1 )]
+margin_left = 467.0
+margin_right = 589.0
 margin_bottom = 45.0
-custom_constants/separation = 32
-custom_styles/separator = SubResource( 1 )
+step = 0.1
+min_value = 1.0
+decimal_places = 1
+value_name = "note_speed"
+use_extra_buttons = true
+extra_step = 0.5
 
-[node name="NoteSpeedDecrement" type="Button" parent="MarginContainer/GridContainer"]
-margin_left = 219.0
-margin_right = 248.0
+[node name="MarginContainer2" type="MarginContainer" parent="VBoxContainer"]
+margin_top = 49.0
+margin_right = 653.0
+margin_bottom = 94.0
+custom_constants/margin_right = 32
+custom_constants/margin_left = 32
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/MarginContainer2"]
+margin_left = 32.0
+margin_right = 621.0
 margin_bottom = 45.0
-size_flags_horizontal = 0
-size_flags_vertical = 3
-custom_fonts/font = ExtResource( 1 )
-text = "<"
 
-[node name="SpeedNumber" type="Label" parent="MarginContainer/GridContainer"]
-margin_left = 252.0
+[node name="Label" type="Label" parent="VBoxContainer/MarginContainer2/HBoxContainer"]
 margin_top = 3.0
-margin_right = 289.0
+margin_right = 463.0
 margin_bottom = 42.0
-custom_fonts/font = ExtResource( 1 )
-text = " 0 "
-script = ExtResource( 4 )
-
-[node name="NoteSpeedIncrement" type="Button" parent="MarginContainer/GridContainer"]
-margin_left = 293.0
-margin_right = 322.0
-margin_bottom = 45.0
-size_flags_vertical = 3
-custom_fonts/font = ExtResource( 1 )
-text = ">"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="AudioOffsetLabel" type="Label" parent="MarginContainer/GridContainer"]
-margin_top = 52.0
-margin_right = 179.0
-margin_bottom = 91.0
-custom_fonts/font = ExtResource( 1 )
+size_flags_horizontal = 3
+custom_fonts/font = ExtResource( 4 )
 text = "Audio Offset"
 
-[node name="VSeparator2" type="VSeparator" parent="MarginContainer/GridContainer"]
-margin_left = 183.0
-margin_top = 49.0
-margin_right = 215.0
-margin_bottom = 94.0
-custom_constants/separation = 32
-custom_styles/separator = SubResource( 2 )
+[node name="HorizontalSpinBox" parent="VBoxContainer/MarginContainer2/HBoxContainer" instance=ExtResource( 1 )]
+margin_left = 467.0
+margin_right = 589.0
+margin_bottom = 45.0
+max_value = 1000.0
+default_value = 0.0
+value_name = "audio_offset"
+use_extra_buttons = true
+extra_step = 10.0
 
-[node name="AudioOffsetDecrement" type="Button" parent="MarginContainer/GridContainer"]
-margin_left = 219.0
-margin_top = 49.0
-margin_right = 248.0
-margin_bottom = 94.0
-size_flags_horizontal = 0
-size_flags_vertical = 3
-custom_fonts/font = ExtResource( 1 )
-text = "<"
+[node name="MarginContainer3" type="MarginContainer" parent="VBoxContainer"]
+margin_top = 98.0
+margin_right = 653.0
+margin_bottom = 143.0
+custom_constants/margin_right = 32
+custom_constants/margin_left = 32
 
-[node name="AudioNumber" type="Label" parent="MarginContainer/GridContainer"]
-margin_left = 252.0
-margin_top = 52.0
-margin_right = 289.0
-margin_bottom = 91.0
-custom_fonts/font = ExtResource( 1 )
-text = " 0 "
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/MarginContainer3"]
+margin_left = 32.0
+margin_right = 621.0
+margin_bottom = 45.0
 
-[node name="AudioOffsetIncrement" type="Button" parent="MarginContainer/GridContainer"]
-margin_left = 293.0
-margin_top = 49.0
-margin_right = 322.0
-margin_bottom = 94.0
-size_flags_vertical = 3
-custom_fonts/font = ExtResource( 1 )
-text = ">"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="InputOffsetLabel" type="Label" parent="MarginContainer/GridContainer"]
-margin_top = 101.0
-margin_right = 179.0
-margin_bottom = 140.0
-custom_fonts/font = ExtResource( 1 )
+[node name="Label" type="Label" parent="VBoxContainer/MarginContainer3/HBoxContainer"]
+margin_top = 3.0
+margin_right = 463.0
+margin_bottom = 42.0
+size_flags_horizontal = 3
+custom_fonts/font = ExtResource( 4 )
 text = "Input Offset"
 
-[node name="VSeparator3" type="VSeparator" parent="MarginContainer/GridContainer"]
-margin_left = 183.0
-margin_top = 98.0
-margin_right = 215.0
-margin_bottom = 143.0
-custom_constants/separation = 32
-custom_styles/separator = SubResource( 3 )
-
-[node name="InputOffsetDecrement" type="Button" parent="MarginContainer/GridContainer"]
-margin_left = 219.0
-margin_top = 98.0
-margin_right = 248.0
-margin_bottom = 143.0
-size_flags_horizontal = 0
-size_flags_vertical = 3
-custom_fonts/font = ExtResource( 1 )
-text = "<"
-
-[node name="InputNumber" type="Label" parent="MarginContainer/GridContainer"]
-margin_left = 252.0
-margin_top = 101.0
-margin_right = 289.0
-margin_bottom = 140.0
-custom_fonts/font = ExtResource( 1 )
-text = " 0 "
-
-[node name="InputOffsetIncrement" type="Button" parent="MarginContainer/GridContainer"]
-margin_left = 293.0
-margin_top = 98.0
-margin_right = 322.0
-margin_bottom = 143.0
-size_flags_vertical = 3
-custom_fonts/font = ExtResource( 1 )
-text = ">"
-__meta__ = {
-"_edit_use_anchors_": false
-}
+[node name="HorizontalSpinBox" parent="VBoxContainer/MarginContainer3/HBoxContainer" instance=ExtResource( 1 )]
+margin_left = 467.0
+margin_right = 589.0
+margin_bottom = 45.0
+max_value = 50.0
+default_value = 0.0
+value_name = "note_speed"
+use_extra_buttons = true
+extra_step = 10.0
 
 [node name="Gameplay_bg" type="TextureRect" parent="."]
-self_modulate = Color( 0.247059, 0.247059, 0.247059, 1 )
+self_modulate = Color( 0.392157, 0.392157, 0.392157, 1 )
 show_behind_parent = true
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -194,6 +127,26 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[connection signal="note_speed_changed" from="." to="MarginContainer/GridContainer/SpeedNumber" method="_on_Options_note_speed_changed"]
-[connection signal="pressed" from="MarginContainer/GridContainer/NoteSpeedDecrement" to="." method="_on_NoteSpeedDecrement_pressed"]
-[connection signal="pressed" from="MarginContainer/GridContainer/NoteSpeedIncrement" to="." method="_on_NoteSpeedIncrement_pressed"]
+[node name="MarginContainer" type="MarginContainer" parent="."]
+margin_right = 250.0
+margin_bottom = 55.0
+custom_constants/margin_right = 8
+custom_constants/margin_top = 8
+custom_constants/margin_left = 8
+custom_constants/margin_bottom = 8
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="BackButton" type="Button" parent="MarginContainer"]
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 254.0
+margin_bottom = 53.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_fonts/font = ExtResource( 4 )
+text = "<- Back to home"
+__meta__ = {
+"_edit_use_anchors_": false
+}
