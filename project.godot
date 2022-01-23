@@ -74,6 +74,7 @@ output_latency=10
 [autoload]
 
 SceneSwitcher="*res://scripts/scene_switcher.gd"
+Settings="*res://scripts/settings.gd"
 
 [display]
 

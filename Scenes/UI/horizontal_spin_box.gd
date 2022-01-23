@@ -33,17 +33,11 @@ func _ready():
 
 
 func _on_Decrement_pressed():
-	current_value = stepify(current_value - step, step)
-	if current_value <= min_value:
-		current_value = min_value
-	emit_signal("value_changed", value_name, current_value)
+	update_value(stepify(current_value - step, step))
 
 
 func _on_Increment_pressed():
-	current_value = stepify(current_value + step, step)
-	if current_value >= max_value:
-		current_value = max_value
-	emit_signal("value_changed", value_name, current_value)
+	update_value(stepify(current_value + step, step))
 
 
 func _on_HorizontalSpinBox_value_changed(value_name, new_value):
@@ -55,16 +49,21 @@ func _on_HorizontalSpinBox_value_changed(value_name, new_value):
 
 
 func _on_SuperDecrement_pressed():
-	print(current_value)
-	current_value = stepify(current_value - extra_step, step)
-	if current_value <= min_value:
-		current_value = min_value
-	print(current_value)
-	emit_signal("value_changed", value_name, current_value)
+	update_value(stepify(current_value - extra_step, step))
 
 
 func _on_SuperIncrement_pressed():
-	current_value = stepify(current_value + extra_step, step)
-	if current_value >= max_value:
+	update_value(stepify(current_value + extra_step, step))
+	
+func _on_Options_change_value(input_value_name, new_value):
+	if input_value_name == value_name:
+		update_value(new_value)
+
+func update_value(new_value):
+	if new_value <= min_value:
+		current_value = min_value
+	elif new_value >= max_value:
 		current_value = max_value
+	else:
+		current_value = new_value
 	emit_signal("value_changed", value_name, current_value)

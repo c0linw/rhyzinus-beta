@@ -5,12 +5,12 @@ var time: float
 var lane: int
 var chart_position: float
 
-const early_flawless: float = 0.025
-const late_flawless: float = 0.025
-const early_decrypted: float = 0.050
-const late_decrypted: float = 0.050
-const early_cracked: float = 0.100
-const late_cracked: float = 0.100
+const early_flawless: float = 0.030
+const late_flawless: float = 0.030
+const early_decrypted: float = 0.045
+const late_decrypted: float = 0.045
+const early_cracked: float = 0.90
+const late_cracked: float = 0.90
 
 enum {ENCRYPTED, CRACKED, DECRYPTED, FLAWLESS}
 
