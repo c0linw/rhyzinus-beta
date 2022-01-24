@@ -95,6 +95,8 @@ func update_song_position():
 func _on_PausePopup_unpause():
 	time_begin = (time_begin + OS.get_ticks_usec() - last_paused)
 	time_delay = AudioServer.get_time_to_next_mix() + AudioServer.get_output_latency()
+	update_song_position()
+	print(song_position)
 
 func _on_Game_pause():
 	last_paused = OS.get_ticks_usec()

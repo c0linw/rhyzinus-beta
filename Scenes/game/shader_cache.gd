@@ -13,5 +13,4 @@ func _process(delta):
 	if countdown > 0:
 		countdown -= 1
 		if countdown <= 0:
-			print("hiding shadercache")
 			hide()

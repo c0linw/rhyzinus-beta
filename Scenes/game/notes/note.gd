@@ -9,8 +9,8 @@ const early_flawless: float = 0.030
 const late_flawless: float = 0.030
 const early_decrypted: float = 0.045
 const late_decrypted: float = 0.045
-const early_cracked: float = 0.90
-const late_cracked: float = 0.90
+const early_cracked: float = 0.090
+const late_cracked: float = 0.090
 
 enum {ENCRYPTED, CRACKED, DECRYPTED, FLAWLESS}
 

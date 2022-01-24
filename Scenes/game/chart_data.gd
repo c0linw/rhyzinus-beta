@@ -8,6 +8,7 @@ var notes: Array = []
 var timing_points: Array = []
 var barlines: Array = []
 var beat_data: Array = []
+var notecount: int = 0
 
 class TimeSorter:
 	# denotes the order in which these should be sorted, if there are objects with the same time
@@ -130,8 +131,9 @@ func process_objects_for_gameplay():
 					curr_tick = processed_timing_points[curr_timing_index]["time"]
 
 			# generate ticks until a leniency window before the end
-			while curr_tick < new_note["end_time"] - 0.100:
+			while curr_tick < new_note["end_time"] - 0.120:
 				new_note["ticks"].append(curr_tick)
+				notecount += 1
 				var next_tick: float = curr_tick + curr_beat_length
 				# tick is either curr + beat_length, or the time of the next bpm change, whichever comes first
 				if curr_timing_index < processed_timing_points.size() - 1:
@@ -149,6 +151,7 @@ func process_objects_for_gameplay():
 		else:
 			processed_notes_with_holds.append(note)
 	
+	notecount += len(processed_notes_with_holds)
 	notes = processed_notes_with_holds
 	timing_points = processed_timing_points
 	barlines = processed_barlines
@@ -157,6 +160,7 @@ func process_objects_for_gameplay():
 	
 func export_data() -> Dictionary:
 	process_objects_for_gameplay()
+	print(notecount)
 	return {
 		"leadin_time": leadin_time,
 		"offset": offset,

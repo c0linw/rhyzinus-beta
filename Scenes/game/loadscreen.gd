@@ -46,7 +46,6 @@ func load_chart(file_path: String, receiver: Node) -> bool:
 		if not process_chart_line(line, receiver):
 			print("skipped invalid line: ", line)
 	file.close()
-	print("parsed %s hitobjects and %s timing points" % [len(receiver.notes), len(receiver.timing_points)])
 	return true
 
 # processes one line of the chart file. Returns true if the line was valid (even if skipped)

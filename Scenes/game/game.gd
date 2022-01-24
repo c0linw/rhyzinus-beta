@@ -545,9 +545,11 @@ func _on_Conductor_finished():
 	SceneSwitcher.change_scene("res://scenes/results/results.tscn", data)
 	
 func pause_game():
-	emit_signal("pause")
-	get_tree().paused = true
-	$CanvasLayer/PausePopup.show()	
+	if not get_tree().paused:
+		emit_signal("pause")
+		get_tree().paused = true
+		print($Conductor.song_position)
+		$CanvasLayer/PausePopup.show()
 	
 func _notification(what):
 	if what == MainLoop.NOTIFICATION_WM_FOCUS_OUT:
