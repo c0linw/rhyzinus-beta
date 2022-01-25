@@ -312,6 +312,7 @@ __meta__ = {
 transform = Transform( 1, 0, 0, 0, 0.956305, 0.292372, 0, -0.292372, 0.956305, 0, 3.3, 5.5 )
 keep_aspect = 0
 current = true
+fov = 75.0
 
 [node name="Lanes_lower" parent="." instance=ExtResource( 5 )]
 

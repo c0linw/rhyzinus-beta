@@ -24,6 +24,7 @@ var bpm_velocity: float = 1.0
 var sv_velocity: float = 1.0
 var last_timestamp: float = 0.0
 var chart_position: float = 0.0
+var notecount: int = 0
 
 # Measurements, useful for positioning-related calculations
 var lane_depth: float
@@ -104,6 +105,7 @@ func _ready():
 	scrollmod_list = chart_data["timing_points"]
 	barlines_to_spawn = chart_data["barlines"]
 	beat_data = chart_data["beats"]
+	notecount = chart_data["notecount"]
 	
 	######## SETUP INPUT
 	input_offset = options["input_offset"]
@@ -275,8 +277,12 @@ func spawn_note(note_data: Dictionary):
 	note_instance.lane = note_data["lane"]
 	notes_to_spawn.erase(note_data)
 	onscreen_notes.append(note_instance)
-	if note_instance.lane <= 7:
+	if note_instance.lane == 0:
+		$Lanes_lower/Left.add_child(note_instance)
+	elif note_instance.lane < 7:
 		$Lanes_lower.add_child(note_instance)
+	elif note_instance.lane == 7:
+		$Lanes_lower/Right.add_child(note_instance)
 	else:
 		$Lanes_upper.add_child(note_instance)
 		
@@ -477,7 +483,7 @@ func _input(event):
 		else: # touch release
 			var candidate_holds: Array
 			for note in onscreen_notes:
-				if note.is_in_group("holds") and event_time >= note.end_time - note.early_cracked + input_offset and note.activated:
+				if note.is_in_group("holds") and event_time >= note.end_time - note.early_release + input_offset and note.activated:
 					candidate_holds.append(note)
 			var judged_note = pop_nearest_note(event, candidate_holds)
 			if judged_note != null:

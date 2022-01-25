@@ -160,7 +160,6 @@ func process_objects_for_gameplay():
 	
 func export_data() -> Dictionary:
 	process_objects_for_gameplay()
-	print(notecount)
 	return {
 		"leadin_time": leadin_time,
 		"offset": offset,
@@ -168,7 +167,8 @@ func export_data() -> Dictionary:
 		"notes": notes,
 		"timing_points": timing_points,
 		"barlines": barlines,
-		"beats": beat_data
+		"beats": beat_data,
+		"notecount": notecount
 	}
 
 func get_end_position(note: Dictionary, start_index: int, array_to_search: Array):
