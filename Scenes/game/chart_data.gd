@@ -127,7 +127,7 @@ func process_objects_for_gameplay():
 						break
 					if processed_timing_points[curr_timing_index]["type"] != "bpm":
 						continue
-					curr_beat_length = processed_timing_points[curr_timing_index]
+					curr_beat_length = processed_timing_points[curr_timing_index]["beat_length"]/1000.0
 					curr_tick = processed_timing_points[curr_timing_index]["time"]
 
 			# generate ticks until a leniency window before the end
@@ -143,7 +143,7 @@ func process_objects_for_gameplay():
 							break
 						if processed_timing_points[curr_timing_index]["type"] != "bpm":
 							continue
-						curr_beat_length = processed_timing_points[curr_timing_index]
+						curr_beat_length = processed_timing_points[curr_timing_index]["beat_length"]/1000.0
 						next_tick = processed_timing_points[curr_timing_index]["time"]
 				curr_tick = next_tick
 			
