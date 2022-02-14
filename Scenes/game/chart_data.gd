@@ -8,6 +8,7 @@ var notes: Array = []
 var timing_points: Array = []
 var barlines: Array = []
 var beat_data: Array = []
+var simlines: Array = []
 var notecount: int = 0
 
 class TimeSorter:
@@ -148,6 +149,8 @@ func process_objects_for_gameplay():
 				curr_tick = next_tick
 			
 			processed_notes_with_holds.append(new_note)
+		elif note["type"] == "hold_end":
+			notecount += 1
 		else:
 			processed_notes_with_holds.append(note)
 	
@@ -157,6 +160,7 @@ func process_objects_for_gameplay():
 	barlines = processed_barlines
 	
 	generate_beats(processed_timing_points)
+	generate_simlines(processed_notes_with_holds)
 	
 func export_data() -> Dictionary:
 	process_objects_for_gameplay()
@@ -168,7 +172,8 @@ func export_data() -> Dictionary:
 		"timing_points": timing_points,
 		"barlines": barlines,
 		"beats": beat_data,
-		"notecount": notecount
+		"notecount": notecount,
+		"simlines": simlines
 	}
 
 func get_end_position(note: Dictionary, start_index: int, array_to_search: Array):
@@ -255,3 +260,36 @@ func generate_beats(timing_points: Array):
 			"beat": beat
 		})
 	beat_data = beat_output
+	
+func generate_simlines(note_data: Array):
+	var last_note_time = -1.0
+	var last_note_lane = -1
+	for note in note_data:
+		if note.time == last_note_time:
+			# simline already exists (3 note chord or more)
+			if len(simlines) > 0 and simlines[len(simlines)-1].time == last_note_time:
+				simlines[len(simlines)-1][get_lane_location(note.lane)][note.lane] = 1
+			# create new simline with current and previous note lanes
+			else:
+				var new_simline = {
+					"time": note.time,
+					"position": note.position,
+					"lower": {},
+					"side": {},
+					"upper": {},
+				}
+				new_simline[get_lane_location(note.lane)][note.lane] = 1
+				new_simline[get_lane_location(last_note_lane)][last_note_lane] = 1
+				simlines.append(new_simline)
+		else: 
+			last_note_time = note.time
+			last_note_lane = note.lane
+			
+func get_lane_location(lane: int) -> String:
+	if lane >= 1 and lane <= 6:
+		return "lower"
+	if lane >= 10 and lane <= 13:
+		return "upper"
+	if lane == 0 or lane == 7:
+		return "side"
+	return "unknown"

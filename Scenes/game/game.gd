@@ -8,16 +8,18 @@ var audio
 
 # gameplay stuff
 var audio_offset: float = 0.0
-var note_speed: float # speed range: 1.0 - 16.0
+var note_speed: float # speed range: 1.0 - 10.0
 var base_note_screen_time: float
 
 var notes_to_spawn: Array = []
 var scrollmod_list: Array = []
 var barlines_to_spawn: Array = []
 var beat_data: Array = []
+var simlines_to_spawn: Array = []
 
 var onscreen_notes: Array = []
 var onscreen_barlines: Array = []
+var onscreen_simlines: Array = []
 
 var starting_bpm: float
 var bpm_velocity: float = 1.0
@@ -48,6 +50,7 @@ var ObjBarline = preload("res://scenes/game/entities/barline.tscn")
 var ObjBarlineUpper = preload("res://scenes/game/entities/barline_upper.tscn")
 var ObjNoteHitbox = preload("res://scenes/game/entities/note_hitbox.tscn")
 var ObjJudgementTexture = preload("res://scenes/game/entities/judgement_texture.tscn")
+var ObjSimline = preload("res://scenes/game/entities/simline.tscn")
 
 # Input-related stuff
 var input_zones: Array = []
@@ -106,6 +109,7 @@ func _ready():
 	barlines_to_spawn = chart_data["barlines"]
 	beat_data = chart_data["beats"]
 	notecount = chart_data["notecount"]
+	simlines_to_spawn = chart_data["simlines"]
 	
 	######## SETUP INPUT
 	input_offset = options["input_offset"]
@@ -148,11 +152,23 @@ func _process(_delta):
 		else:
 			break # assumes all notes are stored in ascending time
 			
+	for simline_data in simlines_to_spawn:
+		if chart_position >= simline_data["position"] - base_note_screen_time:
+			spawn_simline(simline_data)
+		else:
+			break # assumes all simlines are stored in ascending time
+			
 	for barline in onscreen_barlines:
 		if chart_position >= barline.chart_position:
 			remove_barline(barline)
 		else:
 			barline.render(chart_position, lane_depth, base_note_screen_time)
+			
+	for simline in onscreen_simlines:
+		if chart_position >= simline.chart_position:
+			remove_simline(simline)
+		else:
+			simline.render(chart_position, lane_depth, base_note_screen_time)
 			
 	# reset, then update hold status		
 	var candidate_holds: Array = []
@@ -304,6 +320,25 @@ func spawn_barline(barline_data: Dictionary):
 func remove_barline(barline_to_remove):
 	onscreen_barlines.erase(barline_to_remove)
 	barline_to_remove.queue_free()
+	
+func spawn_simline(simline_data: Dictionary):
+	if len(simline_data.upper) == 0 or len(simline_data.lower) == 0:
+		simlines_to_spawn.erase(simline_data)
+		return
+	for upper in simline_data.upper.keys():
+		for lower in simline_data.lower.keys():
+			var simline = ObjSimline.instance()
+			simline.time = simline_data["time"]
+			simline.chart_position = simline_data["position"]
+			simlines_to_spawn.erase(simline_data)
+			onscreen_simlines.append(simline)
+			
+			simline.set_ends(lower, upper, $Lanes_lower.translation, $Lanes_upper.translation)
+			$Lanes_lower.add_child(simline)
+	
+func remove_simline(simline_to_remove):
+	onscreen_simlines.erase(simline_to_remove)
+	simline_to_remove.queue_free()
 	
 func setup_lane_effects():
 	lane_effects.resize(14)
