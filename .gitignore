@@ -8,7 +8,6 @@ export_presets.cfg
 .mono/
 
 # Other stuff
-*.mp3
 *.wav
 *.ogg
 *.zip
