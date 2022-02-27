@@ -207,12 +207,10 @@ func generate_barlines(data: Array) -> Array:
 				"type": "barline"
 			})
 		var next_beat_time: float = timestamp + beat_length
-		if timestamp > 38:
-			pass
 		if index+1 < len(data) and next_beat_time >= data[index+1]["time"]:
 			if data[index+1]["type"] == "bpm":
 				timestamp = data[index+1]["time"]
-				beat_length = data[index+1]["beat_length"]
+				beat_length = data[index+1]["beat_length"] / 1000.0
 				meter = data[index+1]["meter"]
 				beat = 0
 			index += 1
@@ -246,7 +244,7 @@ func generate_beats(timing_points: Array):
 		if index+1 < len(data) and next_beat_time >= data[index+1]["time"]:
 			if data[index+1]["type"] == "bpm":
 				timestamp = data[index+1]["time"]
-				beat_length = data[index+1]["beat_length"]
+				beat_length = data[index+1]["beat_length"] / 1000.0
 				meter = data[index+1]["meter"]
 				beat = 0
 			index += 1
