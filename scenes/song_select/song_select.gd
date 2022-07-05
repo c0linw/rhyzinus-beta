@@ -50,9 +50,9 @@ func _on_SongListElement_song_selected(song_data: Dictionary):
 	emit_signal("song_selected", song_data)
 	
 func _on_SongListElement_play_song(song_data: Dictionary):
-	print("%s%s/%s/%s.txt" % [song_folder, pack_name, song_data.path, selected_difficulty])
+	print("%s%s/%s/%s.rznx" % [song_folder, pack_name, song_data.path, selected_difficulty])
 	var data: Dictionary = {
-		"chart_path": "%s%s/%s/%s.txt" % [song_folder, pack_name, song_data.path, selected_difficulty],
+		"chart_path": "%s%s/%s/%s.rznx" % [song_folder, pack_name, song_data.path, selected_difficulty],
 		"audio_path": "%s%s/%s/audio.mp3" % [song_folder, pack_name, song_data.path]
 	}
 	SceneSwitcher.change_scene("res://scenes/game/loadscreen.tscn", data)

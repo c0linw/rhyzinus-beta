@@ -260,7 +260,7 @@ func apply_timing_point(sv: Dictionary):
 	# account for any bit of the old scrollmod that was missed
 	chart_position += (sv["time"]-last_timestamp)*bpm_velocity*sv_velocity 
 	if sv["type"] == "bpm":
-		var new_bpm: float = (1.0 / sv["beat_length"]) * 60000.0
+		var new_bpm: float = (60.0 / sv["beat_length"])
 		bpm_velocity = new_bpm/starting_bpm
 	elif sv["type"] == "velocity":
 		sv_velocity = sv["velocity"]

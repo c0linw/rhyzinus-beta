@@ -50,7 +50,7 @@ func _ready():
 # replaces the notes and timing_points arrays with their updated versions
 func process_objects_for_gameplay():
 	timing_points = generate_barlines(timing_points)
-	starting_bpm = (1.0 / timing_points[0].beat_length) * 60000.0
+	starting_bpm = (60.0 / timing_points[0].beat_length)
 	# make a new (sorted) array containing all the objects
 	var objects: Array = timing_points.duplicate()
 	objects.append_array(notes)
@@ -71,7 +71,7 @@ func process_objects_for_gameplay():
 		curr_time += time_delta
 		curr_position += position_delta
 		if object["type"] == "bpm":
-			var new_bpm: float = (1.0 / object["beat_length"]) * 60000.0
+			var new_bpm: float = (60.0 / object["beat_length"])
 			bpm_velocity = new_bpm/starting_bpm
 			bpm = new_bpm
 		elif object["type"] == "velocity":
@@ -117,7 +117,7 @@ func process_objects_for_gameplay():
 				# add the beat to the ticks array
 				# increment beat by using timing point info
 				# if this new beat is later than the "next" bpm marker, use that instead, and set the current index to that marker's index
-			var curr_beat_length: float = processed_timing_points[curr_timing_index]["beat_length"]/1000.0
+			var curr_beat_length: float = processed_timing_points[curr_timing_index]["beat_length"]
 			# the initial tick is the first one after the hold's start
 			var curr_tick: float = new_note["time"] + curr_beat_length
 			# this tick is either start + beat_length, or the time of the next bpm change, whichever comes first
@@ -128,7 +128,7 @@ func process_objects_for_gameplay():
 						break
 					if processed_timing_points[curr_timing_index]["type"] != "bpm":
 						continue
-					curr_beat_length = processed_timing_points[curr_timing_index]["beat_length"]/1000.0
+					curr_beat_length = processed_timing_points[curr_timing_index]["beat_length"]
 					curr_tick = processed_timing_points[curr_timing_index]["time"]
 
 			# generate ticks until a leniency window before the end
@@ -144,7 +144,7 @@ func process_objects_for_gameplay():
 							break
 						if processed_timing_points[curr_timing_index]["type"] != "bpm":
 							continue
-						curr_beat_length = processed_timing_points[curr_timing_index]["beat_length"]/1000.0
+						curr_beat_length = processed_timing_points[curr_timing_index]["beat_length"]
 						next_tick = processed_timing_points[curr_timing_index]["time"]
 				curr_tick = next_tick
 			
@@ -194,7 +194,7 @@ func generate_barlines(data: Array) -> Array:
 	data.sort_custom(TimeSorter, "sort_ascending_with_type_priority")
 	var return_data: Array = data.duplicate()
 	var timestamp: float = data[0]["time"]
-	var beat_length: float = data[0].beat_length / 1000.0
+	var beat_length: float = data[0].beat_length
 	var meter: int = data[0]["meter"]
 	var beat: int = 0
 	var index: int = 0
@@ -210,7 +210,7 @@ func generate_barlines(data: Array) -> Array:
 		if index+1 < len(data) and next_beat_time >= data[index+1]["time"]:
 			if data[index+1]["type"] == "bpm":
 				timestamp = data[index+1]["time"]
-				beat_length = data[index+1]["beat_length"] / 1000.0
+				beat_length = data[index+1]["beat_length"]
 				meter = data[index+1]["meter"]
 				beat = 0
 			index += 1
@@ -224,7 +224,7 @@ func generate_beats(timing_points: Array):
 	data.sort_custom(TimeSorter, "sort_ascending_with_type_priority")
 	var beat_output: Array = []
 	var timestamp: float = data[0]["time"]
-	var beat_length: float = data[0].beat_length / 1000.0
+	var beat_length: float = data[0].beat_length
 	var meter: int = data[0]["meter"]
 	var measure: int = 1
 	var beat = 1
@@ -244,7 +244,7 @@ func generate_beats(timing_points: Array):
 		if index+1 < len(data) and next_beat_time >= data[index+1]["time"]:
 			if data[index+1]["type"] == "bpm":
 				timestamp = data[index+1]["time"]
-				beat_length = data[index+1]["beat_length"] / 1000.0
+				beat_length = data[index+1]["beat_length"]
 				meter = data[index+1]["meter"]
 				beat = 0
 			index += 1

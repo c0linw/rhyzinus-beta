@@ -28,8 +28,34 @@ func _ready():
 	if SceneSwitcher.change_scene("res://scenes/game/game.tscn", data) != OK:
 		print ("Error changing scene to Game")
 
-# loads the chart file and processes every line until the end. Returns true if successful.
+
 func load_chart(file_path: String, receiver: Node) -> bool:
+	var file := File.new()
+	if not file.file_exists(file_path):
+		print("Missing chart file ", file_path)
+		file.close()
+		return false
+	var err = file.open_compressed(file_path, File.READ, File.COMPRESSION_DEFLATE)
+	if err:
+		print("Error %s while opening file: %s" % [err, file_path])
+		file.close()
+		return false
+	var chart_json = file.get_as_text()
+	file.close()
+	var result: JSONParseResult = JSON.parse(chart_json)
+	if result.error != OK:
+		push_error("File parsing failed at line %s: %s" % [result.error_line, result.error_string])
+		return false
+	if typeof(result.result) != TYPE_DICTIONARY:
+		push_error("chart data was not parsed as Dictionary")
+		return false
+	receiver.notes = result.result.notes
+	receiver.timing_points = result.result.bpm_changes
+	receiver.timing_points.append_array(result.result.velocity_changes)
+	return true
+
+# loads the .osu chart file and processes every line until the end. Returns true if successful.
+func load_chart_old(file_path: String, receiver: Node) -> bool:
 	# get data from file
 	var file := File.new()
 	if not file.file_exists(file_path):
@@ -68,7 +94,7 @@ func process_chart_line(line: String, receiver: Node) -> bool:
 		if timing_type == "bpm":
 			var timing_point: Dictionary = {
 				"time": get_time(timing_data[0]),
-				"beat_length": float(timing_data[1]), # beat length, in milliseconds
+				"beat_length": float(timing_data[1]) / 1000.0, # beat length, in milliseconds
 				"meter": int(timing_data[2]), # ignored if type == 1
 				"type": timing_type
 			}
