@@ -35,6 +35,16 @@ _global_script_classes=[ {
 "path": "res://scenes/game/notes/note_hold_upper.gd"
 }, {
 "base": "Note",
+"class": "NoteSwipe",
+"language": "GDScript",
+"path": "res://scenes/game/notes/note_swipe.gd"
+}, {
+"base": "NoteSwipe",
+"class": "NoteSwipeSide",
+"language": "GDScript",
+"path": "res://scenes/game/notes/note_swipe_side.gd"
+}, {
+"base": "Note",
 "class": "NoteTap",
 "language": "GDScript",
 "path": "res://scenes/game/notes/note_tap.gd"
@@ -55,6 +65,8 @@ _global_script_class_icons={
 "NoteHold": "",
 "NoteHoldSide": "",
 "NoteHoldUpper": "",
+"NoteSwipe": "",
+"NoteSwipeSide": "",
 "NoteTap": "",
 "NoteTapSide": "",
 "NoteTapUpper": ""

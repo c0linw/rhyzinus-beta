@@ -46,6 +46,8 @@ var ObjNoteTapUpper = preload("res://scenes/game/notes/note_tap_upper.tscn")
 var ObjNoteHold = preload("res://scenes/game/notes/note_hold.tscn")
 var ObjNoteHoldSide = preload("res://scenes/game/notes/note_hold_side.tscn")
 var ObjNoteHoldUpper = preload("res://scenes/game/notes/note_hold_upper.tscn")
+var ObjNoteSwipe = preload("res://scenes/game/notes/note_swipe.tscn")
+var ObjNoteSwipeSide = preload("res://scenes/game/notes/note_swipe_side.tscn")
 var ObjBarline = preload("res://scenes/game/entities/barline.tscn")
 var ObjBarlineUpper = preload("res://scenes/game/entities/barline_upper.tscn")
 var ObjNoteHitbox = preload("res://scenes/game/entities/note_hitbox.tscn")
@@ -57,6 +59,8 @@ var input_zones: Array = []
 var lane_zones: Array = []
 var touch_bindings: Array = [] # keeps track of touch input events
 var input_offset: float = 0.0
+
+var swipe_threshold: float = 0
 
 var judgement_sources: Dictionary = {
 	"tap": 0,
@@ -198,6 +202,11 @@ func _process(_delta):
 				emit_signal("note_judged", result)
 				judgement_sources["end_miss"] += 1
 				delete_note(note)
+		elif note.is_in_group("swipes") and note.activated and timestamp < note.time + note.late_cracked + input_offset:
+			var result = {"judgement": FLAWLESS, "offset": 0}
+			draw_judgement(result, note.lane)
+			emit_signal("note_judged", result)
+			delete_note(note)
 		elif timestamp >= note.time + note.late_cracked + input_offset:
 			if note.is_in_group("holds"):
 				if !note.head_judged:
@@ -286,6 +295,11 @@ func spawn_note(note_data: Dictionary):
 		note_instance.end_time = note_data["end_time"]
 		note_instance.end_position = note_data["end_position"]
 		note_instance.ticks = note_data["ticks"]
+	elif note_data["type"] == "swipe":
+		if note_data["lane"] == 0 || note_data["lane"] == 7:
+			note_instance = ObjNoteSwipeSide.instance()
+		else:
+			note_instance = ObjNoteSwipe.instance()
 	else:
 		return
 	note_instance.time = note_data["time"]
@@ -422,6 +436,9 @@ func setup_input():
 	input_zones[7] = right_hitbox
 	$CanvasLayer.add_child(right_hitbox)
 	
+	swipe_threshold = input_zones[1].area.size.x * 0.2
+	print("swipe threshold = %s pixels" % swipe_threshold)
+	
 func setup_judgement_textures():
 	judgement_textures.resize(4)
 	var pics: Array = [
@@ -451,7 +468,6 @@ func setup_timing_indicator():
 
 func _input(event):
 	if event is InputEventScreenTouch:
-		$Conductor.update_song_position()
 		var event_time = $Conductor.song_position - input_offset
 		if event.pressed: # tap
 			# intercept pause button if available
@@ -465,7 +481,7 @@ func _input(event):
 			var first_note_time = null
 			# multiple notes can be candidates if they have the same timestamp and have a hitbox that covers the touch
 			for note in onscreen_notes:
-				if note.can_judge(event_time):
+				if note.can_judge(event_time) and not note.is_in_group("swipes"):
 					if input_zones[note.lane].area.has_point(event.position):
 						if first_note_time == null:
 							first_note_time = note.time
@@ -493,17 +509,9 @@ func _input(event):
 					return
 				_:
 					# tiebreaker for notes with same time and overlapping zone
-					var min_dist_sq = null
-					var closest_note = null
-					for note in candidate_notes:
-						if closest_note == null:
-							min_dist_sq = event.position.distance_squared_to(input_zones[note.lane].center)
-							closest_note = note
-						else:
-							var curr_dist_sq = event.position.distance_squared_to(input_zones[note.lane].center)
-							if curr_dist_sq < min_dist_sq:
-								min_dist_sq = curr_dist_sq
-								closest_note = note
+					var closest_note = pop_nearest_note(event, candidate_notes)
+					if closest_note == null:
+						return
 					var result = closest_note.judge(event_time)
 					if result != null:
 						draw_judgement(result, closest_note.lane)
@@ -531,6 +539,40 @@ func _input(event):
 			return
 	elif event is InputEventScreenDrag:
 		touch_bindings[event.index] = event # updates position
+		var event_time = $Conductor.song_position - input_offset
+		var candidate_notes: Array # use this to improve hit registration for notes with overlapping hitboxes
+		var first_note_time = null
+		# multiple notes can be candidates if they have the same timestamp and have a hitbox that covers the touch
+		for note in onscreen_notes:
+			if note.is_in_group("swipes") and note.can_judge(event_time):
+				if input_zones[note.lane].area.has_point(event.position):
+					if first_note_time == null:
+						first_note_time = note.time
+					elif note.time > first_note_time:
+						break
+					candidate_notes.append(note)
+			elif note.time > event_time:
+				break
+		
+		match len(candidate_notes):
+			0:
+				return
+			1:
+				var note = candidate_notes[0]
+				if note.start_position == null:
+					note.start_position = event.position
+				elif event.position.distance_to(note.start_position) > swipe_threshold:
+					note.activated = true
+				return
+			_:
+				# tiebreaker for notes with same time and overlapping zone
+				var closest_note = pop_nearest_note(event, candidate_notes)
+				if closest_note != null:
+					if closest_note.start_position == null:
+						closest_note.start_position = event.position
+					elif event.position.distance_to(closest_note.start_position) > swipe_threshold:
+						closest_note.activated = true
+				return
 		return
 		
 func draw_judgement(data: Dictionary, lane: int):
