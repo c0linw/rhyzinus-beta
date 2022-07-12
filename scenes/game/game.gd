@@ -22,7 +22,6 @@ var onscreen_barlines: Array = []
 var onscreen_simlines: Array = []
 
 var starting_bpm: float
-var bpm_velocity: float = 1.0
 var sv_velocity: float = 1.0
 var last_timestamp: float = 0.0
 var chart_position: float = 0.0
@@ -60,7 +59,8 @@ var lane_zones: Array = []
 var touch_bindings: Array = [] # keeps track of touch input events
 var input_offset: float = 0.0
 
-var swipe_threshold: float = 0
+const SWIPE_THRESHOLD_LANES: float = 0.5 # how many lanes of distance are required to activate a swipe
+var swipe_threshold_px: float = 0 # set this value after lane dimensions are calculated
 
 var judgement_sources: Dictionary = {
 	"tap": 0,
@@ -142,7 +142,7 @@ func _process(_delta):
 		else:
 			break
 	
-	chart_position += (timestamp - last_timestamp) * bpm_velocity * sv_velocity
+	chart_position += (timestamp - last_timestamp) * sv_velocity
 	
 	for barline_data in barlines_to_spawn:
 		if chart_position >= barline_data["position"] - base_note_screen_time:
@@ -267,10 +267,10 @@ func _process(_delta):
 
 func apply_timing_point(sv: Dictionary):
 	# account for any bit of the old scrollmod that was missed
-	chart_position += (sv["time"]-last_timestamp)*bpm_velocity*sv_velocity 
+	chart_position += (sv["time"]-last_timestamp)*sv_velocity 
 	if sv["type"] == "bpm":
 		var new_bpm: float = (60.0 / sv["beat_length"])
-		bpm_velocity = new_bpm/starting_bpm
+		# TODO: keep or remove? might be useful later
 	elif sv["type"] == "velocity":
 		sv_velocity = sv["velocity"]
 	last_timestamp = sv["time"] # set up to add remaining part under new scrollmod
@@ -436,8 +436,7 @@ func setup_input():
 	input_zones[7] = right_hitbox
 	$CanvasLayer.add_child(right_hitbox)
 	
-	swipe_threshold = input_zones[1].area.size.x * 0.2
-	print("swipe threshold = %s pixels" % swipe_threshold)
+	swipe_threshold_px = lower_lane_width * SWIPE_THRESHOLD_LANES
 	
 func setup_judgement_textures():
 	judgement_textures.resize(4)
@@ -561,7 +560,7 @@ func _input(event):
 				var note = candidate_notes[0]
 				if note.start_position == null:
 					note.start_position = event.position
-				elif event.position.distance_to(note.start_position) > swipe_threshold:
+				elif event.position.distance_to(note.start_position) > swipe_threshold_px:
 					note.activated = true
 				return
 			_:
@@ -570,7 +569,7 @@ func _input(event):
 				if closest_note != null:
 					if closest_note.start_position == null:
 						closest_note.start_position = event.position
-					elif event.position.distance_to(closest_note.start_position) > swipe_threshold:
+					elif event.position.distance_to(closest_note.start_position) > swipe_threshold_px:
 						closest_note.activated = true
 				return
 		return

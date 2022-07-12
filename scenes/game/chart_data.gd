@@ -58,7 +58,6 @@ func process_objects_for_gameplay():
 	
 	# add position to each object, calculating scroll speed changes
 	var bpm: float = starting_bpm
-	var bpm_velocity: float = 1.0
 	var sv_velocity: float = 1.0
 	var curr_time: float = 0.0
 	var curr_position: float = 0.0
@@ -67,12 +66,11 @@ func process_objects_for_gameplay():
 	var processed_barlines: Array = []
 	for object in objects:
 		var time_delta: float = object["time"] - curr_time
-		var position_delta: float = time_delta * bpm_velocity * sv_velocity
+		var position_delta: float = time_delta * sv_velocity
 		curr_time += time_delta
 		curr_position += position_delta
 		if object["type"] == "bpm":
 			var new_bpm: float = (60.0 / object["beat_length"])
-			bpm_velocity = new_bpm/starting_bpm
 			bpm = new_bpm
 		elif object["type"] == "velocity":
 			sv_velocity = object["velocity"]
