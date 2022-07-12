@@ -18,6 +18,7 @@ class TimeSorter:
 		"velocity": 1,
 		"barline": 2,
 		"tap": 3,
+		"swipe": 3,
 		"hold_start": 3,
 		"hold_end": 3,
 		"hold": 3
@@ -50,7 +51,9 @@ func _ready():
 # replaces the notes and timing_points arrays with their updated versions
 func process_objects_for_gameplay():
 	timing_points = generate_barlines(timing_points)
-	starting_bpm = (60.0 / timing_points[0].beat_length)
+	var first_bpm_index := find_first_beat_index(timing_points)
+	if first_bpm_index >= 0:
+		starting_bpm = (60.0 / timing_points[first_bpm_index].beat_length)
 	# make a new (sorted) array containing all the objects
 	var objects: Array = timing_points.duplicate()
 	objects.append_array(notes)
@@ -191,11 +194,12 @@ func get_end_position(note: Dictionary, start_index: int, array_to_search: Array
 func generate_barlines(data: Array) -> Array:
 	data.sort_custom(TimeSorter, "sort_ascending_with_type_priority")
 	var return_data: Array = data.duplicate()
-	var timestamp: float = data[0]["time"]
-	var beat_length: float = data[0].beat_length
-	var meter: int = data[0]["meter"]
+	var index: int = find_first_beat_index(data)
+	var timestamp: float = data[index]["time"]
+	var beat_length: float = data[index].beat_length
+	var meter: int = data[index]["meter"]
 	var beat: int = 0
-	var index: int = 0
+	
 	# use either the last note or the last timing point's time
 	var end_time: float = max(data[len(data)-1]["time"], notes[len(notes)-1]["time"])
 	while timestamp <= end_time:
@@ -221,9 +225,10 @@ func generate_beats(timing_points: Array):
 	var data: Array = timing_points.duplicate()
 	data.sort_custom(TimeSorter, "sort_ascending_with_type_priority")
 	var beat_output: Array = []
-	var timestamp: float = data[0]["time"]
-	var beat_length: float = data[0].beat_length
-	var meter: int = data[0]["meter"]
+	var index: int = find_first_beat_index(timing_points)
+	var timestamp: float = data[index]["time"]
+	var beat_length: float = data[index].beat_length
+	var meter: int = data[index]["meter"]
 	var measure: int = 1
 	var beat = 1
 	beat_output.append({
@@ -231,7 +236,7 @@ func generate_beats(timing_points: Array):
 			"measure": measure,
 			"beat": beat
 		})
-	var index: int = 0
+	
 	# use either the last note or the last timing point's time
 	var end_time: float = max(data[len(data)-1]["time"], notes[len(notes)-1]["time"])
 	while timestamp <= end_time:
@@ -249,7 +254,6 @@ func generate_beats(timing_points: Array):
 		else:
 			timestamp = next_beat_time
 			beat += 1
-			index += 1
 		beat_output.append({
 			"time": timestamp,
 			"measure": measure,
@@ -289,3 +293,9 @@ func get_lane_location(lane: int) -> String:
 	if lane == 0 or lane == 7:
 		return "side"
 	return "unknown"
+
+func find_first_beat_index(timing_points: Array) -> int:
+	for i in len(timing_points):
+		if timing_points[i].type == "bpm":
+			return i
+	return -1

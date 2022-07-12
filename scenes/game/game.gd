@@ -575,6 +575,8 @@ func _input(event):
 		return
 		
 func draw_judgement(data: Dictionary, lane: int):
+	if input_zones[lane] == null:
+		return
 	var judgement = ObjJudgementTexture.instance()
 	var tex: ImageTexture
 	match data["judgement"]:
@@ -587,10 +589,10 @@ func draw_judgement(data: Dictionary, lane: int):
 		ENCRYPTED:
 			tex = judgement_textures[ENCRYPTED]
 	judgement.setup(tex, lower_lane_width)
-	if input_zones[lane] == null:
-		return
 	judgement.position = Vector2(input_zones[lane].center.x - lower_lane_width/2, input_zones[lane].center.y - lower_lane_width/2)
 	$CanvasLayer.add_child(judgement)
+	
+	# TODO: play animation for note hit
 		
 func delete_note(note: Note):
 	onscreen_notes.erase(note)

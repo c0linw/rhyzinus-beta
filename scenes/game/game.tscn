@@ -1,4 +1,4 @@
-[gd_scene load_steps=47 format=2]
+[gd_scene load_steps=49 format=2]
 
 [ext_resource path="res://scenes/game/results_data.gd" type="Script" id=1]
 [ext_resource path="res://scenes/game/timing_label.gd" type="Script" id=2]
@@ -42,6 +42,14 @@ size = 144
 font_data = ExtResource( 8 )
 
 [sub_resource type="DynamicFont" id=23]
+size = 64
+font_data = ExtResource( 8 )
+
+[sub_resource type="DynamicFont" id=24]
+size = 64
+font_data = ExtResource( 8 )
+
+[sub_resource type="DynamicFont" id=25]
 size = 64
 font_data = ExtResource( 8 )
 
@@ -267,46 +275,55 @@ __meta__ = {
 
 [node name="PausePopup" type="Popup" parent="CanvasLayer"]
 pause_mode = 2
+visible = true
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
 script = ExtResource( 14 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
-[node name="Label" type="Label" parent="CanvasLayer/PausePopup"]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -425.5
-margin_top = -246.0
-margin_right = 425.5
-margin_bottom = -78.0
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/PausePopup"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+alignment = 1
+
+[node name="Label" type="Label" parent="CanvasLayer/PausePopup/VBoxContainer"]
+margin_top = 233.0
+margin_right = 1280.0
+margin_bottom = 401.0
 custom_colors/font_color = Color( 1, 0, 0, 1 )
 custom_fonts/font = SubResource( 22 )
-text = "GET GNOMED"
+text = "Paused"
 align = 1
 valign = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
-[node name="ResumeButton" type="Button" parent="CanvasLayer/PausePopup"]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -115.0
-margin_top = -41.0
-margin_right = 115.0
-margin_bottom = 41.0
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/PausePopup/VBoxContainer"]
+margin_top = 405.0
+margin_right = 1280.0
+margin_bottom = 487.0
+custom_constants/separation = 8
+alignment = 1
+
+[node name="ResumeButton" type="Button" parent="CanvasLayer/PausePopup/VBoxContainer/HBoxContainer"]
+margin_left = 369.0
+margin_right = 599.0
+margin_bottom = 82.0
+size_flags_horizontal = 4
 custom_fonts/font = SubResource( 23 )
 text = "Resume"
-__meta__ = {
-"_edit_use_anchors_": false
-}
+
+[node name="RetryButton" type="Button" parent="CanvasLayer/PausePopup/VBoxContainer/HBoxContainer"]
+margin_left = 607.0
+margin_right = 770.0
+margin_bottom = 82.0
+custom_fonts/font = SubResource( 24 )
+text = "Retry"
+
+[node name="QuitButton" type="Button" parent="CanvasLayer/PausePopup/VBoxContainer/HBoxContainer"]
+margin_left = 778.0
+margin_right = 911.0
+margin_bottom = 82.0
+custom_fonts/font = SubResource( 25 )
+text = "Quit"
 
 [node name="Camera" type="Camera" parent="."]
 transform = Transform( 1, 0, 0, 0, 0.956305, 0.292372, 0, -0.292372, 0.956305, 0, 3.3, 5.5 )
@@ -451,9 +468,6 @@ mouse_filter = 2
 texture = ExtResource( 7 )
 expand = true
 stretch_mode = 7
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="Conductor" parent="." instance=ExtResource( 4 )]
 
@@ -488,6 +502,6 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 2, 0 )
 [connection signal="pause" from="." to="Conductor" method="_on_Game_pause"]
 [connection signal="pressed" from="CanvasLayer/PauseContainer/PauseButton" to="CanvasLayer/PauseContainer/PauseButton" method="_on_PauseButton_pressed"]
 [connection signal="unpause" from="CanvasLayer/PausePopup" to="Conductor" method="_on_PausePopup_unpause"]
-[connection signal="pressed" from="CanvasLayer/PausePopup/ResumeButton" to="CanvasLayer/PausePopup" method="_on_ResumeButton_pressed"]
+[connection signal="pressed" from="CanvasLayer/PausePopup/VBoxContainer/HBoxContainer/ResumeButton" to="CanvasLayer/PausePopup" method="_on_ResumeButton_pressed"]
 [connection signal="finished" from="Conductor" to="." method="_on_Conductor_finished"]
 [connection signal="finished" from="Conductor" to="CanvasLayer/ComboCounter/ComboCounterLabel" method="_on_Conductor_finished"]
