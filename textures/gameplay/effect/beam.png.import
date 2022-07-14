@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/result_screen.jpg-06abd789278698cbe26e5680efbd23f7.stex"
+path="res://.import/beam.png-44e3d2d6280068a21efc6787b49e1c38.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://images/result_screen.jpg"
-dest_files=[ "res://.import/result_screen.jpg-06abd789278698cbe26e5680efbd23f7.stex" ]
+source_file="res://textures/gameplay/effect/beam.png"
+dest_files=[ "res://.import/beam.png-44e3d2d6280068a21efc6787b49e1c38.stex" ]
 
 [params]
 

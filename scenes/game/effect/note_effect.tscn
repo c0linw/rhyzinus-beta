@@ -1,0 +1,21 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="Animation" id=1]
+resource_name = "Burst"
+tracks/0/type = "value"
+tracks/0/path = NodePath("Note_Effect_Lower/Sprite:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray(  ),
+"transitions": PoolRealArray(  ),
+"update": 0,
+"values": [  ]
+}
+
+[node name="Note_Effect_Lower" type="AnimationPlayer"]
+anims/Burst = SubResource( 1 )
+
+[node name="Sprite" type="Sprite" parent="."]

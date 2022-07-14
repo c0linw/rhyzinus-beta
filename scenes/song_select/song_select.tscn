@@ -2,10 +2,11 @@
 
 [ext_resource path="res://scenes/song_select/jacket_image.gd" type="Script" id=1]
 [ext_resource path="res://fonts/new_dynamicfont.tres" type="DynamicFont" id=2]
-[ext_resource path="res://images/gameplay-bg.jpg" type="Texture" id=3]
+[ext_resource path="res://textures/gameplay-bg.jpg" type="Texture" id=3]
 [ext_resource path="res://scenes/song_select/difficulty_select.tscn" type="PackedScene" id=4]
 [ext_resource path="res://scenes/song_select/song_select.gd" type="Script" id=5]
 [ext_resource path="res://scenes/song_select/song_select_scroll.gd" type="Script" id=7]
+
 
 [sub_resource type="StyleBoxEmpty" id=1]
 

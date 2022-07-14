@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/song_select.jpg-b2c562ee82e3008836d91894742bbf4e.stex"
+path="res://.import/gameplay-bg.jpg-b13b1b926af0634806882c4141f9c76e.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://images/song_select.jpg"
-dest_files=[ "res://.import/song_select.jpg-b2c562ee82e3008836d91894742bbf4e.stex" ]
+source_file="res://textures/gameplay-bg.jpg"
+dest_files=[ "res://.import/gameplay-bg.jpg-b13b1b926af0634806882c4141f9c76e.stex" ]
 
 [params]
 
