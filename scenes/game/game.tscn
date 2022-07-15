@@ -6,7 +6,7 @@
 [ext_resource path="res://scenes/game/conductor.tscn" type="PackedScene" id=4]
 [ext_resource path="res://scenes/game/entities/lanes_lower.tscn" type="PackedScene" id=5]
 [ext_resource path="res://scenes/game/framerate_counter.gd" type="Script" id=6]
-[ext_resource path="res://images/gameplay-bg.jpg" type="Texture" id=7]
+[ext_resource path="res://textures/gameplay-bg.jpg" type="Texture" id=7]
 [ext_resource path="res://fonts/Trebuchet_MS.ttf" type="DynamicFontData" id=8]
 [ext_resource path="res://textures/gameplay/lane_effect.png" type="Texture" id=9]
 [ext_resource path="res://scenes/game/combo_counter.gd" type="Script" id=10]
@@ -23,6 +23,7 @@
 [ext_resource path="res://scenes/game/notes/note_hold.tscn" type="PackedScene" id=21]
 [ext_resource path="res://scenes/game/notes/note_hold_upper.tscn" type="PackedScene" id=22]
 [ext_resource path="res://scenes/game/shader_cache.gd" type="Script" id=23]
+
 
 [sub_resource type="DynamicFont" id=20]
 size = 64

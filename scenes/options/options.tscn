@@ -1,9 +1,10 @@
 [gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://scenes/ui/horizontal_spin_box.tscn" type="PackedScene" id=1]
-[ext_resource path="res://images/gameplay-bg.jpg" type="Texture" id=2]
+[ext_resource path="res://textures/gameplay-bg.jpg" type="Texture" id=2]
 [ext_resource path="res://scenes/options/options.gd" type="Script" id=3]
 [ext_resource path="res://fonts/new_dynamicfont.tres" type="DynamicFont" id=4]
+
 
 [node name="Options" type="Control"]
 anchor_right = 1.0

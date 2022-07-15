@@ -6,9 +6,6 @@
 [node name="PlayerInfo" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 anchor_left = 0.5
@@ -59,20 +56,20 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.37
 custom_fonts/font = ExtResource( 2 )
-text = "9.37"
+text = "0.00"
 align = 1
 valign = 1
 
 [node name="PlayerName" type="Label" parent="MarginContainer"]
-margin_top = 38.0
+margin_top = 31.0
 margin_right = 473.0
-margin_bottom = 62.0
+margin_bottom = 70.0
 rect_pivot_offset = Vector2( 0, 6 )
 size_flags_horizontal = 3
 size_flags_vertical = 6
 size_flags_stretch_ratio = 0.4
 custom_fonts/font = ExtResource( 2 )
-text = "thewhitewhale"
+text = "GUEST"
 align = 1
 valign = 1
 __meta__ = {
