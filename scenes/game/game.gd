@@ -52,6 +52,7 @@ var ObjBarlineUpper = preload("res://scenes/game/entities/barline_upper.tscn")
 var ObjNoteHitbox = preload("res://scenes/game/entities/note_hitbox.tscn")
 var ObjJudgementTexture = preload("res://scenes/game/entities/judgement_texture.tscn")
 var ObjSimline = preload("res://scenes/game/entities/simline.tscn")
+var ObjNoteEffect = preload("res://scenes/game/effect/note_effect.tscn")
 
 # Input-related stuff
 var input_zones: Array = []
@@ -579,20 +580,28 @@ func draw_judgement(data: Dictionary, lane: int):
 		return
 	var judgement = ObjJudgementTexture.instance()
 	var tex: ImageTexture
+	
+	var play_effect := false
 	match data["judgement"]:
 		FLAWLESS: 
 			tex = judgement_textures[FLAWLESS]
+			play_effect = true
 		DECRYPTED:
 			tex = judgement_textures[DECRYPTED]
+			play_effect = true
 		CRACKED:
 			tex = judgement_textures[CRACKED]
+			play_effect = true
 		ENCRYPTED:
 			tex = judgement_textures[ENCRYPTED]
 	judgement.setup(tex, lower_lane_width)
 	judgement.position = Vector2(input_zones[lane].center.x - lower_lane_width/2, input_zones[lane].center.y - lower_lane_width/2)
 	$CanvasLayer.add_child(judgement)
 	
-	# TODO: play animation for note hit
+	if play_effect:
+		var fx = ObjNoteEffect.instance()
+		fx.position = input_zones[lane].center
+		$CanvasLayer.add_child(fx)
 		
 func delete_note(note: Note):
 	onscreen_notes.erase(note)
