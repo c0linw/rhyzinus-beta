@@ -635,7 +635,9 @@ func _on_Conductor_finished():
 		print("%s: %d" % [key, judgement_sources[key]])
 	var data: Dictionary = {
 		"result_data": $result_data.results, 
-		"best_combo": $CanvasLayer/ComboCounter/ComboCounterLabel.best_combo}
+		"best_combo": $CanvasLayer/ComboCounter/ComboCounterLabel.best_combo,
+		"score": $result_data.score
+		}
 	SceneSwitcher.change_scene("res://scenes/results/results.tscn", data)
 	
 func pause_game():

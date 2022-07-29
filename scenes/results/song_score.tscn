@@ -1,37 +1,26 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://fonts/new_dynamicfont.tres" type="DynamicFont" id=1]
 [ext_resource path="res://textures/result/score_rank_r_rainbow.png" type="Texture" id=2]
+[ext_resource path="res://scenes/results/song_score.gd" type="Script" id=3]
 
-[node name="SongScore" type="Control"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="MarginContainer" type="MarginContainer" parent="."]
-anchor_top = 0.5
-anchor_bottom = 0.5
-margin_top = -234.0
+[node name="SongScore" type="MarginContainer"]
 margin_right = 680.0
-margin_bottom = -17.0
+margin_bottom = 217.0
 rect_scale = Vector2( 1, 0.997732 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
-__meta__ = {
-"_edit_use_anchors_": false
-}
+script = ExtResource( 3 )
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
 margin_right = 680.0
 margin_bottom = 217.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer"]
-margin_right = 213.0
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer"]
+margin_right = 338.0
 margin_bottom = 217.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -39,75 +28,67 @@ custom_constants/margin_top = 8
 custom_constants/margin_left = 8
 custom_constants/margin_bottom = 8
 
-[node name="TextureRect" type="TextureRect" parent="MarginContainer/HBoxContainer/MarginContainer"]
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer/MarginContainer"]
 margin_left = 8.0
 margin_top = 8.0
-margin_right = 213.0
+margin_right = 338.0
 margin_bottom = 209.0
 size_flags_vertical = 3
 texture = ExtResource( 2 )
 expand = true
 stretch_mode = 6
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
-margin_left = 217.0
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
+margin_left = 342.0
 margin_right = 680.0
 margin_bottom = 217.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="AnalysisComplete" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer"]
-margin_right = 463.0
+[node name="AnalysisComplete" type="Label" parent="HBoxContainer/VBoxContainer"]
+margin_right = 338.0
 margin_bottom = 39.0
 custom_fonts/font = ExtResource( 1 )
 text = "Analysis Complete"
 
-[node name="ColorRect" type="ColorRect" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+[node name="ColorRect" type="ColorRect" parent="HBoxContainer/VBoxContainer"]
 margin_top = 43.0
-margin_right = 463.0
+margin_right = 338.0
 margin_bottom = 47.0
 rect_min_size = Vector2( 0, 4 )
 
-[node name="SongName" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+[node name="SongName" type="Label" parent="HBoxContainer/VBoxContainer"]
 margin_top = 51.0
-margin_right = 463.0
+margin_right = 338.0
 margin_bottom = 106.0
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 1 )
 text = "Song Name"
 
-[node name="SongDifficulty" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+[node name="SongDifficulty" type="Label" parent="HBoxContainer/VBoxContainer"]
 margin_top = 110.0
-margin_right = 463.0
+margin_right = 338.0
 margin_bottom = 166.0
 size_flags_vertical = 7
 custom_fonts/font = ExtResource( 1 )
 text = "Delta 11"
 align = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer"]
 margin_top = 170.0
-margin_right = 463.0
+margin_right = 338.0
 margin_bottom = 209.0
 size_flags_vertical = 4
 custom_constants/separation = 32
 
-[node name="SongScore" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
+[node name="SongScore" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer"]
 margin_right = 242.0
 margin_bottom = 39.0
 custom_fonts/font = ExtResource( 1 )
 text = "Score: 1,000,000"
 
-[node name="SongAcc" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
-margin_left = 274.0
-margin_right = 463.0
-margin_bottom = 39.0
-custom_fonts/font = ExtResource( 1 )
-text = "Acc: 100.00%"
-align = 2
-
-[node name="ColorRect2" type="ColorRect" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+[node name="ColorRect2" type="ColorRect" parent="HBoxContainer/VBoxContainer"]
 margin_top = 213.0
-margin_right = 463.0
+margin_right = 338.0
 margin_bottom = 217.0
 rect_min_size = Vector2( 0, 4 )
