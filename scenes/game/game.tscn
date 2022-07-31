@@ -262,6 +262,11 @@ custom_fonts/font = ExtResource( 26 )
 align = 2
 script = ExtResource( 25 )
 
+[node name="TestInfoLabel" type="Label" parent="CanvasLayer/InfoContainer"]
+margin_top = 13.0
+margin_right = 119.0
+margin_bottom = 27.0
+
 [node name="PausePopup" type="Popup" parent="CanvasLayer"]
 pause_mode = 2
 visible = true

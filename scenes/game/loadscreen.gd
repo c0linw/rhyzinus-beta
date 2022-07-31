@@ -22,7 +22,9 @@ func _ready():
 	var data = {
 		"chart_data": $chart_data.export_data(), 
 		"audio_path": audio_path,
-		"options": options
+		"options": options,
+		"song_title": SceneSwitcher.get_param("song_title"),
+		"difficulty": "%s %s" % [SceneSwitcher.get_param("diff_name"), SceneSwitcher.get_param("diff_level")]
 		}
 	yield(get_tree(), "idle_frame")
 	if SceneSwitcher.change_scene("res://scenes/game/game.tscn", data) != OK:

@@ -108,6 +108,9 @@ func _ready():
 	if options == null :
 		print("failed to load options!")
 		return
+		
+	find_node("TestInfoLabel").text = "%s\n%s" % [SceneSwitcher.get_param("song_title"), SceneSwitcher.get_param("difficulty")]
+		
 	starting_bpm = chart_data["starting_bpm"]
 	notes_to_spawn = chart_data["notes"]
 	scrollmod_list = chart_data["timing_points"]
@@ -636,7 +639,9 @@ func _on_Conductor_finished():
 	var data: Dictionary = {
 		"result_data": $result_data.results, 
 		"best_combo": $CanvasLayer/ComboCounter/ComboCounterLabel.best_combo,
-		"score": $result_data.score
+		"score": $result_data.score,
+		"song_title": SceneSwitcher.get_param("song_title"),
+		"difficulty": SceneSwitcher.get_param("difficulty")
 		}
 	SceneSwitcher.change_scene("res://scenes/results/results.tscn", data)
 	
