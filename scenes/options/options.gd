@@ -22,4 +22,7 @@ func _on_HorizontalSpinBox_value_changed(value_name: String, new_value):
 
 
 func _on_BackButton_pressed():
-	Settings.save_settings_file()
+	var prev_scene = SceneSwitcher.get_param("prev_scene")
+	if prev_scene:
+		Settings.save_settings_file()
+		SceneSwitcher.change_scene(prev_scene)

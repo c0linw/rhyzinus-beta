@@ -85,3 +85,6 @@ margin_right = 223.0
 margin_bottom = 51.0
 theme = ExtResource( 6 )
 text = "Back"
+
+[connection signal="pressed" from="MarginContainer3/HBoxContainer/RetryButton" to="." method="_on_RetryButton_pressed"]
+[connection signal="pressed" from="MarginContainer3/HBoxContainer/SongSelectButton" to="." method="_on_SongSelectButton_pressed"]

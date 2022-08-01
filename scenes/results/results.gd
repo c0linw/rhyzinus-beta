@@ -28,3 +28,11 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass
+
+
+func _on_RetryButton_pressed():
+	pass # Replace with function body.
+
+
+func _on_SongSelectButton_pressed():
+	SceneSwitcher.change_scene("res://scenes/song_select/song_select.tscn")

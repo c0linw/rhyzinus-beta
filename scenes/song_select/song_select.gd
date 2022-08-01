@@ -92,3 +92,10 @@ func read_index(pack_name: String):
 		print("Error: index.json content is not an array")
 		return null
 	return parse_result.result
+
+
+func _on_OptionsButton_pressed():
+	var data = {
+		"prev_scene": "res://scenes/song_select/song_select.tscn"
+	}
+	SceneSwitcher.change_scene("res://scenes/options/options.tscn", data)
