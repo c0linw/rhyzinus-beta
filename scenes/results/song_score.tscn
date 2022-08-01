@@ -33,6 +33,7 @@ margin_left = 8.0
 margin_top = 8.0
 margin_right = 338.0
 margin_bottom = 209.0
+rect_min_size = Vector2( 200, 200 )
 size_flags_vertical = 3
 texture = ExtResource( 2 )
 expand = true
@@ -63,7 +64,7 @@ margin_right = 338.0
 margin_bottom = 106.0
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 1 )
-text = "Song Name"
+text = "Untitled Song"
 
 [node name="SongDifficulty" type="Label" parent="HBoxContainer/VBoxContainer"]
 margin_top = 110.0
@@ -71,7 +72,7 @@ margin_right = 338.0
 margin_bottom = 166.0
 size_flags_vertical = 7
 custom_fonts/font = ExtResource( 1 )
-text = "Delta 11"
+text = "Alpha 0"
 align = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer"]
@@ -82,10 +83,10 @@ size_flags_vertical = 4
 custom_constants/separation = 32
 
 [node name="SongScore" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer"]
-margin_right = 242.0
+margin_right = 116.0
 margin_bottom = 39.0
 custom_fonts/font = ExtResource( 1 )
-text = "Score: 1,000,000"
+text = "Score: 0"
 
 [node name="ColorRect2" type="ColorRect" parent="HBoxContainer/VBoxContainer"]
 margin_top = 213.0
