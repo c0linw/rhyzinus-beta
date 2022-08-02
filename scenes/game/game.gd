@@ -446,7 +446,7 @@ func setup_input():
 func setup_judgement_textures():
 	judgement_textures.resize(4)
 	var pics: Array = [
-		load("res://textures/gameplay/encrypted.png"), 
+		load("res://textures/gameplay/corrupted.png"), 
 		load("res://textures/gameplay/cracked.png"),
 		load("res://textures/gameplay/decrypted.png"),
 		load("res://textures/gameplay/flawless.png")
