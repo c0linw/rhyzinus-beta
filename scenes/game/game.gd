@@ -1,7 +1,7 @@
 extends Spatial
 
 # enums and constants
-enum {ENCRYPTED, CRACKED, DECRYPTED, FLAWLESS}
+enum {CORRUPTED, CRACKED, DECRYPTED, FLAWLESS}
 
 # audio stuff
 var audio
@@ -108,12 +108,16 @@ func _ready():
 	if options == null :
 		print("failed to load options!")
 		return
+		
+	find_node("TestInfoLabel").text = "%s\n%s" % [SceneSwitcher.get_param("song_title"), SceneSwitcher.get_param("difficulty")]
+		
 	starting_bpm = chart_data["starting_bpm"]
 	notes_to_spawn = chart_data["notes"]
 	scrollmod_list = chart_data["timing_points"]
 	barlines_to_spawn = chart_data["barlines"]
 	beat_data = chart_data["beats"]
 	notecount = chart_data["notecount"]
+	$result_data.notecount = notecount
 	simlines_to_spawn = chart_data["simlines"]
 	
 	######## SETUP INPUT
@@ -198,7 +202,7 @@ func _process(_delta):
 				judgement_sources["end_hit"] += 1
 				delete_note(note)
 			if !note.held and timestamp > note.end_time + note.late_cracked + input_offset:
-				var result = {"judgement": ENCRYPTED, "offset": 0}
+				var result = {"judgement": CORRUPTED, "offset": 0}
 				draw_judgement(result, note.lane)
 				emit_signal("note_judged", result)
 				judgement_sources["end_miss"] += 1
@@ -212,13 +216,13 @@ func _process(_delta):
 			if note.is_in_group("holds"):
 				if !note.head_judged:
 					if !note.activated:
-						var result = {"judgement": ENCRYPTED, "offset": 0}
+						var result = {"judgement": CORRUPTED, "offset": 0}
 						draw_judgement(result, note.lane)
 						emit_signal("note_judged", result)
 						judgement_sources["start_pass"] += 1
 					note.head_judged = true
 			else:
-				var result = {"judgement": ENCRYPTED, "offset": 0}
+				var result = {"judgement": CORRUPTED, "offset": 0}
 				draw_judgement(result, note.lane)
 				emit_signal("note_judged", result)
 				judgement_sources["note_pass"] += 1
@@ -232,7 +236,7 @@ func _process(_delta):
 				if hold.activated and hold.held:
 					result = {"judgement": FLAWLESS, "offset": 0}
 				else:
-					result = {"judgement": ENCRYPTED, "offset": 0}
+					result = {"judgement": CORRUPTED, "offset": 0}
 				draw_judgement(result, hold.lane)
 				emit_signal("note_judged", result)
 				judgement_sources["hold_tick"] += 1
@@ -442,7 +446,7 @@ func setup_input():
 func setup_judgement_textures():
 	judgement_textures.resize(4)
 	var pics: Array = [
-		load("res://textures/gameplay/encrypted.png"),
+		load("res://textures/gameplay/corrupted.png"), 
 		load("res://textures/gameplay/cracked.png"),
 		load("res://textures/gameplay/decrypted.png"),
 		load("res://textures/gameplay/flawless.png")
@@ -592,8 +596,8 @@ func draw_judgement(data: Dictionary, lane: int):
 		CRACKED:
 			tex = judgement_textures[CRACKED]
 			play_effect = true
-		ENCRYPTED:
-			tex = judgement_textures[ENCRYPTED]
+		CORRUPTED:
+			tex = judgement_textures[CORRUPTED]
 	judgement.setup(tex, lower_lane_width)
 	judgement.position = Vector2(input_zones[lane].center.x - lower_lane_width/2, input_zones[lane].center.y - lower_lane_width/2)
 	$CanvasLayer.add_child(judgement)
@@ -634,7 +638,11 @@ func _on_Conductor_finished():
 		print("%s: %d" % [key, judgement_sources[key]])
 	var data: Dictionary = {
 		"result_data": $result_data.results, 
-		"best_combo": $CanvasLayer/ComboCounter/ComboCounterLabel.best_combo}
+		"best_combo": $CanvasLayer/ComboCounter/ComboCounterLabel.best_combo,
+		"score": $result_data.score,
+		"song_title": SceneSwitcher.get_param("song_title"),
+		"difficulty": SceneSwitcher.get_param("difficulty")
+		}
 	SceneSwitcher.change_scene("res://scenes/results/results.tscn", data)
 	
 func pause_game():

@@ -1,4 +1,4 @@
-extends TextureButton
+extends Label
 
 
 # Declare member variables here. Examples:
@@ -16,5 +16,5 @@ func _ready():
 #	pass
 
 
-func _on_PauseButton_pressed():
-	print("pause button pressed!")
+func _on_result_data_score_updated(score):
+	text = str(score)

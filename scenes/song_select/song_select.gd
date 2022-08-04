@@ -8,6 +8,13 @@ var song_folder: String = "res://songs/"
 var diff_buttons: Array
 var pack_name: String = "beta1"
 
+var diff_names: Dictionary = {
+	ALPHA: "Alpha",
+	BETA: "Beta",
+	GAMMA: "Gamma",
+	DELTA: "Delta"
+}
+
 var ObjSongListElement = preload("res://scenes/song_select/song_list_element.tscn")
 
 signal difficulty_set(difficulty)
@@ -53,7 +60,10 @@ func _on_SongListElement_play_song(song_data: Dictionary):
 	print("%s%s/%s/%s.rznx" % [song_folder, pack_name, song_data.path, selected_difficulty])
 	var data: Dictionary = {
 		"chart_path": "%s%s/%s/%s.rznx" % [song_folder, pack_name, song_data.path, selected_difficulty],
-		"audio_path": "%s%s/%s/audio.mp3" % [song_folder, pack_name, song_data.path]
+		"audio_path": "%s%s/%s/audio.mp3" % [song_folder, pack_name, song_data.path],
+		"song_title": song_data.title,
+		"diff_name": diff_names[selected_difficulty],
+		"diff_level": song_data.levels[selected_difficulty]
 	}
 	SceneSwitcher.change_scene("res://scenes/game/loadscreen.tscn", data)
 
@@ -82,3 +92,10 @@ func read_index(pack_name: String):
 		print("Error: index.json content is not an array")
 		return null
 	return parse_result.result
+
+
+func _on_OptionsButton_pressed():
+	var data = {
+		"prev_scene": "res://scenes/song_select/song_select.tscn"
+	}
+	SceneSwitcher.change_scene("res://scenes/options/options.tscn", data)

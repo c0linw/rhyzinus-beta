@@ -1,4 +1,4 @@
-extends Control
+extends MarginContainer
 
 enum {ENCRYPTED, CRACKED, DECRYPTED, FLAWLESS}
 
@@ -17,7 +17,7 @@ func _ready():
 #	pass
 
 func set_results(result_data: Dictionary):
-	$MarginContainer/HBoxContainer/NoteStats/HBoxContainer/NoteCounts/FlawlessCount.text = str(len(result_data[FLAWLESS])) + " "
-	$MarginContainer/HBoxContainer/NoteStats/HBoxContainer/NoteCounts/DecryptedCount.text = str(len(result_data[DECRYPTED])) + " "
-	$MarginContainer/HBoxContainer/NoteStats/HBoxContainer/NoteCounts/CrackedCount.text = str(len(result_data[CRACKED])) + " "
-	$MarginContainer/HBoxContainer/NoteStats/HBoxContainer/NoteCounts/EncryptedCount.text = str(len(result_data[ENCRYPTED])) + " "
+	$HBoxContainer/NoteStats/HBoxContainer/NoteCounts/FlawlessCount.text = str(len(result_data[FLAWLESS])) + " "
+	$HBoxContainer/NoteStats/HBoxContainer/NoteCounts/DecryptedCount.text = str(len(result_data[DECRYPTED])) + " "
+	$HBoxContainer/NoteStats/HBoxContainer/NoteCounts/CrackedCount.text = str(len(result_data[CRACKED])) + " "
+	$HBoxContainer/NoteStats/HBoxContainer/NoteCounts/EncryptedCount.text = str(len(result_data[ENCRYPTED])) + " "

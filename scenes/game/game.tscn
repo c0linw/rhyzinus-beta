@@ -1,4 +1,4 @@
-[gd_scene load_steps=47 format=2]
+[gd_scene load_steps=49 format=2]
 
 [ext_resource path="res://scenes/game/results_data.gd" type="Script" id=1]
 [ext_resource path="res://scenes/game/timing_label.gd" type="Script" id=2]
@@ -24,6 +24,8 @@
 [ext_resource path="res://scenes/game/notes/note_hold_upper.tscn" type="PackedScene" id=22]
 [ext_resource path="res://scenes/game/shader_cache.gd" type="Script" id=23]
 [ext_resource path="res://themes/theme1.tres" type="Theme" id=24]
+[ext_resource path="res://scenes/game/score_label.gd" type="Script" id=25]
+[ext_resource path="res://fonts/new_dynamicfont.tres" type="DynamicFont" id=26]
 
 [sub_resource type="DynamicFont" id=20]
 size = 64
@@ -208,9 +210,6 @@ __meta__ = {
 margin_right = 40.0
 margin_bottom = 40.0
 mouse_filter = 2
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="TextureRect" type="TextureRect" parent="CanvasLayer/GaugeContainer"]
 margin_right = 40.0
@@ -247,9 +246,26 @@ text = "LATE"
 align = 1
 valign = 1
 script = ExtResource( 2 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+
+[node name="InfoContainer" type="MarginContainer" parent="CanvasLayer"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -119.0
+margin_bottom = 40.0
+size_flags_horizontal = 3
+
+[node name="ScoreLabel" type="Label" parent="CanvasLayer/InfoContainer"]
+margin_right = 119.0
+margin_bottom = 39.0
+grow_horizontal = 0
+custom_fonts/font = ExtResource( 26 )
+align = 2
+script = ExtResource( 25 )
+
+[node name="TestInfoLabel" type="Label" parent="CanvasLayer/InfoContainer"]
+margin_top = 13.0
+margin_right = 119.0
+margin_bottom = 27.0
 
 [node name="PausePopup" type="Popup" parent="CanvasLayer"]
 pause_mode = 2
@@ -488,3 +504,4 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 2, 0 )
 [connection signal="pressed" from="CanvasLayer/PausePopup/VBoxContainer/HBoxContainer/ResumeButton" to="CanvasLayer/PausePopup" method="_on_ResumeButton_pressed"]
 [connection signal="finished" from="Conductor" to="." method="_on_Conductor_finished"]
 [connection signal="finished" from="Conductor" to="CanvasLayer/ComboCounter/ComboCounterLabel" method="_on_Conductor_finished"]
+[connection signal="score_updated" from="result_data" to="CanvasLayer/InfoContainer/ScoreLabel" method="_on_result_data_score_updated"]
