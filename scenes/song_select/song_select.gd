@@ -63,7 +63,8 @@ func _on_SongListElement_play_song(song_data: Dictionary):
 		"audio_path": "%s%s/%s/audio.mp3" % [song_folder, pack_name, song_data.path],
 		"song_title": song_data.title,
 		"diff_name": diff_names[selected_difficulty],
-		"diff_level": song_data.levels[selected_difficulty]
+		"diff_level": song_data.levels[selected_difficulty],
+		"jacket_path": "%s%s/%s/jacket.png" % [song_folder, pack_name, song_data.path]
 	}
 	SceneSwitcher.change_scene("res://scenes/game/loadscreen.tscn", data)
 

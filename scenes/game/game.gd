@@ -641,7 +641,8 @@ func _on_Conductor_finished():
 		"best_combo": $CanvasLayer/ComboCounter/ComboCounterLabel.best_combo,
 		"score": $result_data.score,
 		"song_title": SceneSwitcher.get_param("song_title"),
-		"difficulty": SceneSwitcher.get_param("difficulty")
+		"difficulty": SceneSwitcher.get_param("difficulty"),
+		"jacket_path": SceneSwitcher.get_param("jacket_path")
 		}
 	SceneSwitcher.change_scene("res://scenes/results/results.tscn", data)
 	

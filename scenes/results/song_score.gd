@@ -18,8 +18,12 @@ func _ready():
 func set_song_name(name: String):
 	find_node("SongName").text = name
 	
-func set_song_difficulty(diff: int):
-	find_node("SongDifficulty").text = str(diff)
+func set_song_difficulty(diffname: String):
+	find_node("SongDifficulty").text = diffname
 	
 func set_score(score: int):
-	find_node("SongScore").text = str(score)
+	find_node("SongScore").text = "Score: " + str(score)
+
+func set_song_jacket(jacket_path: String):
+	print("set_song_jacket called! jacket_path = ", jacket_path)
+	find_node("SongJacket").texture = load(jacket_path)

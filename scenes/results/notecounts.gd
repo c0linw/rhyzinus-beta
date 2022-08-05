@@ -1,6 +1,6 @@
 extends MarginContainer
 
-enum {ENCRYPTED, CRACKED, DECRYPTED, FLAWLESS}
+enum {CORRUPTED, CRACKED, DECRYPTED, FLAWLESS}
 
 # Declare member variables here. Examples:
 # var a = 2
@@ -17,7 +17,7 @@ func _ready():
 #	pass
 
 func set_results(result_data: Dictionary):
-	$HBoxContainer/NoteStats/HBoxContainer/NoteCounts/FlawlessCount.text = str(len(result_data[FLAWLESS])) + " "
-	$HBoxContainer/NoteStats/HBoxContainer/NoteCounts/DecryptedCount.text = str(len(result_data[DECRYPTED])) + " "
-	$HBoxContainer/NoteStats/HBoxContainer/NoteCounts/CrackedCount.text = str(len(result_data[CRACKED])) + " "
-	$HBoxContainer/NoteStats/HBoxContainer/NoteCounts/EncryptedCount.text = str(len(result_data[ENCRYPTED])) + " "
+	find_node("FlawlessCount").text = str(len(result_data[FLAWLESS])) + " "
+	find_node("DecryptedCount").text = str(len(result_data[DECRYPTED])) + " "
+	find_node("CrackedCount").text = str(len(result_data[CRACKED])) + " "
+	find_node("CorruptedCount").text = str(len(result_data[CORRUPTED])) + " "

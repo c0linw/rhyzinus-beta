@@ -15,7 +15,7 @@ func _ready():
 		
 	score = SceneSwitcher.get_param("score")
 	if score:
-		$MarginContainer2/SongScore.set_score()
+		$MarginContainer2/SongScore.set_score(score)
 		
 	var song_title = SceneSwitcher.get_param("song_title")
 	if song_title:
@@ -24,6 +24,10 @@ func _ready():
 	var difficulty = SceneSwitcher.get_param("difficulty")
 	if difficulty:
 		$MarginContainer2/SongScore.set_song_difficulty(difficulty)
+		
+	var jacket_path = SceneSwitcher.get_param("jacket_path")
+	if jacket_path:
+		$MarginContainer2/SongScore.set_song_jacket(jacket_path)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):

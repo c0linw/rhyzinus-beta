@@ -1,10 +1,14 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://fonts/new_dynamicfont.tres" type="DynamicFont" id=1]
 [ext_resource path="res://textures/result/score_rank_r_plus_rainbow.png" type="Texture" id=2]
 [ext_resource path="res://textures/ui/notecounts_border.png" type="Texture" id=3]
 [ext_resource path="res://scenes/results/notecount_flawless.tres" type="DynamicFont" id=4]
 [ext_resource path="res://scenes/results/notecounts.gd" type="Script" id=5]
+[ext_resource path="res://textures/result/decrypted_trimmed.png" type="Texture" id=6]
+[ext_resource path="res://textures/result/corrupted_trimmed.png" type="Texture" id=7]
+[ext_resource path="res://textures/result/flawless_trimmed.png" type="Texture" id=8]
+[ext_resource path="res://textures/result/cracked_trimmed.png" type="Texture" id=9]
 
 [node name="NoteCounts" type="MarginContainer"]
 anchor_top = 1.0
@@ -16,6 +20,9 @@ size_flags_vertical = 3
 custom_constants/margin_left = 0
 custom_constants/margin_bottom = 0
 script = ExtResource( 5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Border" type="TextureRect" parent="."]
 margin_right = 638.0
@@ -50,22 +57,20 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/NoteStats"]
+[node name="NoteCounts" type="VBoxContainer" parent="HBoxContainer/NoteStats"]
 margin_left = 16.0
-margin_top = 16.0
+margin_top = 37.0
 margin_right = 301.0
-margin_bottom = 271.0
-size_flags_vertical = 3
-
-[node name="NoteCounts" type="VBoxContainer" parent="HBoxContainer/NoteStats/HBoxContainer"]
-margin_top = 43.0
-margin_right = 27.0
-margin_bottom = 211.0
+margin_bottom = 249.0
 size_flags_vertical = 4
 
-[node name="FlawlessCount" type="Label" parent="HBoxContainer/NoteStats/HBoxContainer/NoteCounts"]
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/NoteStats/NoteCounts"]
+margin_right = 285.0
+margin_bottom = 72.0
+
+[node name="FlawlessCount" type="Label" parent="HBoxContainer/NoteStats/NoteCounts/HBoxContainer"]
 margin_right = 27.0
-margin_bottom = 39.0
+margin_bottom = 72.0
 size_flags_vertical = 3
 custom_colors/font_color = Color( 0.678431, 0.960784, 1, 1 )
 custom_fonts/font = ExtResource( 4 )
@@ -75,98 +80,86 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="DecryptedCount" type="Label" parent="HBoxContainer/NoteStats/HBoxContainer/NoteCounts"]
-margin_top = 43.0
-margin_right = 27.0
-margin_bottom = 82.0
-size_flags_vertical = 3
-custom_fonts/font = ExtResource( 1 )
-text = "0 "
-valign = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="CrackedCount" type="Label" parent="HBoxContainer/NoteStats/HBoxContainer/NoteCounts"]
-margin_top = 86.0
-margin_right = 27.0
-margin_bottom = 125.0
-size_flags_vertical = 3
-custom_fonts/font = ExtResource( 1 )
-text = "0 "
-valign = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="EncryptedCount" type="Label" parent="HBoxContainer/NoteStats/HBoxContainer/NoteCounts"]
-margin_top = 129.0
-margin_right = 27.0
-margin_bottom = 168.0
-size_flags_vertical = 3
-custom_fonts/font = ExtResource( 1 )
-text = "0 "
-valign = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="NoteNames" type="VBoxContainer" parent="HBoxContainer/NoteStats/HBoxContainer"]
+[node name="Flawless" type="TextureRect" parent="HBoxContainer/NoteStats/NoteCounts/HBoxContainer"]
 margin_left = 31.0
-margin_top = 43.0
-margin_right = 178.0
-margin_bottom = 211.0
-size_flags_vertical = 4
-custom_constants/separation = 4
-alignment = 1
+margin_right = 285.0
+margin_bottom = 72.0
+size_flags_horizontal = 3
+texture = ExtResource( 8 )
+stretch_mode = 6
 
-[node name="Flawless" type="Label" parent="HBoxContainer/NoteStats/HBoxContainer/NoteNames"]
-margin_right = 147.0
-margin_bottom = 39.0
-size_flags_vertical = 3
-custom_colors/font_color = Color( 0.678431, 0.960784, 1, 1 )
-custom_fonts/font = ExtResource( 4 )
-text = "Flawless"
-valign = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
+[node name="HBoxContainer2" type="HBoxContainer" parent="HBoxContainer/NoteStats/NoteCounts"]
+margin_top = 76.0
+margin_right = 285.0
+margin_bottom = 121.0
 
-[node name="Decrypted" type="Label" parent="HBoxContainer/NoteStats/HBoxContainer/NoteNames"]
-margin_top = 43.0
-margin_right = 147.0
-margin_bottom = 82.0
+[node name="DecryptedCount" type="Label" parent="HBoxContainer/NoteStats/NoteCounts/HBoxContainer2"]
+margin_right = 27.0
+margin_bottom = 45.0
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 1 )
-text = "Decrypted"
+text = "0 "
 valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Cracked" type="Label" parent="HBoxContainer/NoteStats/HBoxContainer/NoteNames"]
-margin_top = 86.0
-margin_right = 147.0
-margin_bottom = 125.0
+[node name="Decrypted" type="TextureRect" parent="HBoxContainer/NoteStats/NoteCounts/HBoxContainer2"]
+margin_left = 31.0
+margin_right = 285.0
+margin_bottom = 45.0
+size_flags_horizontal = 3
+texture = ExtResource( 6 )
+stretch_mode = 6
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="HBoxContainer/NoteStats/NoteCounts"]
+margin_top = 125.0
+margin_right = 285.0
+margin_bottom = 167.0
+size_flags_vertical = 3
+
+[node name="CrackedCount" type="Label" parent="HBoxContainer/NoteStats/NoteCounts/HBoxContainer3"]
+margin_right = 27.0
+margin_bottom = 42.0
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 1 )
-text = "Cracked"
+text = "0 "
 valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Encrypted" type="Label" parent="HBoxContainer/NoteStats/HBoxContainer/NoteNames"]
-margin_top = 129.0
-margin_right = 147.0
-margin_bottom = 168.0
+[node name="Cracked" type="TextureRect" parent="HBoxContainer/NoteStats/NoteCounts/HBoxContainer3"]
+margin_left = 31.0
+margin_right = 285.0
+margin_bottom = 42.0
+size_flags_horizontal = 3
+texture = ExtResource( 9 )
+stretch_mode = 6
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="HBoxContainer/NoteStats/NoteCounts"]
+margin_top = 171.0
+margin_right = 285.0
+margin_bottom = 212.0
+
+[node name="CorruptedCount" type="Label" parent="HBoxContainer/NoteStats/NoteCounts/HBoxContainer4"]
+margin_right = 27.0
+margin_bottom = 41.0
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 1 )
-text = "Encrypted"
+text = "0 "
 valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="Corrupted" type="TextureRect" parent="HBoxContainer/NoteStats/NoteCounts/HBoxContainer4"]
+margin_left = 31.0
+margin_right = 285.0
+margin_bottom = 41.0
+size_flags_horizontal = 3
+texture = ExtResource( 7 )
+stretch_mode = 6
 
 [node name="ScoreRank" type="MarginContainer" parent="HBoxContainer"]
 margin_left = 321.0
