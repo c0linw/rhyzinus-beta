@@ -2,9 +2,15 @@ extends MarginContainer
 
 enum {CORRUPTED, CRACKED, DECRYPTED, FLAWLESS}
 
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
+var grade_textures: Dictionary = {
+	"r_plus_rainbow": preload("res://textures/result/score_rank_r_plus_rainbow.png"),
+	"r_plus": preload("res://textures/result/score_rank_r_plus_blue.png"),
+	"r": preload("res://textures/result/score_rank_r_blue.png"),
+	"a": preload("res://textures/result/score_rank_a_blue.png"),
+	"b": preload("res://textures/result/score_rank_b.png"),
+	"c": preload("res://textures/result/score_rank_c.png"),
+	"d": preload("res://textures/result/score_rank_d.png"),
+}
 
 
 # Called when the node enters the scene tree for the first time.
@@ -21,3 +27,11 @@ func set_results(result_data: Dictionary):
 	find_node("DecryptedCount").text = str(len(result_data[DECRYPTED])) + " "
 	find_node("CrackedCount").text = str(len(result_data[CRACKED])) + " "
 	find_node("CorruptedCount").text = str(len(result_data[CORRUPTED])) + " "
+	
+func set_grade(grade: String):
+	if grade_textures.has(grade):
+		find_node("ScoreTexture").texture = grade_textures[grade]
+
+func set_achievement(result_data: Dictionary):
+	var achievement_text: String
+	find_node("AchievementLabel").text = achievement_text
