@@ -28,10 +28,16 @@ func set_results(result_data: Dictionary):
 	find_node("CrackedCount").text = str(len(result_data[CRACKED])) + " "
 	find_node("CorruptedCount").text = str(len(result_data[CORRUPTED])) + " "
 	
+	set_achievement(result_data)
+	
 func set_grade(grade: String):
 	if grade_textures.has(grade):
 		find_node("ScoreTexture").texture = grade_textures[grade]
 
 func set_achievement(result_data: Dictionary):
-	var achievement_text: String
+	var achievement_text = "Clear"
+	if len(result_data[CORRUPTED]) == 0:
+		achievement_text = "Full Chain"
+		if len(result_data[CRACKED]) == 0:
+			achievement_text = "Full Decryption"
 	find_node("AchievementLabel").text = achievement_text
