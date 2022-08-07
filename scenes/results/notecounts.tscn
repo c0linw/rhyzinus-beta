@@ -57,18 +57,14 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="NoteCounts" type="VBoxContainer" parent="HBoxContainer/NoteStats"]
+[node name="GridContainer" type="GridContainer" parent="HBoxContainer/NoteStats"]
 margin_left = 16.0
-margin_top = 37.0
+margin_top = 16.0
 margin_right = 301.0
-margin_bottom = 249.0
-size_flags_vertical = 4
+margin_bottom = 271.0
+columns = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/NoteStats/NoteCounts"]
-margin_right = 285.0
-margin_bottom = 72.0
-
-[node name="FlawlessCount" type="Label" parent="HBoxContainer/NoteStats/NoteCounts/HBoxContainer"]
+[node name="FlawlessCount" type="Label" parent="HBoxContainer/NoteStats/GridContainer"]
 margin_right = 27.0
 margin_bottom = 72.0
 size_flags_vertical = 3
@@ -80,47 +76,39 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Flawless" type="TextureRect" parent="HBoxContainer/NoteStats/NoteCounts/HBoxContainer"]
+[node name="Flawless" type="TextureRect" parent="HBoxContainer/NoteStats/GridContainer"]
 margin_left = 31.0
 margin_right = 285.0
 margin_bottom = 72.0
 size_flags_horizontal = 3
 texture = ExtResource( 8 )
-stretch_mode = 6
+stretch_mode = 4
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="HBoxContainer/NoteStats/NoteCounts"]
+[node name="DecryptedCount" type="Label" parent="HBoxContainer/NoteStats/GridContainer"]
+margin_top = 76.0
+margin_right = 27.0
+margin_bottom = 133.0
+size_flags_vertical = 3
+custom_fonts/font = ExtResource( 1 )
+text = "0 "
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Decrypted" type="TextureRect" parent="HBoxContainer/NoteStats/GridContainer"]
+margin_left = 31.0
 margin_top = 76.0
 margin_right = 285.0
-margin_bottom = 121.0
-
-[node name="DecryptedCount" type="Label" parent="HBoxContainer/NoteStats/NoteCounts/HBoxContainer2"]
-margin_right = 27.0
-margin_bottom = 45.0
-size_flags_vertical = 3
-custom_fonts/font = ExtResource( 1 )
-text = "0 "
-valign = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Decrypted" type="TextureRect" parent="HBoxContainer/NoteStats/NoteCounts/HBoxContainer2"]
-margin_left = 31.0
-margin_right = 285.0
-margin_bottom = 45.0
+margin_bottom = 133.0
 size_flags_horizontal = 3
 texture = ExtResource( 6 )
-stretch_mode = 6
+stretch_mode = 4
 
-[node name="HBoxContainer3" type="HBoxContainer" parent="HBoxContainer/NoteStats/NoteCounts"]
-margin_top = 125.0
-margin_right = 285.0
-margin_bottom = 167.0
-size_flags_vertical = 3
-
-[node name="CrackedCount" type="Label" parent="HBoxContainer/NoteStats/NoteCounts/HBoxContainer3"]
+[node name="CrackedCount" type="Label" parent="HBoxContainer/NoteStats/GridContainer"]
+margin_top = 137.0
 margin_right = 27.0
-margin_bottom = 42.0
+margin_bottom = 194.0
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 1 )
 text = "0 "
@@ -129,22 +117,19 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Cracked" type="TextureRect" parent="HBoxContainer/NoteStats/NoteCounts/HBoxContainer3"]
+[node name="Cracked" type="TextureRect" parent="HBoxContainer/NoteStats/GridContainer"]
 margin_left = 31.0
+margin_top = 137.0
 margin_right = 285.0
-margin_bottom = 42.0
+margin_bottom = 194.0
 size_flags_horizontal = 3
 texture = ExtResource( 9 )
-stretch_mode = 6
+stretch_mode = 4
 
-[node name="HBoxContainer4" type="HBoxContainer" parent="HBoxContainer/NoteStats/NoteCounts"]
-margin_top = 171.0
-margin_right = 285.0
-margin_bottom = 212.0
-
-[node name="CorruptedCount" type="Label" parent="HBoxContainer/NoteStats/NoteCounts/HBoxContainer4"]
+[node name="CorruptedCount" type="Label" parent="HBoxContainer/NoteStats/GridContainer"]
+margin_top = 198.0
 margin_right = 27.0
-margin_bottom = 41.0
+margin_bottom = 255.0
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 1 )
 text = "0 "
@@ -153,13 +138,14 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Corrupted" type="TextureRect" parent="HBoxContainer/NoteStats/NoteCounts/HBoxContainer4"]
+[node name="Corrupted" type="TextureRect" parent="HBoxContainer/NoteStats/GridContainer"]
 margin_left = 31.0
+margin_top = 198.0
 margin_right = 285.0
-margin_bottom = 41.0
+margin_bottom = 255.0
 size_flags_horizontal = 3
 texture = ExtResource( 7 )
-stretch_mode = 6
+stretch_mode = 4
 
 [node name="ScoreRank" type="MarginContainer" parent="HBoxContainer"]
 margin_left = 321.0
