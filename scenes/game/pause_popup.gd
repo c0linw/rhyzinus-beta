@@ -5,6 +5,8 @@ extends Popup
 # var a = 2
 # var b = "text"
 signal unpause
+signal restart
+signal quit
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -17,8 +19,19 @@ func _ready():
 
 
 func _on_ResumeButton_pressed():
-	var conductor = get_tree().get_root().find_node("Conductor")
 	hide()
 	emit_signal("unpause")
 	get_tree().paused = false
 	
+
+
+func _on_RetryButton_pressed():
+	hide()
+	emit_signal("restart")
+	get_tree().paused = false
+
+
+func _on_QuitButton_pressed():
+	hide()
+	emit_signal("quit")
+	get_tree().paused = false

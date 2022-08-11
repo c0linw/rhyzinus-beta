@@ -298,29 +298,29 @@ valign = 1
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/PausePopup/VBoxContainer"]
 margin_top = 420.0
 margin_right = 1280.0
-margin_bottom = 471.0
+margin_bottom = 472.0
 custom_constants/separation = 8
 alignment = 1
 
 [node name="ResumeButton" type="Button" parent="CanvasLayer/PausePopup/VBoxContainer/HBoxContainer"]
-margin_left = 473.0
-margin_right = 606.0
-margin_bottom = 51.0
+margin_left = 478.0
+margin_right = 602.0
+margin_bottom = 52.0
 size_flags_horizontal = 4
 theme = ExtResource( 24 )
 text = "Resume"
 
 [node name="RetryButton" type="Button" parent="CanvasLayer/PausePopup/VBoxContainer/HBoxContainer"]
-margin_left = 614.0
-margin_right = 714.0
-margin_bottom = 51.0
+margin_left = 610.0
+margin_right = 709.0
+margin_bottom = 52.0
 theme = ExtResource( 24 )
 text = "Retry"
 
 [node name="QuitButton" type="Button" parent="CanvasLayer/PausePopup/VBoxContainer/HBoxContainer"]
-margin_left = 722.0
-margin_right = 807.0
-margin_bottom = 51.0
+margin_left = 717.0
+margin_right = 802.0
+margin_bottom = 52.0
 theme = ExtResource( 24 )
 text = "Quit"
 
@@ -500,8 +500,12 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 2, 0 )
 [connection signal="note_judged" from="." to="result_data" method="_on_Game_note_judged"]
 [connection signal="pause" from="." to="Conductor" method="_on_Game_pause"]
 [connection signal="pressed" from="CanvasLayer/PauseContainer/PauseButton" to="CanvasLayer/PauseContainer/PauseButton" method="_on_PauseButton_pressed"]
+[connection signal="quit" from="CanvasLayer/PausePopup" to="." method="_on_PausePopup_quit"]
+[connection signal="restart" from="CanvasLayer/PausePopup" to="." method="_on_PausePopup_restart"]
 [connection signal="unpause" from="CanvasLayer/PausePopup" to="Conductor" method="_on_PausePopup_unpause"]
 [connection signal="pressed" from="CanvasLayer/PausePopup/VBoxContainer/HBoxContainer/ResumeButton" to="CanvasLayer/PausePopup" method="_on_ResumeButton_pressed"]
+[connection signal="pressed" from="CanvasLayer/PausePopup/VBoxContainer/HBoxContainer/RetryButton" to="CanvasLayer/PausePopup" method="_on_RetryButton_pressed"]
+[connection signal="pressed" from="CanvasLayer/PausePopup/VBoxContainer/HBoxContainer/QuitButton" to="CanvasLayer/PausePopup" method="_on_QuitButton_pressed"]
 [connection signal="finished" from="Conductor" to="." method="_on_Conductor_finished"]
 [connection signal="finished" from="Conductor" to="CanvasLayer/ComboCounter/ComboCounterLabel" method="_on_Conductor_finished"]
 [connection signal="score_updated" from="result_data" to="CanvasLayer/InfoContainer/ScoreLabel" method="_on_result_data_score_updated"]

@@ -87,12 +87,6 @@ signal pause
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	set_process(false)
-	######## TODO: set options by passing them in
-	note_speed = 7.7
-	lane_depth = 24.0
-	
-	######## SETUP OBJECTS
-	base_note_screen_time = (3 + (10-note_speed)) / note_speed 
 	
 	var chart_data = SceneSwitcher.get_param("chart_data")
 	if chart_data == null :
@@ -108,17 +102,23 @@ func _ready():
 	if options == null :
 		print("failed to load options!")
 		return
+	
+	note_speed = options["note_speed"]
+	lane_depth = 24.0
+	
+	######## SETUP OBJECTS
+	base_note_screen_time = (3 + (10-note_speed)) / note_speed 
 		
 	find_node("TestInfoLabel").text = "%s\n%s" % [SceneSwitcher.get_param("song_title"), SceneSwitcher.get_param("difficulty")]
 		
 	starting_bpm = chart_data["starting_bpm"]
-	notes_to_spawn = chart_data["notes"]
-	scrollmod_list = chart_data["timing_points"]
-	barlines_to_spawn = chart_data["barlines"]
-	beat_data = chart_data["beats"]
+	notes_to_spawn = chart_data["notes"].duplicate()
+	scrollmod_list = chart_data["timing_points"].duplicate()
+	barlines_to_spawn = chart_data["barlines"].duplicate()
+	beat_data = chart_data["beats"].duplicate()
 	notecount = chart_data["notecount"]
 	$result_data.notecount = notecount
-	simlines_to_spawn = chart_data["simlines"]
+	simlines_to_spawn = chart_data["simlines"].duplicate()
 	
 	######## SETUP INPUT
 	input_offset = options["input_offset"]
@@ -656,3 +656,39 @@ func pause_game():
 func _notification(what):
 	if what == MainLoop.NOTIFICATION_WM_FOCUS_OUT:
 		pause_game()
+
+
+func _on_PausePopup_restart():
+	$Conductor.stop()
+	set_process(false)
+	
+	var chart_data = SceneSwitcher.get_param("chart_data")
+	notes_to_spawn = chart_data["notes"].duplicate()
+	scrollmod_list = chart_data["timing_points"].duplicate()
+	barlines_to_spawn = chart_data["barlines"].duplicate()
+	beat_data = chart_data["beats"].duplicate()
+	simlines_to_spawn = chart_data["simlines"].duplicate()
+	
+	for barline in onscreen_barlines:
+		barline.queue_free()
+	onscreen_barlines = []
+	
+	for simline in onscreen_simlines:
+		simline.queue_free()
+	onscreen_simlines = []
+	
+	for note in onscreen_notes:
+		note.queue_free()
+	onscreen_notes = []
+	
+	######## RESET STUFF
+	$result_data.reset()
+	$CanvasLayer/ComboCounter/ComboCounterLabel.reset()
+
+	yield(get_tree(), "idle_frame")
+	set_process(true)
+	$Conductor.play_from_beat(0,0)
+
+
+func _on_PausePopup_quit():
+	SceneSwitcher.change_scene("res://scenes/song_select/song_select.tscn")

@@ -37,3 +37,12 @@ func update_score():
 	float_score += 1000000 * len(results[CRACKED]) * 0.50 / notecount
 	score = int(float_score)
 	emit_signal("score_updated", score)
+	
+func reset():
+	results = {
+		CORRUPTED: [],
+		CRACKED: [],
+		DECRYPTED: [],
+		FLAWLESS: []
+	}
+	update_score()

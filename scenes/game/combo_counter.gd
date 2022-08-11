@@ -30,3 +30,7 @@ func _on_Game_note_judged(result: Dictionary):
 func _on_Conductor_finished():
 	if current_combo > best_combo:
 		best_combo = current_combo
+
+func reset():
+	current_combo = 0
+	best_combo = 0

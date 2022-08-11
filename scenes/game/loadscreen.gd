@@ -13,10 +13,13 @@ func _ready():
 	if not load_chart(chart_path, $chart_data):
 		 # TODO: return to menu if load was unsuccessful
 		print("Chart loading failed!")
+		SceneSwitcher.change_scene("res://scenes/song_select/song_select.tscn")
 	# TODO: switch scene to Game, passing in audio and chart_data object
+	Settings.read_settings_file()
 	var options: Dictionary = {
-		"audio_offset": 0.120,
-		"input_offset": 0.030
+		"audio_offset": Settings.setting_values["audio_offset"] / 1000.0,
+		"input_offset": Settings.setting_values["input_offset"] / 1000.0,
+		"note_speed": Settings.setting_values["note_speed"]
 	}
 	$chart_data.offset = options["audio_offset"]
 	var data = {
