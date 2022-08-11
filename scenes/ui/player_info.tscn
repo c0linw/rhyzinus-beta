@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://textures/ui/player_border.png" type="Texture" id=1]
-[ext_resource path="res://fonts/new_dynamicfont.tres" type="DynamicFont" id=2]
+[ext_resource path="res://fonts/m_plus_1p_regular_28.tres" type="DynamicFont" id=2]
 
 [node name="PlayerInfo" type="Control"]
 anchor_right = 1.0
@@ -61,7 +61,7 @@ align = 1
 valign = 1
 
 [node name="PlayerName" type="Label" parent="MarginContainer"]
-margin_top = 31.0
+margin_top = 30.0
 margin_right = 473.0
 margin_bottom = 70.0
 rect_pivot_offset = Vector2( 0, 6 )

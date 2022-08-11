@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://fonts/Trebuchet_MS.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://fonts/MPLUS1p-Regular.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://scenes/song_select/difficulty_select.gd" type="Script" id=2]
 [ext_resource path="res://textures/ui/diff_select_alpha.png" type="Texture" id=3]
 
@@ -19,9 +19,6 @@ size_flags_vertical = 3
 texture_normal = ExtResource( 3 )
 expand = true
 script = ExtResource( 2 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 margin_right = 40.0
@@ -38,8 +35,8 @@ __meta__ = {
 [node name="Label" type="Label" parent="MarginContainer"]
 margin_left = 8.0
 margin_top = 8.0
-margin_right = 199.0
-margin_bottom = 37.0
+margin_right = 216.0
+margin_bottom = 42.0
 custom_fonts/font = SubResource( 1 )
 text = "Difficulty Number"
 
