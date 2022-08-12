@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://fonts/new_dynamicfont.tres" type="DynamicFont" id=1]
 [ext_resource path="res://textures/result/score_rank_d.png" type="Texture" id=2]
@@ -9,6 +9,11 @@
 [ext_resource path="res://textures/result/corrupted_trimmed.png" type="Texture" id=7]
 [ext_resource path="res://textures/result/flawless_trimmed.png" type="Texture" id=8]
 [ext_resource path="res://textures/result/cracked_trimmed.png" type="Texture" id=9]
+[ext_resource path="res://fonts/MPLUS1p-Regular.ttf" type="DynamicFontData" id=10]
+
+[sub_resource type="DynamicFont" id=1]
+size = 32
+font_data = ExtResource( 10 )
 
 [node name="NoteCounts" type="MarginContainer"]
 anchor_top = 1.0
@@ -65,7 +70,7 @@ margin_bottom = 271.0
 columns = 2
 
 [node name="FlawlessCount" type="Label" parent="HBoxContainer/NoteStats/GridContainer"]
-margin_right = 27.0
+margin_right = 29.0
 margin_bottom = 72.0
 size_flags_vertical = 3
 custom_colors/font_color = Color( 0.678431, 0.960784, 1, 1 )
@@ -77,7 +82,7 @@ __meta__ = {
 }
 
 [node name="Flawless" type="TextureRect" parent="HBoxContainer/NoteStats/GridContainer"]
-margin_left = 31.0
+margin_left = 33.0
 margin_right = 285.0
 margin_bottom = 72.0
 size_flags_horizontal = 3
@@ -86,7 +91,7 @@ stretch_mode = 4
 
 [node name="DecryptedCount" type="Label" parent="HBoxContainer/NoteStats/GridContainer"]
 margin_top = 76.0
-margin_right = 27.0
+margin_right = 29.0
 margin_bottom = 133.0
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 1 )
@@ -97,7 +102,7 @@ __meta__ = {
 }
 
 [node name="Decrypted" type="TextureRect" parent="HBoxContainer/NoteStats/GridContainer"]
-margin_left = 31.0
+margin_left = 33.0
 margin_top = 76.0
 margin_right = 285.0
 margin_bottom = 133.0
@@ -107,7 +112,7 @@ stretch_mode = 4
 
 [node name="CrackedCount" type="Label" parent="HBoxContainer/NoteStats/GridContainer"]
 margin_top = 137.0
-margin_right = 27.0
+margin_right = 29.0
 margin_bottom = 194.0
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 1 )
@@ -118,7 +123,7 @@ __meta__ = {
 }
 
 [node name="Cracked" type="TextureRect" parent="HBoxContainer/NoteStats/GridContainer"]
-margin_left = 31.0
+margin_left = 33.0
 margin_top = 137.0
 margin_right = 285.0
 margin_bottom = 194.0
@@ -128,7 +133,7 @@ stretch_mode = 4
 
 [node name="CorruptedCount" type="Label" parent="HBoxContainer/NoteStats/GridContainer"]
 margin_top = 198.0
-margin_right = 27.0
+margin_right = 29.0
 margin_bottom = 255.0
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 1 )
@@ -139,7 +144,7 @@ __meta__ = {
 }
 
 [node name="Corrupted" type="TextureRect" parent="HBoxContainer/NoteStats/GridContainer"]
-margin_left = 31.0
+margin_left = 33.0
 margin_top = 198.0
 margin_right = 285.0
 margin_bottom = 255.0
@@ -169,16 +174,16 @@ size_flags_stretch_ratio = 0.0
 
 [node name="AnalysisRank" type="Label" parent="HBoxContainer/ScoreRank/VBoxContainer"]
 margin_right = 285.0
-margin_bottom = 39.0
+margin_bottom = 46.0
 size_flags_horizontal = 3
 size_flags_vertical = 1
-custom_fonts/font = ExtResource( 1 )
+custom_fonts/font = SubResource( 1 )
 text = "Analysis Rank:"
 
 [node name="ScoreTexture" type="TextureRect" parent="HBoxContainer/ScoreRank/VBoxContainer"]
-margin_top = 43.0
+margin_top = 50.0
 margin_right = 285.0
-margin_bottom = 212.0
+margin_bottom = 205.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 texture = ExtResource( 2 )
@@ -189,10 +194,12 @@ __meta__ = {
 }
 
 [node name="AchievementLabel" type="Label" parent="HBoxContainer/ScoreRank/VBoxContainer"]
-margin_top = 216.0
+margin_top = 209.0
 margin_right = 285.0
 margin_bottom = 255.0
 size_flags_horizontal = 3
 size_flags_vertical = 1
+custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
 custom_fonts/font = ExtResource( 1 )
+text = "Clear"
 align = 2
