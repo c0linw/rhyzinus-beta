@@ -1,4 +1,4 @@
-[gd_scene load_steps=49 format=2]
+[gd_scene load_steps=51 format=2]
 
 [ext_resource path="res://scenes/game/results_data.gd" type="Script" id=1]
 [ext_resource path="res://scenes/game/timing_label.gd" type="Script" id=2]
@@ -26,6 +26,7 @@
 [ext_resource path="res://themes/theme1.tres" type="Theme" id=24]
 [ext_resource path="res://scenes/game/score_label.gd" type="Script" id=25]
 [ext_resource path="res://fonts/new_dynamicfont.tres" type="DynamicFont" id=26]
+[ext_resource path="res://fonts/MPLUS1p-Regular.ttf" type="DynamicFontData" id=27]
 
 [sub_resource type="DynamicFont" id=20]
 size = 64
@@ -40,9 +41,12 @@ font_data = ExtResource( 8 )
 [sub_resource type="DynamicFont" id=21]
 font_data = ExtResource( 8 )
 
+[sub_resource type="StyleBoxFlat" id=23]
+bg_color = Color( 1, 1, 1, 0.501961 )
+
 [sub_resource type="DynamicFont" id=22]
-size = 144
-font_data = ExtResource( 8 )
+size = 96
+font_data = ExtResource( 27 )
 
 [sub_resource type="SpatialMaterial" id=14]
 render_priority = -1
@@ -256,16 +260,16 @@ size_flags_horizontal = 3
 
 [node name="ScoreLabel" type="Label" parent="CanvasLayer/InfoContainer"]
 margin_right = 119.0
-margin_bottom = 39.0
+margin_bottom = 46.0
 grow_horizontal = 0
 custom_fonts/font = ExtResource( 26 )
 align = 2
 script = ExtResource( 25 )
 
 [node name="TestInfoLabel" type="Label" parent="CanvasLayer/InfoContainer"]
-margin_top = 13.0
+margin_top = 16.0
 margin_right = 119.0
-margin_bottom = 27.0
+margin_bottom = 30.0
 
 [node name="PausePopup" type="Popup" parent="CanvasLayer"]
 pause_mode = 2
@@ -280,29 +284,46 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 color = Color( 0, 0, 0, 0.313726 )
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/PausePopup"]
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/PausePopup"]
+anchor_top = 0.5
 anchor_right = 1.0
-anchor_bottom = 1.0
+anchor_bottom = 0.5
+margin_top = -106.5
+margin_bottom = 106.5
+size_flags_horizontal = 3
+size_flags_vertical = 0
+custom_styles/panel = SubResource( 23 )
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/PausePopup/PanelContainer"]
+margin_right = 1280.0
+margin_bottom = 213.0
+custom_constants/margin_bottom = 8
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/PausePopup/PanelContainer/MarginContainer"]
+margin_right = 1280.0
+margin_bottom = 205.0
+size_flags_horizontal = 3
 alignment = 1
 
-[node name="Label" type="Label" parent="CanvasLayer/PausePopup/VBoxContainer"]
-margin_top = 248.0
+[node name="Label" type="Label" parent="CanvasLayer/PausePopup/PanelContainer/MarginContainer/VBoxContainer"]
+margin_top = 7.0
 margin_right = 1280.0
-margin_bottom = 416.0
-custom_colors/font_color = Color( 1, 0, 0, 1 )
+margin_bottom = 142.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_constants/shadow_offset_x = 4
 custom_fonts/font = SubResource( 22 )
 text = "Paused"
 align = 1
 valign = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/PausePopup/VBoxContainer"]
-margin_top = 420.0
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/PausePopup/PanelContainer/MarginContainer/VBoxContainer"]
+margin_top = 146.0
 margin_right = 1280.0
-margin_bottom = 472.0
+margin_bottom = 198.0
 custom_constants/separation = 8
 alignment = 1
 
-[node name="ResumeButton" type="Button" parent="CanvasLayer/PausePopup/VBoxContainer/HBoxContainer"]
+[node name="ResumeButton" type="Button" parent="CanvasLayer/PausePopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
 margin_left = 478.0
 margin_right = 602.0
 margin_bottom = 52.0
@@ -310,14 +331,14 @@ size_flags_horizontal = 4
 theme = ExtResource( 24 )
 text = "Resume"
 
-[node name="RetryButton" type="Button" parent="CanvasLayer/PausePopup/VBoxContainer/HBoxContainer"]
+[node name="RetryButton" type="Button" parent="CanvasLayer/PausePopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
 margin_left = 610.0
 margin_right = 709.0
 margin_bottom = 52.0
 theme = ExtResource( 24 )
 text = "Retry"
 
-[node name="QuitButton" type="Button" parent="CanvasLayer/PausePopup/VBoxContainer/HBoxContainer"]
+[node name="QuitButton" type="Button" parent="CanvasLayer/PausePopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
 margin_left = 717.0
 margin_right = 802.0
 margin_bottom = 52.0
@@ -503,9 +524,9 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 2, 0 )
 [connection signal="quit" from="CanvasLayer/PausePopup" to="." method="_on_PausePopup_quit"]
 [connection signal="restart" from="CanvasLayer/PausePopup" to="." method="_on_PausePopup_restart"]
 [connection signal="unpause" from="CanvasLayer/PausePopup" to="Conductor" method="_on_PausePopup_unpause"]
-[connection signal="pressed" from="CanvasLayer/PausePopup/VBoxContainer/HBoxContainer/ResumeButton" to="CanvasLayer/PausePopup" method="_on_ResumeButton_pressed"]
-[connection signal="pressed" from="CanvasLayer/PausePopup/VBoxContainer/HBoxContainer/RetryButton" to="CanvasLayer/PausePopup" method="_on_RetryButton_pressed"]
-[connection signal="pressed" from="CanvasLayer/PausePopup/VBoxContainer/HBoxContainer/QuitButton" to="CanvasLayer/PausePopup" method="_on_QuitButton_pressed"]
+[connection signal="pressed" from="CanvasLayer/PausePopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/ResumeButton" to="CanvasLayer/PausePopup" method="_on_ResumeButton_pressed"]
+[connection signal="pressed" from="CanvasLayer/PausePopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/RetryButton" to="CanvasLayer/PausePopup" method="_on_RetryButton_pressed"]
+[connection signal="pressed" from="CanvasLayer/PausePopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/QuitButton" to="CanvasLayer/PausePopup" method="_on_QuitButton_pressed"]
 [connection signal="finished" from="Conductor" to="." method="_on_Conductor_finished"]
 [connection signal="finished" from="Conductor" to="CanvasLayer/ComboCounter/ComboCounterLabel" method="_on_Conductor_finished"]
 [connection signal="score_updated" from="result_data" to="CanvasLayer/InfoContainer/ScoreLabel" method="_on_result_data_score_updated"]

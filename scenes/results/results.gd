@@ -39,14 +39,10 @@ func _ready():
 #	pass
 
 func calculate_grade(score: int):
-	print(grade_cutoffs.keys())
 	for cutoff in grade_cutoffs.keys():
 		if score >= cutoff:
 			return grade_cutoffs[cutoff]
 	return "d"
-
-func _on_RetryButton_pressed():
-	pass # Replace with function body.
 
 
 func _on_SongSelectButton_pressed():
