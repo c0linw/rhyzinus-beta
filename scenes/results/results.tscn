@@ -69,12 +69,12 @@ custom_constants/margin_right = 16
 custom_constants/margin_bottom = 16
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer3"]
-margin_right = 87.0
+margin_right = 88.0
 margin_bottom = 52.0
 custom_constants/separation = 32
 
 [node name="SongSelectButton" type="Button" parent="MarginContainer3/HBoxContainer"]
-margin_right = 87.0
+margin_right = 88.0
 margin_bottom = 52.0
 theme = ExtResource( 6 )
 text = "Next"

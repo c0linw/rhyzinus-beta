@@ -28,27 +28,27 @@ rect_min_size = Vector2( 0, 4 )
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
 margin_top = 20.0
 margin_right = 653.0
-margin_bottom = 65.0
+margin_bottom = 72.0
 custom_constants/margin_right = 32
 custom_constants/margin_left = 32
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/MarginContainer"]
 margin_left = 32.0
 margin_right = 621.0
-margin_bottom = 45.0
+margin_bottom = 52.0
 
 [node name="Label" type="Label" parent="VBoxContainer/MarginContainer/HBoxContainer"]
 margin_top = 3.0
-margin_right = 463.0
-margin_bottom = 42.0
+margin_right = 459.0
+margin_bottom = 49.0
 size_flags_horizontal = 3
 custom_fonts/font = ExtResource( 4 )
 text = "Note Speed"
 
 [node name="NoteSpeedSpinbox" parent="VBoxContainer/MarginContainer/HBoxContainer" groups=["settings"] instance=ExtResource( 1 )]
-margin_left = 467.0
+margin_left = 463.0
 margin_right = 589.0
-margin_bottom = 45.0
+margin_bottom = 52.0
 step = 0.1
 min_value = 1.0
 decimal_places = 1
@@ -57,35 +57,35 @@ use_extra_buttons = true
 extra_step = 0.5
 
 [node name="ColorRect2" type="ColorRect" parent="VBoxContainer"]
-margin_top = 81.0
+margin_top = 88.0
 margin_right = 653.0
-margin_bottom = 85.0
+margin_bottom = 92.0
 rect_min_size = Vector2( 0, 4 )
 
 [node name="MarginContainer2" type="MarginContainer" parent="VBoxContainer"]
-margin_top = 101.0
+margin_top = 108.0
 margin_right = 653.0
-margin_bottom = 146.0
+margin_bottom = 160.0
 custom_constants/margin_right = 32
 custom_constants/margin_left = 32
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/MarginContainer2"]
 margin_left = 32.0
 margin_right = 621.0
-margin_bottom = 45.0
+margin_bottom = 52.0
 
 [node name="Label" type="Label" parent="VBoxContainer/MarginContainer2/HBoxContainer"]
 margin_top = 3.0
-margin_right = 463.0
-margin_bottom = 42.0
+margin_right = 459.0
+margin_bottom = 49.0
 size_flags_horizontal = 3
 custom_fonts/font = ExtResource( 4 )
 text = "Audio Offset"
 
 [node name="AudioOffsetSpinBox" parent="VBoxContainer/MarginContainer2/HBoxContainer" groups=["settings"] instance=ExtResource( 1 )]
-margin_left = 467.0
+margin_left = 463.0
 margin_right = 589.0
-margin_bottom = 45.0
+margin_bottom = 52.0
 max_value = 1000.0
 default_value = 0.0
 value_name = "audio_offset"
@@ -93,35 +93,35 @@ use_extra_buttons = true
 extra_step = 10.0
 
 [node name="ColorRect3" type="ColorRect" parent="VBoxContainer"]
-margin_top = 162.0
+margin_top = 176.0
 margin_right = 653.0
-margin_bottom = 166.0
+margin_bottom = 180.0
 rect_min_size = Vector2( 0, 4 )
 
 [node name="MarginContainer3" type="MarginContainer" parent="VBoxContainer"]
-margin_top = 182.0
+margin_top = 196.0
 margin_right = 653.0
-margin_bottom = 227.0
+margin_bottom = 248.0
 custom_constants/margin_right = 32
 custom_constants/margin_left = 32
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/MarginContainer3"]
 margin_left = 32.0
 margin_right = 621.0
-margin_bottom = 45.0
+margin_bottom = 52.0
 
 [node name="Label" type="Label" parent="VBoxContainer/MarginContainer3/HBoxContainer"]
 margin_top = 3.0
-margin_right = 463.0
-margin_bottom = 42.0
+margin_right = 459.0
+margin_bottom = 49.0
 size_flags_horizontal = 3
 custom_fonts/font = ExtResource( 4 )
 text = "Input Offset"
 
 [node name="InputOffsetSpinBox" parent="VBoxContainer/MarginContainer3/HBoxContainer" groups=["settings"] instance=ExtResource( 1 )]
-margin_left = 467.0
+margin_left = 463.0
 margin_right = 589.0
-margin_bottom = 45.0
+margin_bottom = 52.0
 max_value = 50.0
 default_value = 0.0
 value_name = "input_offset"
@@ -129,9 +129,9 @@ use_extra_buttons = true
 extra_step = 10.0
 
 [node name="ColorRect4" type="ColorRect" parent="VBoxContainer"]
-margin_top = 243.0
+margin_top = 264.0
 margin_right = 653.0
-margin_bottom = 247.0
+margin_bottom = 268.0
 rect_min_size = Vector2( 0, 4 )
 
 [node name="Gameplay_bg" type="TextureRect" parent="."]
@@ -159,11 +159,10 @@ custom_constants/margin_bottom = 8
 margin_left = 8.0
 margin_top = 8.0
 margin_right = 138.0
-margin_bottom = 59.0
+margin_bottom = 60.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme = ExtResource( 5 )
-custom_fonts/font = ExtResource( 4 )
 text = "<- Back"
 __meta__ = {
 "_edit_use_anchors_": false

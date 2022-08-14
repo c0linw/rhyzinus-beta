@@ -27,7 +27,8 @@ func _ready():
 		"audio_path": audio_path,
 		"options": options,
 		"song_title": SceneSwitcher.get_param("song_title"),
-		"difficulty": "%s %s" % [SceneSwitcher.get_param("diff_name"), SceneSwitcher.get_param("diff_level")],
+		"diff_name": SceneSwitcher.get_param("diff_name"),
+		"diff_level": SceneSwitcher.get_param("diff_level"),
 		"jacket_path": SceneSwitcher.get_param("jacket_path")
 		}
 	yield(get_tree(), "idle_frame")

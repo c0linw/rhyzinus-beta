@@ -108,9 +108,16 @@ func _ready():
 	
 	######## SETUP OBJECTS
 	base_note_screen_time = (3 + (10-note_speed)) / note_speed 
+	
+	if SceneSwitcher.get_param("song_title") != null:
+		find_node("SongTitleLabel").text = SceneSwitcher.get_param("song_title")
 		
-	find_node("TestInfoLabel").text = "%s\n%s" % [SceneSwitcher.get_param("song_title"), SceneSwitcher.get_param("difficulty")]
-		
+	if SceneSwitcher.get_param("diff_name") != null && SceneSwitcher.get_param("diff_level") != null:
+		find_node("DifficultyLabel").text = "%s %s" % [SceneSwitcher.get_param("diff_name"), SceneSwitcher.get_param("diff_level")]
+	
+	if SceneSwitcher.get_param("jacket_path") != null:
+		find_node("SongJacket").texture = load(SceneSwitcher.get_param("jacket_path"))
+	
 	starting_bpm = chart_data["starting_bpm"]
 	notes_to_spawn = chart_data["notes"].duplicate()
 	scrollmod_list = chart_data["timing_points"].duplicate()

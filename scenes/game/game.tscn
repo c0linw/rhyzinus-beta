@@ -1,4 +1,4 @@
-[gd_scene load_steps=51 format=2]
+[gd_scene load_steps=56 format=2]
 
 [ext_resource path="res://scenes/game/results_data.gd" type="Script" id=1]
 [ext_resource path="res://scenes/game/timing_label.gd" type="Script" id=2]
@@ -25,8 +25,8 @@
 [ext_resource path="res://scenes/game/shader_cache.gd" type="Script" id=23]
 [ext_resource path="res://themes/theme1.tres" type="Theme" id=24]
 [ext_resource path="res://scenes/game/score_label.gd" type="Script" id=25]
-[ext_resource path="res://fonts/new_dynamicfont.tres" type="DynamicFont" id=26]
 [ext_resource path="res://fonts/MPLUS1p-Regular.ttf" type="DynamicFontData" id=27]
+[ext_resource path="res://songs/beta1/autothysis/jacket.png" type="Texture" id=29]
 
 [sub_resource type="DynamicFont" id=20]
 size = 64
@@ -40,6 +40,33 @@ font_data = ExtResource( 8 )
 
 [sub_resource type="DynamicFont" id=21]
 font_data = ExtResource( 8 )
+
+[sub_resource type="StyleBoxFlat" id=24]
+content_margin_left = 12.0
+content_margin_right = 12.0
+content_margin_top = 12.0
+content_margin_bottom = 12.0
+bg_color = Color( 0, 0, 0, 0.313726 )
+border_width_left = 4
+border_width_top = 4
+border_width_bottom = 4
+border_color = Color( 1, 1, 1, 1 )
+
+[sub_resource type="DynamicFont" id=25]
+size = 32
+font_data = ExtResource( 27 )
+
+[sub_resource type="DynamicFont" id=26]
+size = 24
+font_data = ExtResource( 27 )
+
+[sub_resource type="DynamicFont" id=28]
+size = 32
+font_data = ExtResource( 27 )
+
+[sub_resource type="DynamicFont" id=27]
+size = 32
+font_data = ExtResource( 27 )
 
 [sub_resource type="StyleBoxFlat" id=23]
 bg_color = Color( 1, 1, 1, 0.501961 )
@@ -149,9 +176,6 @@ custom_fonts/font = SubResource( 20 )
 align = 1
 valign = 1
 script = ExtResource( 6 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="ComboCounter" type="Control" parent="CanvasLayer"]
 anchor_left = 0.5
@@ -254,26 +278,79 @@ script = ExtResource( 2 )
 [node name="InfoContainer" type="MarginContainer" parent="CanvasLayer"]
 anchor_left = 1.0
 anchor_right = 1.0
-margin_left = -119.0
-margin_bottom = 40.0
-size_flags_horizontal = 3
+margin_left = -218.0
+margin_bottom = 122.0
+grow_horizontal = 0
+custom_constants/margin_top = 16
 
-[node name="ScoreLabel" type="Label" parent="CanvasLayer/InfoContainer"]
-margin_right = 119.0
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/InfoContainer"]
+margin_top = 16.0
+margin_right = 411.0
+margin_bottom = 168.0
+grow_horizontal = 0
+size_flags_horizontal = 3
+custom_styles/panel = SubResource( 24 )
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/InfoContainer/PanelContainer"]
+margin_left = 12.0
+margin_top = 12.0
+margin_right = 399.0
+margin_bottom = 140.0
+custom_constants/separation = 8
+
+[node name="SongJacket" type="TextureRect" parent="CanvasLayer/InfoContainer/PanelContainer/HBoxContainer"]
+margin_right = 128.0
+margin_bottom = 128.0
+rect_min_size = Vector2( 128, 128 )
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 29 )
+expand = true
+stretch_mode = 6
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/InfoContainer/PanelContainer/HBoxContainer"]
+margin_left = 136.0
+margin_right = 387.0
+margin_bottom = 128.0
+custom_constants/separation = 0
+
+[node name="SongTitleLabel" type="Label" parent="CanvasLayer/InfoContainer/PanelContainer/HBoxContainer/VBoxContainer"]
+margin_right = 251.0
+margin_bottom = 46.0
+custom_fonts/font = SubResource( 25 )
+text = "Untitled Song"
+
+[node name="DifficultyLabel" type="Label" parent="CanvasLayer/InfoContainer/PanelContainer/HBoxContainer/VBoxContainer"]
+margin_top = 46.0
+margin_right = 251.0
+margin_bottom = 80.0
+custom_fonts/font = SubResource( 26 )
+text = "Alpha 1"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/InfoContainer/PanelContainer/HBoxContainer/VBoxContainer"]
+margin_top = 80.0
+margin_right = 251.0
+margin_bottom = 126.0
+
+[node name="ScorePrefixLabel" type="Label" parent="CanvasLayer/InfoContainer/PanelContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
+margin_right = 107.0
+margin_bottom = 46.0
+custom_fonts/font = SubResource( 28 )
+text = "Score: "
+
+[node name="ScoreLabel" type="Label" parent="CanvasLayer/InfoContainer/PanelContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
+margin_left = 111.0
+margin_right = 251.0
 margin_bottom = 46.0
 grow_horizontal = 0
-custom_fonts/font = ExtResource( 26 )
+rect_min_size = Vector2( 140, 0 )
+custom_fonts/font = SubResource( 27 )
+text = "0"
 align = 2
 script = ExtResource( 25 )
 
-[node name="TestInfoLabel" type="Label" parent="CanvasLayer/InfoContainer"]
-margin_top = 16.0
-margin_right = 119.0
-margin_bottom = 30.0
-
 [node name="PausePopup" type="Popup" parent="CanvasLayer"]
 pause_mode = 2
-visible = true
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
@@ -529,4 +606,4 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 2, 0 )
 [connection signal="pressed" from="CanvasLayer/PausePopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/QuitButton" to="CanvasLayer/PausePopup" method="_on_QuitButton_pressed"]
 [connection signal="finished" from="Conductor" to="." method="_on_Conductor_finished"]
 [connection signal="finished" from="Conductor" to="CanvasLayer/ComboCounter/ComboCounterLabel" method="_on_Conductor_finished"]
-[connection signal="score_updated" from="result_data" to="CanvasLayer/InfoContainer/ScoreLabel" method="_on_result_data_score_updated"]
+[connection signal="score_updated" from="result_data" to="CanvasLayer/InfoContainer/PanelContainer/HBoxContainer/VBoxContainer/HBoxContainer/ScoreLabel" method="_on_result_data_score_updated"]
