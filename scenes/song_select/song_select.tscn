@@ -170,20 +170,20 @@ margin_bottom = 357.0
 
 [node name="ColorRect" type="ColorRect" parent="MarginContainer3/VBoxContainer"]
 margin_right = 576.0
-margin_bottom = 4.0
-rect_min_size = Vector2( 0, 4 )
+margin_bottom = 6.0
+rect_min_size = Vector2( 0, 6 )
 
 [node name="Control" type="Control" parent="MarginContainer3/VBoxContainer"]
-margin_top = 8.0
+margin_top = 10.0
 margin_right = 576.0
-margin_bottom = 349.0
+margin_bottom = 347.0
 size_flags_vertical = 3
 
 [node name="ColorRect2" type="ColorRect" parent="MarginContainer3/VBoxContainer"]
-margin_top = 353.0
+margin_top = 351.0
 margin_right = 576.0
 margin_bottom = 357.0
-rect_min_size = Vector2( 0, 4 )
+rect_min_size = Vector2( 0, 6 )
 
 [node name="MarginContainer4" type="MarginContainer" parent="."]
 anchor_left = 1.0
