@@ -12,6 +12,27 @@ anchor_bottom = 1.0
 mouse_filter = 2
 script = ExtResource( 3 )
 
+[node name="MarginContainer" type="MarginContainer" parent="."]
+margin_right = 215.0
+margin_bottom = 84.0
+custom_constants/margin_right = 16
+custom_constants/margin_top = 16
+custom_constants/margin_left = 16
+custom_constants/margin_bottom = 16
+
+[node name="BackButton" type="Button" parent="MarginContainer"]
+margin_left = 16.0
+margin_top = 16.0
+margin_right = 215.0
+margin_bottom = 88.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource( 5 )
+text = "<- Back"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 anchor_left = 1.0
 anchor_right = 1.0
@@ -143,29 +164,5 @@ mouse_filter = 2
 texture = ExtResource( 2 )
 expand = true
 stretch_mode = 7
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="MarginContainer" type="MarginContainer" parent="."]
-margin_right = 146.0
-margin_bottom = 67.0
-custom_constants/margin_right = 8
-custom_constants/margin_top = 8
-custom_constants/margin_left = 8
-custom_constants/margin_bottom = 8
-
-[node name="BackButton" type="Button" parent="MarginContainer"]
-margin_left = 8.0
-margin_top = 8.0
-margin_right = 138.0
-margin_bottom = 60.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-theme = ExtResource( 5 )
-text = "<- Back"
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [connection signal="pressed" from="MarginContainer/BackButton" to="." method="_on_BackButton_pressed"]

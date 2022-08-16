@@ -10,7 +10,6 @@ func _ready():
 		node.connect("value_changed", self, "_on_HorizontalSpinBox_value_changed")
 		self.connect("change_value", node, "_on_Options_change_value")
 	for key in Settings.setting_values.keys():
-		print("key = %s, value = %s" % [key, Settings.setting_values[key]])
 		emit_signal("change_value", key, Settings.setting_values[key])
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

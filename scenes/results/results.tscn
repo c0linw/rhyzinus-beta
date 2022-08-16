@@ -54,7 +54,7 @@ margin_bottom = 91.68
 rect_pivot_offset = Vector2( 5, 270 )
 
 [node name="SongScore" parent="MarginContainer2" instance=ExtResource( 4 )]
-margin_right = 519.0
+margin_right = 662.0
 margin_bottom = 232.0
 rect_scale = Vector2( 1, 1 )
 
@@ -63,19 +63,19 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -103.0
-margin_top = -68.0
+margin_left = -153.0
+margin_top = -88.0
 custom_constants/margin_right = 16
 custom_constants/margin_bottom = 16
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer3"]
-margin_right = 88.0
-margin_bottom = 52.0
+margin_right = 137.0
+margin_bottom = 72.0
 custom_constants/separation = 32
 
 [node name="SongSelectButton" type="Button" parent="MarginContainer3/HBoxContainer"]
-margin_right = 88.0
-margin_bottom = 52.0
+margin_right = 137.0
+margin_bottom = 72.0
 theme = ExtResource( 6 )
 text = "Next"
 
