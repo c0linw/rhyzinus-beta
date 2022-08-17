@@ -421,7 +421,7 @@ func setup_input():
 		input_zones[i] = hitbox
 		$CanvasLayer.add_child(hitbox)
 		
-	var upper_lane_width = (upper_lane_right.x - upper_lane_left.x) / 4
+	upper_lane_width = (upper_lane_right.x - upper_lane_left.x) / 4
 	var upper_lane_top = upper_lane_left.y - upper_lane_width*0.67
 	for i in range(10, 14):
 		var hitbox: NoteHitbox = ObjNoteHitbox.instance()
@@ -435,7 +435,7 @@ func setup_input():
 	var left_hitbox: NoteHitbox = ObjNoteHitbox.instance()
 	var top_left = Vector2(lower_lane_left.x - lower_lane_width*1.5, upper_lane_left.y)
 	var bottom_right = Vector2(lower_lane_left.x + lower_lane_width*0.5, view_coords.y)
-	var center = Vector2(lower_lane_left.x - lower_lane_width*0.4, lower_lane_left.y + (upper_lane_left.y - lower_lane_left.y)*0.4)
+	var center = Vector2(lower_lane_left.x - lower_lane_width*0.25, lower_lane_left.y + (upper_lane_left.y - lower_lane_left.y)*0.3)
 	left_hitbox.set_points(top_left, bottom_right, center)
 	input_zones[0] = left_hitbox
 	$CanvasLayer.add_child(left_hitbox)
@@ -443,7 +443,7 @@ func setup_input():
 	var right_hitbox: NoteHitbox = ObjNoteHitbox.instance()
 	top_left = Vector2(lower_lane_right.x - lower_lane_width*0.5, upper_lane_right.y)
 	bottom_right = Vector2(lower_lane_right.x + lower_lane_width*1.5, view_coords.y)
-	center = Vector2(lower_lane_right.x + lower_lane_width*0.4, lower_lane_right.y + (upper_lane_right.y - lower_lane_right.y)*0.4)
+	center = Vector2(lower_lane_right.x + lower_lane_width*0.25, lower_lane_right.y + (upper_lane_right.y - lower_lane_right.y)*0.3)
 	right_hitbox.set_points(top_left, bottom_right, center)
 	input_zones[7] = right_hitbox
 	$CanvasLayer.add_child(right_hitbox)
@@ -610,9 +610,19 @@ func draw_judgement(data: Dictionary, lane: int):
 	$CanvasLayer.add_child(judgement)
 	
 	if play_effect:
-		var fx = ObjNoteEffect.instance()
-		fx.position = input_zones[lane].center
-		$CanvasLayer.add_child(fx)
+		play_effect(lane)
+		
+
+func play_effect(lane: int):
+	var fx = ObjNoteEffect.instance()
+	fx.position = input_zones[lane].center
+	var width = upper_lane_width if lane >= 10 else lower_lane_width
+	fx.scale_to_width(width * 1.5)
+	if lane == 0:
+		fx.rotation_degrees = 90
+	elif lane == 7:
+		fx.rotation_degrees = -90
+	$CanvasLayer.add_child(fx)
 		
 func delete_note(note: Note):
 	onscreen_notes.erase(note)
