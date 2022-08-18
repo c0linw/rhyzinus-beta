@@ -380,8 +380,6 @@ func setup_lane_effects():
 	for o in lane_effects:
 		if o != null:
 			o.visible = false
-			
-	var view_coords = get_viewport().size
 	
 	# hitboxes for lane effects on non-note tap
 	lane_zones[0] = $Lanes_lower/LaneArea0
@@ -394,9 +392,6 @@ func setup_lane_effects():
 	lane_zones[7] = $Lanes_lower/LaneArea7
 
 func setup_input():
-	var view_coords: Vector2
-	view_coords.x = max(ProjectSettings.get("display/window/size/width"), get_viewport().size.x)
-	view_coords.y = max(ProjectSettings.get("display/window/size/height"), get_viewport().size.y)
 	
 	input_zones.resize(14)
 	lane_zones.resize(14)
@@ -414,11 +409,13 @@ func setup_input():
 	lower_lane_width = (lower_lane_right.x - lower_lane_left.x) / 6
 	# upper limit for floor note will be 60% of the way to the upper notes
 	var lower_lane_top = lower_lane_left.y + (upper_lane_left.y - lower_lane_left.y) * 0.6
+	# lower limit is the same distance
+	var lower_lane_bottom = lower_lane_left.y - (upper_lane_left.y - lower_lane_left.y) * 0.6
 		
 	for i in range(1, 7):
 		var hitbox: NoteHitbox = ObjNoteHitbox.instance()
 		var top_left = Vector2(lower_lane_left.x + lower_lane_width*(i-1.5), lower_lane_top)
-		var bottom_right = Vector2(lower_lane_left.x + lower_lane_width*(i + 0.5), view_coords.y)
+		var bottom_right = Vector2(lower_lane_left.x + lower_lane_width*(i + 0.5), lower_lane_bottom)
 		var center = Vector2(lower_lane_left.x + lower_lane_width*(i-0.5), lower_lane_left.y)
 		hitbox.set_points(top_left, bottom_right, center)
 		input_zones[i] = hitbox
@@ -426,6 +423,7 @@ func setup_input():
 		
 	upper_lane_width = (upper_lane_right.x - upper_lane_left.x) / 4
 	var upper_lane_top = upper_lane_left.y - upper_lane_width*0.67
+	
 	for i in range(10, 14):
 		var hitbox: NoteHitbox = ObjNoteHitbox.instance()
 		var top_left = Vector2(upper_lane_left.x + upper_lane_width*(i-10.25), upper_lane_top)
@@ -437,7 +435,7 @@ func setup_input():
 		
 	var left_hitbox: NoteHitbox = ObjNoteHitbox.instance()
 	var top_left = Vector2(lower_lane_left.x - lower_lane_width*1.5, upper_lane_left.y)
-	var bottom_right = Vector2(lower_lane_left.x + lower_lane_width*0.5, view_coords.y)
+	var bottom_right = Vector2(lower_lane_left.x + lower_lane_width*0.5, lower_lane_bottom)
 	var center = Vector2(lower_lane_left.x - lower_lane_width*0.25, lower_lane_left.y + (upper_lane_left.y - lower_lane_left.y)*0.3)
 	left_hitbox.set_points(top_left, bottom_right, center)
 	input_zones[0] = left_hitbox
@@ -445,7 +443,7 @@ func setup_input():
 	
 	var right_hitbox: NoteHitbox = ObjNoteHitbox.instance()
 	top_left = Vector2(lower_lane_right.x - lower_lane_width*0.5, upper_lane_right.y)
-	bottom_right = Vector2(lower_lane_right.x + lower_lane_width*1.5, view_coords.y)
+	bottom_right = Vector2(lower_lane_right.x + lower_lane_width*1.5, lower_lane_bottom)
 	center = Vector2(lower_lane_right.x + lower_lane_width*0.25, lower_lane_right.y + (upper_lane_right.y - lower_lane_right.y)*0.3)
 	right_hitbox.set_points(top_left, bottom_right, center)
 	input_zones[7] = right_hitbox
