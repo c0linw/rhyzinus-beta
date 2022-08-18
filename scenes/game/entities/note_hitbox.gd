@@ -20,8 +20,6 @@ func set_points(upper_left: Vector2, lower_right: Vector2, center_point: Vector2
 	
 	$ReferenceRect.set_position(area.position)
 	$ReferenceRect.set_size(area.end - area.position)
-	
-	$ColorRect.set_position(center_point)
 
 func get_center() -> Vector2:
 	return center

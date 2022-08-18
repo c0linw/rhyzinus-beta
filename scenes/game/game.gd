@@ -394,7 +394,10 @@ func setup_lane_effects():
 	lane_zones[7] = $Lanes_lower/LaneArea7
 
 func setup_input():
-	var view_coords = Vector2(ProjectSettings.get("display/window/size/width"), ProjectSettings.get("display/window/size/height"))
+	var view_coords: Vector2
+	view_coords.x = max(ProjectSettings.get("display/window/size/width"), get_viewport().size.x)
+	view_coords.y = max(ProjectSettings.get("display/window/size/height"), get_viewport().size.y)
+	
 	input_zones.resize(14)
 	lane_zones.resize(14)
 	touch_bindings.resize(20)
