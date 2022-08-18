@@ -1,57 +1,50 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://fonts/new_dynamicfont.tres" type="DynamicFont" id=1]
 [ext_resource path="res://textures/result/score_rank_d.png" type="Texture" id=2]
-[ext_resource path="res://textures/ui/notecounts_border.png" type="Texture" id=3]
-[ext_resource path="res://scenes/results/notecount_flawless.tres" type="DynamicFont" id=4]
+[ext_resource path="res://fonts/m_plus_1p_regular_48.tres" type="DynamicFont" id=3]
+[ext_resource path="res://fonts/result_notecount_flawless.tres" type="DynamicFont" id=4]
 [ext_resource path="res://scenes/results/notecounts.gd" type="Script" id=5]
 [ext_resource path="res://textures/result/decrypted_trimmed.png" type="Texture" id=6]
 [ext_resource path="res://textures/result/corrupted_trimmed.png" type="Texture" id=7]
 [ext_resource path="res://textures/result/flawless_trimmed.png" type="Texture" id=8]
 [ext_resource path="res://textures/result/cracked_trimmed.png" type="Texture" id=9]
-[ext_resource path="res://fonts/MPLUS1p-Regular.ttf" type="DynamicFontData" id=10]
-
-[sub_resource type="DynamicFont" id=1]
-size = 32
-font_data = ExtResource( 10 )
+[ext_resource path="res://fonts/result_notecount.tres" type="DynamicFont" id=11]
 
 [node name="NoteCounts" type="MarginContainer"]
 anchor_top = 1.0
 anchor_bottom = 1.0
-margin_top = -287.0
-margin_right = 638.0
+margin_top = -344.0
+margin_right = 695.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_constants/margin_left = 0
 custom_constants/margin_bottom = 0
 script = ExtResource( 5 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
-[node name="Border" type="TextureRect" parent="."]
-margin_right = 638.0
-margin_bottom = 287.0
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+margin_right = 695.0
+margin_bottom = 344.0
+
+[node name="ColorRect" type="ColorRect" parent="VBoxContainer"]
+margin_right = 695.0
+margin_bottom = 6.0
+rect_min_size = Vector2( 0, 6 )
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 10.0
+margin_right = 695.0
+margin_bottom = 334.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-texture = ExtResource( 3 )
-expand = true
+custom_constants/separation = 32
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
-margin_right = 638.0
-margin_bottom = 287.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="NoteStats" type="MarginContainer" parent="HBoxContainer"]
-margin_right = 317.0
-margin_bottom = 287.0
+[node name="NoteStats" type="MarginContainer" parent="VBoxContainer/HBoxContainer"]
+margin_right = 299.0
+margin_bottom = 324.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_constants/margin_right = 16
@@ -62,15 +55,15 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="GridContainer" type="GridContainer" parent="HBoxContainer/NoteStats"]
+[node name="GridContainer" type="GridContainer" parent="VBoxContainer/HBoxContainer/NoteStats"]
 margin_left = 16.0
 margin_top = 16.0
-margin_right = 301.0
-margin_bottom = 271.0
+margin_right = 283.0
+margin_bottom = 308.0
 columns = 2
 
-[node name="FlawlessCount" type="Label" parent="HBoxContainer/NoteStats/GridContainer"]
-margin_right = 29.0
+[node name="FlawlessCount" type="Label" parent="VBoxContainer/HBoxContainer/NoteStats/GridContainer"]
+margin_right = 44.0
 margin_bottom = 72.0
 size_flags_vertical = 3
 custom_colors/font_color = Color( 0.678431, 0.960784, 1, 1 )
@@ -81,81 +74,81 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Flawless" type="TextureRect" parent="HBoxContainer/NoteStats/GridContainer"]
-margin_left = 33.0
-margin_right = 285.0
+[node name="Flawless" type="TextureRect" parent="VBoxContainer/HBoxContainer/NoteStats/GridContainer"]
+margin_left = 48.0
+margin_right = 267.0
 margin_bottom = 72.0
 size_flags_horizontal = 3
 texture = ExtResource( 8 )
 stretch_mode = 4
 
-[node name="DecryptedCount" type="Label" parent="HBoxContainer/NoteStats/GridContainer"]
+[node name="DecryptedCount" type="Label" parent="VBoxContainer/HBoxContainer/NoteStats/GridContainer"]
 margin_top = 76.0
-margin_right = 29.0
-margin_bottom = 133.0
+margin_right = 44.0
+margin_bottom = 145.0
 size_flags_vertical = 3
-custom_fonts/font = ExtResource( 1 )
+custom_fonts/font = ExtResource( 11 )
 text = "0 "
 valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Decrypted" type="TextureRect" parent="HBoxContainer/NoteStats/GridContainer"]
-margin_left = 33.0
+[node name="Decrypted" type="TextureRect" parent="VBoxContainer/HBoxContainer/NoteStats/GridContainer"]
+margin_left = 48.0
 margin_top = 76.0
-margin_right = 285.0
-margin_bottom = 133.0
+margin_right = 267.0
+margin_bottom = 145.0
 size_flags_horizontal = 3
 texture = ExtResource( 6 )
 stretch_mode = 4
 
-[node name="CrackedCount" type="Label" parent="HBoxContainer/NoteStats/GridContainer"]
-margin_top = 137.0
-margin_right = 29.0
-margin_bottom = 194.0
+[node name="CrackedCount" type="Label" parent="VBoxContainer/HBoxContainer/NoteStats/GridContainer"]
+margin_top = 149.0
+margin_right = 44.0
+margin_bottom = 218.0
 size_flags_vertical = 3
-custom_fonts/font = ExtResource( 1 )
+custom_fonts/font = ExtResource( 11 )
 text = "0 "
 valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Cracked" type="TextureRect" parent="HBoxContainer/NoteStats/GridContainer"]
-margin_left = 33.0
-margin_top = 137.0
-margin_right = 285.0
-margin_bottom = 194.0
+[node name="Cracked" type="TextureRect" parent="VBoxContainer/HBoxContainer/NoteStats/GridContainer"]
+margin_left = 48.0
+margin_top = 149.0
+margin_right = 267.0
+margin_bottom = 218.0
 size_flags_horizontal = 3
 texture = ExtResource( 9 )
 stretch_mode = 4
 
-[node name="CorruptedCount" type="Label" parent="HBoxContainer/NoteStats/GridContainer"]
-margin_top = 198.0
-margin_right = 29.0
-margin_bottom = 255.0
+[node name="CorruptedCount" type="Label" parent="VBoxContainer/HBoxContainer/NoteStats/GridContainer"]
+margin_top = 222.0
+margin_right = 44.0
+margin_bottom = 291.0
 size_flags_vertical = 3
-custom_fonts/font = ExtResource( 1 )
+custom_fonts/font = ExtResource( 11 )
 text = "0 "
 valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Corrupted" type="TextureRect" parent="HBoxContainer/NoteStats/GridContainer"]
-margin_left = 33.0
-margin_top = 198.0
-margin_right = 285.0
-margin_bottom = 255.0
+[node name="Corrupted" type="TextureRect" parent="VBoxContainer/HBoxContainer/NoteStats/GridContainer"]
+margin_left = 48.0
+margin_top = 222.0
+margin_right = 267.0
+margin_bottom = 291.0
 size_flags_horizontal = 3
 texture = ExtResource( 7 )
 stretch_mode = 4
 
-[node name="ScoreRank" type="MarginContainer" parent="HBoxContainer"]
-margin_left = 321.0
-margin_right = 638.0
-margin_bottom = 287.0
+[node name="ScoreRank" type="MarginContainer" parent="VBoxContainer/HBoxContainer"]
+margin_left = 331.0
+margin_right = 695.0
+margin_bottom = 324.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_constants/margin_right = 16
@@ -163,27 +156,27 @@ custom_constants/margin_top = 16
 custom_constants/margin_left = 16
 custom_constants/margin_bottom = 16
 
-[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/ScoreRank"]
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/ScoreRank"]
 margin_left = 16.0
 margin_top = 16.0
-margin_right = 301.0
-margin_bottom = 271.0
+margin_right = 348.0
+margin_bottom = 308.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.0
 
-[node name="AnalysisRank" type="Label" parent="HBoxContainer/ScoreRank/VBoxContainer"]
-margin_right = 285.0
-margin_bottom = 46.0
+[node name="AnalysisRank" type="Label" parent="VBoxContainer/HBoxContainer/ScoreRank/VBoxContainer"]
+margin_right = 332.0
+margin_bottom = 60.0
 size_flags_horizontal = 3
 size_flags_vertical = 1
-custom_fonts/font = SubResource( 1 )
+custom_fonts/font = ExtResource( 3 )
 text = "Analysis Rank:"
 
-[node name="ScoreTexture" type="TextureRect" parent="HBoxContainer/ScoreRank/VBoxContainer"]
-margin_top = 50.0
-margin_right = 285.0
-margin_bottom = 205.0
+[node name="ScoreTexture" type="TextureRect" parent="VBoxContainer/HBoxContainer/ScoreRank/VBoxContainer"]
+margin_top = 64.0
+margin_right = 332.0
+margin_bottom = 242.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 texture = ExtResource( 2 )
@@ -193,13 +186,19 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="AchievementLabel" type="Label" parent="HBoxContainer/ScoreRank/VBoxContainer"]
-margin_top = 209.0
-margin_right = 285.0
-margin_bottom = 255.0
+[node name="AchievementLabel" type="Label" parent="VBoxContainer/HBoxContainer/ScoreRank/VBoxContainer"]
+margin_top = 246.0
+margin_right = 332.0
+margin_bottom = 292.0
 size_flags_horizontal = 3
 size_flags_vertical = 1
 custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
 custom_fonts/font = ExtResource( 1 )
 text = "Clear"
 align = 2
+
+[node name="ColorRect2" type="ColorRect" parent="VBoxContainer"]
+margin_top = 338.0
+margin_right = 695.0
+margin_bottom = 344.0
+rect_min_size = Vector2( 0, 6 )

@@ -20,7 +20,7 @@ func _on_Game_note_judged(result):
 	if result["judgement"] == CRACKED or result["judgement"] == DECRYPTED:
 		if result["offset"] < 0:
 			text = "EARLY"
-			add_color_override("font_color", Color(0.1, 0.1, 1, 1))
+			add_color_override("font_color", Color(0.1, 1, 0.1, 1))
 		elif result["offset"] > 0:
 			text = "LATE"
 			add_color_override("font_color", Color(1, 0.1, 0.1, 1))

@@ -6,11 +6,11 @@
 [ext_resource path="res://fonts/MPLUS1p-Regular.ttf" type="DynamicFontData" id=4]
 
 [sub_resource type="DynamicFont" id=1]
-size = 40
+size = 56
 font_data = ExtResource( 4 )
 
 [sub_resource type="DynamicFont" id=2]
-size = 24
+size = 32
 font_data = ExtResource( 3 )
 
 [node name="SongListElement" type="TextureButton"]
@@ -32,41 +32,41 @@ mouse_filter = 2
 
 [node name="SongNameContainer" type="MarginContainer" parent="VBoxContainer"]
 margin_right = 458.0
-margin_bottom = 72.0
+margin_bottom = 95.0
 mouse_filter = 2
 custom_constants/margin_right = 16
 custom_constants/margin_top = 16
-custom_constants/margin_left = 24
+custom_constants/margin_left = 32
 custom_constants/margin_bottom = 0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="SongName" type="Label" parent="VBoxContainer/SongNameContainer"]
-margin_left = 24.0
+margin_left = 32.0
 margin_top = 16.0
 margin_right = 442.0
-margin_bottom = 72.0
+margin_bottom = 95.0
 custom_fonts/font = SubResource( 1 )
 text = "Song Name"
 
 [node name="ArtistContainer" type="MarginContainer" parent="VBoxContainer"]
-margin_top = 76.0
+margin_top = 99.0
 margin_right = 458.0
-margin_bottom = 110.0
+margin_bottom = 145.0
 mouse_filter = 2
 custom_constants/margin_right = 16
 custom_constants/margin_top = 0
-custom_constants/margin_left = 24
+custom_constants/margin_left = 32
 custom_constants/margin_bottom = 0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="ArtistName" type="Label" parent="VBoxContainer/ArtistContainer"]
-margin_left = 24.0
+margin_left = 32.0
 margin_right = 442.0
-margin_bottom = 34.0
+margin_bottom = 46.0
 custom_fonts/font = SubResource( 2 )
 text = "Artist"
 
