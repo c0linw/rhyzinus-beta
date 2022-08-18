@@ -25,21 +25,21 @@
 [ext_resource path="res://scenes/game/shader_cache.gd" type="Script" id=23]
 [ext_resource path="res://themes/theme1.tres" type="Theme" id=24]
 [ext_resource path="res://scenes/game/score_label.gd" type="Script" id=25]
+[ext_resource path="res://fonts/Dosis-Regular.ttf" type="DynamicFontData" id=26]
 [ext_resource path="res://fonts/MPLUS1p-Regular.ttf" type="DynamicFontData" id=27]
-[ext_resource path="res://songs/beta1/autothysis/jacket.png" type="Texture" id=29]
 
 [sub_resource type="DynamicFont" id=20]
 size = 64
 font_data = ExtResource( 8 )
 
+[sub_resource type="DynamicFont" id=21]
+font_data = ExtResource( 27 )
+
 [sub_resource type="DynamicFont" id=19]
 size = 64
 outline_size = 2
 outline_color = Color( 0, 0.0431373, 0.396078, 1 )
-font_data = ExtResource( 27 )
-
-[sub_resource type="DynamicFont" id=21]
-font_data = ExtResource( 8 )
+font_data = ExtResource( 26 )
 
 [sub_resource type="StyleBoxFlat" id=24]
 content_margin_left = 12.0
@@ -166,6 +166,9 @@ script = ExtResource( 11 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="FramerateCounter" type="Label" parent="CanvasLayer"]
 margin_left = 38.6252
@@ -176,28 +179,39 @@ custom_fonts/font = SubResource( 20 )
 align = 1
 valign = 1
 script = ExtResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="ComboCounter" type="Control" parent="CanvasLayer"]
-anchor_left = 0.5
-anchor_right = 0.5
-margin_left = -20.0
-margin_right = 20.0
-margin_bottom = 40.0
-mouse_filter = 2
+[node name="ComboIndicator" type="VBoxContainer" parent="CanvasLayer"]
+anchor_right = 1.0
+margin_bottom = 114.0
+custom_constants/separation = 0
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="ComboCounterLabel" type="Label" parent="CanvasLayer/ComboCounter"]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -68.0
-margin_top = -38.0
-margin_right = 68.0
-margin_bottom = 38.0
+[node name="TimingLabel" type="Label" parent="CanvasLayer/ComboIndicator"]
+margin_top = 4.0
+margin_right = 1920.0
+margin_bottom = 28.0
 grow_horizontal = 2
 rect_pivot_offset = Vector2( 200, 50 )
-size_flags_horizontal = 2
-size_flags_vertical = 2
+size_flags_horizontal = 3
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_fonts/font = SubResource( 21 )
+text = "LATE"
+align = 1
+valign = 1
+script = ExtResource( 2 )
+
+[node name="ComboCounterLabel" type="Label" parent="CanvasLayer/ComboIndicator"]
+margin_top = 28.0
+margin_right = 1920.0
+margin_bottom = 110.0
+grow_horizontal = 2
+rect_pivot_offset = Vector2( 200, 50 )
 custom_colors/font_color = Color( 0.584314, 0.882353, 1, 1 )
 custom_fonts/font = SubResource( 19 )
 text = "1234"
@@ -241,37 +255,6 @@ margin_right = 40.0
 margin_bottom = 40.0
 mouse_filter = 2
 
-[node name="TimingIndicator" type="Control" parent="CanvasLayer"]
-anchor_left = 0.5
-anchor_right = 0.5
-margin_left = -20.0
-margin_right = 20.0
-margin_bottom = 40.0
-mouse_filter = 2
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="TimingLabel" type="Label" parent="CanvasLayer/TimingIndicator"]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -17.0
-margin_top = -10.0
-margin_right = 17.0
-margin_bottom = 10.0
-grow_horizontal = 2
-rect_pivot_offset = Vector2( 200, 50 )
-size_flags_horizontal = 2
-size_flags_vertical = 2
-custom_colors/font_color = Color( 1, 1, 1, 1 )
-custom_fonts/font = SubResource( 21 )
-text = "LATE"
-align = 1
-valign = 1
-script = ExtResource( 2 )
-
 [node name="InfoContainer" type="MarginContainer" parent="CanvasLayer"]
 anchor_left = 1.0
 anchor_right = 1.0
@@ -279,6 +262,9 @@ margin_left = -218.0
 margin_bottom = 122.0
 grow_horizontal = 0
 custom_constants/margin_top = 16
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/InfoContainer"]
 margin_top = 16.0
@@ -301,7 +287,6 @@ margin_bottom = 131.0
 rect_min_size = Vector2( 128, 128 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
-texture = ExtResource( 29 )
 expand = true
 stretch_mode = 6
 
@@ -342,7 +327,7 @@ margin_bottom = 51.0
 grow_horizontal = 0
 rect_min_size = Vector2( 160, 0 )
 custom_fonts/font = SubResource( 27 )
-text = "0000000"
+text = "0"
 align = 2
 script = ExtResource( 25 )
 
@@ -589,8 +574,8 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 2, 0 )
 
 [node name="Note_Tap_Upper" parent="ShaderCache" instance=ExtResource( 20 )]
 
-[connection signal="note_judged" from="." to="CanvasLayer/ComboCounter/ComboCounterLabel" method="_on_Game_note_judged"]
-[connection signal="note_judged" from="." to="CanvasLayer/TimingIndicator/TimingLabel" method="_on_Game_note_judged"]
+[connection signal="note_judged" from="." to="CanvasLayer/ComboIndicator/ComboCounterLabel" method="_on_Game_note_judged"]
+[connection signal="note_judged" from="." to="CanvasLayer/ComboIndicator/TimingLabel" method="_on_Game_note_judged"]
 [connection signal="note_judged" from="." to="result_data" method="_on_Game_note_judged"]
 [connection signal="pause" from="." to="Conductor" method="_on_Game_pause"]
 [connection signal="pressed" from="CanvasLayer/PauseContainer/PauseButton" to="CanvasLayer/PauseContainer/PauseButton" method="_on_PauseButton_pressed"]
@@ -601,5 +586,5 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 2, 0 )
 [connection signal="pressed" from="CanvasLayer/PausePopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/RetryButton" to="CanvasLayer/PausePopup" method="_on_RetryButton_pressed"]
 [connection signal="pressed" from="CanvasLayer/PausePopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/QuitButton" to="CanvasLayer/PausePopup" method="_on_QuitButton_pressed"]
 [connection signal="finished" from="Conductor" to="." method="_on_Conductor_finished"]
-[connection signal="finished" from="Conductor" to="CanvasLayer/ComboCounter/ComboCounterLabel" method="_on_Conductor_finished"]
+[connection signal="finished" from="Conductor" to="CanvasLayer/ComboIndicator/ComboCounterLabel" method="_on_Conductor_finished"]
 [connection signal="score_updated" from="result_data" to="CanvasLayer/InfoContainer/PanelContainer/HBoxContainer/VBoxContainer/HBoxContainer/ScoreLabel" method="_on_result_data_score_updated"]

@@ -466,16 +466,16 @@ func setup_judgement_textures():
 func setup_combo_counter():
 	var fontSize = (lower_lane_left.y - upper_lane_left.y) * 0.37
 	var outline = fontSize * 0.02
-	var comboPosY = upper_lane_left.y + (lower_lane_left.y - upper_lane_left.y)*0.35
-	$CanvasLayer/ComboCounter/ComboCounterLabel.get_font("font").size = fontSize
-	$CanvasLayer/ComboCounter.margin_top = comboPosY
+	var comboPosY = upper_lane_left.y + (lower_lane_left.y - upper_lane_left.y)*0.2
+	
+	var label = find_node("ComboCounterLabel")
+	label.get_font("font").size = fontSize
+	label.get_font("font").extra_spacing_top = fontSize * -0.2
+	find_node("ComboIndicator").margin_top = comboPosY
 	
 func setup_timing_indicator():
-	var fontSize = (lower_lane_left.y - upper_lane_left.y) * 0.13
-	var outline = fontSize * 0.02
-	var timingPosY = $CanvasLayer/ComboCounter.get_global_position().y - get_viewport().size.y * 0.1
-	$CanvasLayer/TimingIndicator/TimingLabel.get_font("font").size = fontSize
-	$CanvasLayer/TimingIndicator.margin_top = timingPosY
+	var fontSize = (lower_lane_left.y - upper_lane_left.y) * 0.1
+	find_node("TimingLabel").get_font("font").size = fontSize
 	
 
 func _input(event):
