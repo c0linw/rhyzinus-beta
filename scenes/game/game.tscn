@@ -230,6 +230,9 @@ custom_constants/margin_right = 16
 custom_constants/margin_top = 16
 custom_constants/margin_left = 16
 custom_constants/margin_bottom = 16
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="PauseButton" type="TextureButton" parent="CanvasLayer/PauseContainer"]
 margin_left = 16.0
@@ -258,8 +261,8 @@ mouse_filter = 2
 [node name="InfoContainer" type="MarginContainer" parent="CanvasLayer"]
 anchor_left = 1.0
 anchor_right = 1.0
-margin_left = -218.0
-margin_bottom = 122.0
+margin_left = -444.0
+margin_bottom = 171.0
 grow_horizontal = 0
 custom_constants/margin_top = 16
 __meta__ = {
@@ -313,6 +316,7 @@ text = "Alpha 1"
 margin_top = 80.0
 margin_right = 284.0
 margin_bottom = 131.0
+alignment = 2
 
 [node name="ScorePrefixLabel" type="Label" parent="CanvasLayer/InfoContainer/PanelContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
 margin_right = 120.0
@@ -574,8 +578,8 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 2, 0 )
 
 [node name="Note_Tap_Upper" parent="ShaderCache" instance=ExtResource( 20 )]
 
-[connection signal="note_judged" from="." to="CanvasLayer/ComboIndicator/ComboCounterLabel" method="_on_Game_note_judged"]
 [connection signal="note_judged" from="." to="CanvasLayer/ComboIndicator/TimingLabel" method="_on_Game_note_judged"]
+[connection signal="note_judged" from="." to="CanvasLayer/ComboIndicator/ComboCounterLabel" method="_on_Game_note_judged"]
 [connection signal="note_judged" from="." to="result_data" method="_on_Game_note_judged"]
 [connection signal="pause" from="." to="Conductor" method="_on_Game_pause"]
 [connection signal="pressed" from="CanvasLayer/PauseContainer/PauseButton" to="CanvasLayer/PauseContainer/PauseButton" method="_on_PauseButton_pressed"]
