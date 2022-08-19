@@ -656,7 +656,7 @@ func _on_Conductor_finished():
 		print("%s: %d" % [key, judgement_sources[key]])
 	var data: Dictionary = {
 		"result_data": $result_data.results, 
-		"best_combo": $CanvasLayer/ComboCounter/ComboCounterLabel.best_combo,
+		"best_combo": find_node("ComboCounterLabel").best_combo,
 		"score": $result_data.score,
 		"song_title": SceneSwitcher.get_param("song_title"),
 		"difficulty": SceneSwitcher.get_param("difficulty"),
@@ -701,7 +701,7 @@ func _on_PausePopup_restart():
 	
 	######## RESET STUFF
 	$result_data.reset()
-	$CanvasLayer/ComboCounter/ComboCounterLabel.reset()
+	find_node("ComboCounterLabel").reset()
 
 	yield(get_tree(), "idle_frame")
 	set_process(true)
