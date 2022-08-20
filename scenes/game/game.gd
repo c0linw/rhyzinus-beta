@@ -652,8 +652,8 @@ func pop_nearest_note(input: InputEvent, candidates: Array):
 
 func _on_Conductor_finished():
 	$Conductor.stop()
-	for key in judgement_sources:
-		print("%s: %d" % [key, judgement_sources[key]])
+	#for key in judgement_sources:
+		#print("%s: %d" % [key, judgement_sources[key]])
 	var data: Dictionary = {
 		"result_data": $result_data.results, 
 		"best_combo": find_node("ComboCounterLabel").best_combo,

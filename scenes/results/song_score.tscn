@@ -16,6 +16,9 @@ rect_scale = Vector2( 1, 0.997732 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 margin_right = 874.0

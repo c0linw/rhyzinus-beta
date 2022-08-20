@@ -20,5 +20,4 @@ func set_score(score: int):
 	find_node("SongScore").text = "Score: " + str(score)
 
 func set_song_jacket(jacket_path: String):
-	print("set_song_jacket called! jacket_path = ", jacket_path)
 	find_node("SongJacket").texture = load(jacket_path)
