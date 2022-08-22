@@ -15,7 +15,7 @@ func judge(event_time: float):
 	pass # swipe judgement is performed in game.gd's process() instead
 
 func can_judge(event_time: float):
-	return not activated and event_time >= time-early_cracked and event_time <= time+late_cracked
+	return not activated and event_time >= time-early_swipe and event_time <= time+late_swipe
 
 func render(song_chart_position: float, lane_depth: float, base_note_screen_time: float):
 	if lane > 0 && lane < 7:

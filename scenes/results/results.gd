@@ -26,9 +26,8 @@ func _ready():
 	if song_title:
 		$MarginContainer2/SongScore.set_song_name(song_title)
 		
-	var difficulty = SceneSwitcher.get_param("difficulty")
-	if difficulty:
-		$MarginContainer2/SongScore.set_song_difficulty(difficulty)
+	if SceneSwitcher.get_param("diff_name") != null && SceneSwitcher.get_param("diff_level") != null:
+		$MarginContainer2/SongScore.set_song_difficulty("%s %s" % [SceneSwitcher.get_param("diff_name"), SceneSwitcher.get_param("diff_level")])
 		
 	var jacket_path = SceneSwitcher.get_param("jacket_path")
 	if jacket_path:
