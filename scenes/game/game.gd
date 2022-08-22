@@ -435,14 +435,14 @@ func setup_input():
 		
 	var left_hitbox: NoteHitbox = ObjNoteHitbox.instance()
 	var top_left = Vector2(lower_lane_left.x - lower_lane_width*1.5, upper_lane_left.y)
-	var bottom_right = Vector2(lower_lane_left.x + lower_lane_width*0.5, lower_lane_bottom)
+	var bottom_right = Vector2(lower_lane_left.x + lower_lane_width, lower_lane_bottom)
 	var center = Vector2(lower_lane_left.x - lower_lane_width*0.25, lower_lane_left.y + (upper_lane_left.y - lower_lane_left.y)*0.3)
 	left_hitbox.set_points(top_left, bottom_right, center)
 	input_zones[0] = left_hitbox
 	$CanvasLayer.add_child(left_hitbox)
 	
 	var right_hitbox: NoteHitbox = ObjNoteHitbox.instance()
-	top_left = Vector2(lower_lane_right.x - lower_lane_width*0.5, upper_lane_right.y)
+	top_left = Vector2(lower_lane_right.x - lower_lane_width, upper_lane_right.y)
 	bottom_right = Vector2(lower_lane_right.x + lower_lane_width*1.5, lower_lane_bottom)
 	center = Vector2(lower_lane_right.x + lower_lane_width*0.25, lower_lane_right.y + (upper_lane_right.y - lower_lane_right.y)*0.3)
 	right_hitbox.set_points(top_left, bottom_right, center)
@@ -553,38 +553,39 @@ func _input(event):
 		touch_bindings[event.index] = event # updates position
 		var event_time = $Conductor.song_position - input_offset
 		var candidate_notes: Array # use this to improve hit registration for notes with overlapping hitboxes
-		var first_note_time = null
 		# multiple notes can be candidates if they have the same timestamp and have a hitbox that covers the touch
 		for note in onscreen_notes:
-			if note.is_in_group("swipes") and note.can_judge(event_time):
-				if input_zones[note.lane].area.has_point(event.position):
-					if first_note_time == null:
-						first_note_time = note.time
-					elif note.time > first_note_time:
-						break
+			if note.can_judge(event_time):
+				if note.is_in_group("swipes") and input_zones[note.lane].area.has_point(event.position):
 					candidate_notes.append(note)
 			elif note.time > event_time:
 				break
 		
-		match len(candidate_notes):
-			0:
-				return
-			1:
-				var note = candidate_notes[0]
-				if note.start_position == null:
-					note.start_position = event.position
-				elif event.position.distance_to(note.start_position) > swipe_threshold_px:
-					note.activated = true
-				return
-			_:
-				# tiebreaker for notes with same time and overlapping zone
-				var closest_note = pop_nearest_note(event, candidate_notes)
-				if closest_note != null:
-					if closest_note.start_position == null:
-						closest_note.start_position = event.position
-					elif event.position.distance_to(closest_note.start_position) > swipe_threshold_px:
-						closest_note.activated = true
-				return
+#		match len(candidate_notes):
+#			0:
+#				return
+#			1:
+#				var note = candidate_notes[0]
+#				if note.start_position == null:
+#					note.start_position = event.position
+#				elif event.position.distance_to(note.start_position) > swipe_threshold_px:
+#					note.activated = true
+#				return
+#			_:
+#				# tiebreaker for notes with same time and overlapping zone
+#				var closest_note = pop_nearest_note(event, candidate_notes)
+#				if closest_note != null:
+#					if closest_note.start_position == null:
+#						closest_note.start_position = event.position
+#					elif event.position.distance_to(closest_note.start_position) > swipe_threshold_px:
+#						closest_note.activated = true
+#				return
+	
+		for note in candidate_notes:
+			if note.start_position == null:
+				note.start_position = event.position
+			elif event.position.distance_to(note.start_position) > swipe_threshold_px:
+				note.activated = true
 		return
 		
 func draw_judgement(data: Dictionary, lane: int):
@@ -659,7 +660,8 @@ func _on_Conductor_finished():
 		"best_combo": find_node("ComboCounterLabel").best_combo,
 		"score": $result_data.score,
 		"song_title": SceneSwitcher.get_param("song_title"),
-		"difficulty": SceneSwitcher.get_param("difficulty"),
+		"diff_name": SceneSwitcher.get_param("diff_name"),
+		"diff_level": SceneSwitcher.get_param("diff_level"),
 		"jacket_path": SceneSwitcher.get_param("jacket_path")
 		}
 	SceneSwitcher.change_scene("res://scenes/results/results.tscn", data)
