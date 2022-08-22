@@ -16,9 +16,9 @@ func render(song_chart_position: float, lane_depth: float, base_note_screen_time
 		
 	if held:
 		head = song_chart_position
-		$Body.get_surface_material(0).albedo_color = Color(1,0.93,0,0.7)
+		$Body.get_surface_material(0).albedo_color = Color(1,1,1,0.7)
 	else:
-		$Body.get_surface_material(0).albedo_color = Color(1,0.93,0,0.5)
+		$Body.get_surface_material(0).albedo_color = Color(1,1,1,0.5)
 		
 	if lane == 0:
 		translation = Vector3(-0.625,0,-lane_depth*(head-song_chart_position)/base_note_screen_time)
