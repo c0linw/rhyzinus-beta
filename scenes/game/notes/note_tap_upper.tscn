@@ -5,14 +5,14 @@
 
 [sub_resource type="SpatialMaterial" id=1]
 flags_transparent = true
-albedo_color = Color( 0.25098, 0.498039, 1.30196, 0.705882 )
+albedo_color = Color( 0.376471, 0.564706, 1, 0.705882 )
 
 [sub_resource type="PlaneMesh" id=2]
 size = Vector2( 1, 1 )
 
 [sub_resource type="SpatialMaterial" id=5]
 flags_transparent = true
-albedo_color = Color( 0.203922, 0.392157, 1.30196, 0.784314 )
+albedo_color = Color( 0.25098, 0.501961, 1, 0.784314 )
 
 [sub_resource type="PlaneMesh" id=4]
 size = Vector2( 1, 1 )
