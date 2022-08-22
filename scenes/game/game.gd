@@ -60,7 +60,7 @@ var lane_zones: Array = []
 var touch_bindings: Array = [] # keeps track of touch input events
 var input_offset: float = 0.0
 
-const SWIPE_THRESHOLD_LANES: float = 0.5 # how many lanes of distance are required to activate a swipe
+const SWIPE_THRESHOLD_LANES: float = 0.25 # how many lanes of distance are required to activate a swipe
 var swipe_threshold_px: float = 0 # set this value after lane dimensions are calculated
 
 var judgement_sources: Dictionary = {
