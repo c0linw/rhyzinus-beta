@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=2]
 
 [sub_resource type="SpatialMaterial" id=1]
-albedo_color = Color( 0.133333, 0.247059, 1, 1 )
+albedo_color = Color( 0.12549, 0.247059, 0.870588, 1 )
 
 [sub_resource type="CubeMesh" id=2]
 material = SubResource( 1 )

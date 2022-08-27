@@ -542,7 +542,7 @@ __meta__ = {
 }
 
 [node name="Gameplay_bg" type="TextureRect" parent="Control"]
-self_modulate = Color( 0.247059, 0.247059, 0.247059, 1 )
+self_modulate = Color( 0.188235, 0.188235, 0.188235, 1 )
 show_behind_parent = true
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -550,6 +550,9 @@ mouse_filter = 2
 texture = ExtResource( 7 )
 expand = true
 stretch_mode = 7
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Conductor" parent="." instance=ExtResource( 4 )]
 
