@@ -119,36 +119,27 @@ func process_objects_for_gameplay():
 				# increment beat by using timing point info
 				# if this new beat is later than the "next" bpm marker, use that instead, and set the current index to that marker's index
 			var curr_beat_length: float = processed_timing_points[curr_timing_index]["beat_length"]
-			# the initial tick is the first one after the hold's start
-			var curr_tick: float = new_note["time"] + curr_beat_length
-			# this tick is either start + beat_length, or the time of the next bpm change, whichever comes first
-			if curr_timing_index < processed_timing_points.size() - 1:
-				while curr_timing_index < processed_timing_points.size() - 1:
-					curr_timing_index += 1
-					if processed_timing_points[curr_timing_index]["time"] >= curr_tick + curr_beat_length:
-						break
-					if processed_timing_points[curr_timing_index]["type"] != "bpm":
-						continue
-					curr_beat_length = processed_timing_points[curr_timing_index]["beat_length"]
-					curr_tick = processed_timing_points[curr_timing_index]["time"]
+			var curr_tick: float = new_note["time"]
 
 			# generate ticks until a leniency window before the end
 			while curr_tick < new_note["end_time"] - 0.120:
-				new_note["ticks"].append(curr_tick)
-				notecount += 1
+				var tick_valid := false
 				var next_tick: float = curr_tick + curr_beat_length
 				# tick is either curr + beat_length, or the time of the next bpm change, whichever comes first
-				if curr_timing_index < processed_timing_points.size() - 1:
-					while curr_timing_index < processed_timing_points.size() - 1:
-						curr_timing_index += 1
-						if processed_timing_points[curr_timing_index]["time"] >= next_tick:
-							break
-						if processed_timing_points[curr_timing_index]["type"] != "bpm":
-							continue
-						curr_beat_length = processed_timing_points[curr_timing_index]["beat_length"]
-						next_tick = processed_timing_points[curr_timing_index]["time"]
-				curr_tick = next_tick
-			
+				if curr_timing_index+1 < len(processed_timing_points) and next_tick >= processed_timing_points[curr_timing_index+1]["time"]:
+					if processed_timing_points[curr_timing_index+1]["type"] == "bpm":
+						curr_tick = processed_timing_points[curr_timing_index+1]["time"]
+						curr_beat_length = processed_timing_points[curr_timing_index+1]["beat_length"]
+						tick_valid = true
+					curr_timing_index += 1
+				else: 
+					curr_tick = next_tick
+					tick_valid = true
+				
+				if tick_valid:
+					new_note["ticks"].append(curr_tick)
+					notecount += 1
+					
 			processed_notes_with_holds.append(new_note)
 		elif note["type"] == "hold_end":
 			notecount += 1
