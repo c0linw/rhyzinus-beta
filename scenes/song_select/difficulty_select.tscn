@@ -19,6 +19,9 @@ size_flags_vertical = 3
 texture_normal = ExtResource( 3 )
 expand = true
 script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 margin_right = 40.0
