@@ -10,8 +10,12 @@ var data: Dictionary = {
 
 var focused_tex = preload("res://textures/ui/song_border_selected.png")
 var normal_tex = preload("res://textures/ui/song_border.png")
+var selected: bool = false
+var anim_names: Array = ["glow_green", "glow_orange", "glow_red", "glow_purple"]
+var diff_colors: Array = [Color(0.31, 1, 0.31), Color(1, 0.67, 0.125), Color(1, 0.25, 0.25), Color(0.78, 0.25, 1)]
+var curr_anim: String = "glow_none"
 
-signal song_selected(song_data)
+signal song_selected(instance, song_data)
 signal play_song(song_data)
 
 # Called when the node enters the scene tree for the first time.
@@ -23,26 +27,22 @@ func setup(song_data: Dictionary):
 	data = song_data
 
 func _on_SongListElement_pressed():
-	if get_focus_owner() == self:
+	if selected:
 		emit_signal("play_song", data)
 		return
-	set_focus_mode(Control.FOCUS_ALL)
-	grab_focus()
+	set_selected()
 
 
-func _on_SongListElement_focus_entered():
-	set_normal_texture(focused_tex)
-	$VBoxContainer/SongNameContainer.add_constant_override("margin_left", 96)
-	$VBoxContainer/SongNameContainer/SongName.add_color_override("font_color", Color(0, 0, 0, 1))
-	$VBoxContainer/ArtistContainer.add_constant_override("margin_left", 136)
-	$VBoxContainer/ArtistContainer/ArtistName.add_color_override("font_color", Color(0, 0, 0, 1))
-	emit_signal("song_selected", data)
+func set_selected():
+	selected = true
+	find_node("AnimationPlayer").play(curr_anim)
+	emit_signal("song_selected", self, data)
+
+func set_unselected():
+	selected = false
+	find_node("AnimationPlayer").play("glow_none")
 	
-	
-func _on_SongListElement_focus_exited():
-	set_focus_mode(Control.FOCUS_NONE)
-	$VBoxContainer/SongNameContainer.add_constant_override("margin_left", 32)
-	$VBoxContainer/SongNameContainer/SongName.add_color_override("font_color", Color(1, 1, 1, 1))
-	$VBoxContainer/ArtistContainer.add_constant_override("margin_left", 32)
-	$VBoxContainer/ArtistContainer/ArtistName.add_color_override("font_color", Color(1, 1, 1, 1))
-	set_normal_texture(normal_tex)
+func _on_SongSelect_difficulty_set(difficulty):
+	curr_anim = anim_names[difficulty]
+	if $AnimationPlayer.current_animation != "glow_none" and $AnimationPlayer.current_animation != "":
+		$AnimationPlayer.play(curr_anim)

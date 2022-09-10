@@ -1,43 +1,171 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=11 format=2]
 
-[ext_resource path="res://fonts/MPLUS1p-Regular.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://fonts/m_plus_1p_regular_48.tres" type="DynamicFont" id=1]
 [ext_resource path="res://scenes/song_select/difficulty_select.gd" type="Script" id=2]
-[ext_resource path="res://textures/ui/diff_select_alpha.png" type="Texture" id=3]
+[ext_resource path="res://textures/ui/diff_select_panel.png" type="Texture" id=3]
+[ext_resource path="res://textures/ui/diff_select_glow_bloom.png" type="Texture" id=4]
+[ext_resource path="res://textures/ui/diff_select_glow_core.png" type="Texture" id=5]
 
-[sub_resource type="DynamicFont" id=1]
-resource_local_to_scene = true
-size = 32
-font_data = ExtResource( 1 )
+[sub_resource type="Animation" id=1]
+resource_name = "glow_green"
+length = 2.0
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("GlowEffect/GlowEffectBloom:self_modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.67, 1.33, 2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 0.313726, 1, 0.313726, 1 ), Color( 0.313726, 1, 0.313726, 1 ), Color( 0.313726, 1, 0.313726, 0.313726 ), Color( 0.313726, 1, 0.313726, 1 ) ]
+}
+
+[sub_resource type="Animation" id=2]
+resource_name = "glow_none"
+tracks/0/type = "value"
+tracks/0/path = NodePath("GlowEffect/GlowEffectBloom:self_modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0.1 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ) ]
+}
+
+[sub_resource type="Animation" id=3]
+resource_name = "glow_orange"
+length = 2.0
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("GlowEffect/GlowEffectBloom:self_modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.67, 1.33, 2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 0.666667, 0.12549, 1 ), Color( 1, 0.666667, 0.12549, 1 ), Color( 1, 0.666667, 0.12549, 0.313726 ), Color( 1, 0.666667, 0.12549, 1 ) ]
+}
+
+[sub_resource type="Animation" id=4]
+resource_name = "glow_purple"
+length = 2.0
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("GlowEffect/GlowEffectBloom:self_modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.67, 1.33, 2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 0.784314, 0.25098, 1, 1 ), Color( 0.784314, 0.25098, 1, 1 ), Color( 0.784314, 0.25098, 1, 0.313726 ), Color( 0.784314, 0.25098, 1, 1 ) ]
+}
+
+[sub_resource type="Animation" id=5]
+resource_name = "glow_red"
+length = 2.0
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("GlowEffect/GlowEffectBloom:self_modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.67, 1.33, 2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 0.25098, 0.25098, 1 ), Color( 1, 0.25098, 0.25098, 1 ), Color( 1, 0.25098, 0.25098, 0.313726 ), Color( 1, 0.25098, 0.25098, 1 ) ]
+}
 
 [node name="DifficultyButton" type="TextureButton"]
-margin_right = 40.0
-margin_bottom = 40.0
-rect_min_size = Vector2( 216, 64 )
 focus_mode = 0
 size_flags_horizontal = 0
 size_flags_vertical = 3
 texture_normal = ExtResource( 3 )
-expand = true
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
-margin_right = 40.0
-margin_bottom = 40.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
 mouse_filter = 2
-custom_constants/margin_right = 16
-custom_constants/margin_top = 8
-custom_constants/margin_left = 8
-custom_constants/margin_bottom = 8
+size_flags_horizontal = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Label" type="Label" parent="MarginContainer"]
-margin_left = 8.0
-margin_top = 8.0
-margin_right = 291.0
-margin_bottom = 54.0
-custom_fonts/font = SubResource( 1 )
-text = "Difficulty Number"
+margin_top = 2.0
+margin_right = 128.0
+margin_bottom = 62.0
+grow_horizontal = 2
+custom_fonts/font = ExtResource( 1 )
+text = "0"
+align = 1
+valign = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/glow_green = SubResource( 1 )
+anims/glow_none = SubResource( 2 )
+anims/glow_orange = SubResource( 3 )
+anims/glow_purple = SubResource( 4 )
+anims/glow_red = SubResource( 5 )
+
+[node name="GlowEffect" type="Control" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -20.0
+margin_top = -20.0
+margin_right = 20.0
+margin_bottom = 20.0
+mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GlowEffectBloom" type="TextureRect" parent="GlowEffect"]
+self_modulate = Color( 1, 1, 1, 0 )
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -90.0
+margin_top = -58.0
+margin_right = 90.0
+margin_bottom = 58.0
+mouse_filter = 2
+texture = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GlowEffectCore" type="TextureRect" parent="GlowEffect"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -90.0
+margin_top = -58.0
+margin_right = 90.0
+margin_bottom = 58.0
+mouse_filter = 2
+texture = ExtResource( 5 )
 
 [connection signal="pressed" from="." to="." method="_on_DifficultyButton_pressed"]
