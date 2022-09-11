@@ -9,7 +9,7 @@
 [ext_resource path="res://scenes/song_select/song_select_scroll.gd" type="Script" id=7]
 [ext_resource path="res://themes/theme1.tres" type="Theme" id=8]
 [ext_resource path="res://songs/beta1/neutralizeptbmix/jacket.png" type="Texture" id=9]
-[ext_resource path="res://textures/ui/song_border_selected.png" type="Texture" id=11]
+[ext_resource path="res://textures/ui/pack_select.png" type="Texture" id=10]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 1, 1, 1, 1 )
@@ -61,7 +61,7 @@ margin_bottom = 759.0
 size_flags_horizontal = 0
 
 [node name="Gameplay_bg" type="TextureRect" parent="."]
-self_modulate = Color( 0.392157, 0.392157, 0.392157, 1 )
+self_modulate = Color( 0.196078, 0.196078, 0.203922, 1 )
 show_behind_parent = true
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -82,18 +82,19 @@ grow_horizontal = 0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_constants/separation = 0
+alignment = 2
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="PackSelectButton" type="TextureButton" parent="VBoxContainer"]
 self_modulate = Color( 0.807843, 0.807843, 0.807843, 1 )
-margin_right = 648.0
-margin_bottom = 130.0
-grow_horizontal = 0
-rect_min_size = Vector2( 648, 130 )
-size_flags_horizontal = 0
-texture_normal = ExtResource( 11 )
+margin_left = 24.0
+margin_right = 864.0
+margin_bottom = 128.0
+rect_min_size = Vector2( 840, 128 )
+size_flags_horizontal = 8
+texture_normal = ExtResource( 10 )
 expand = true
 stretch_mode = 5
 
@@ -105,9 +106,9 @@ __meta__ = {
 }
 
 [node name="Label" type="Label" parent="VBoxContainer/PackSelectButton/MarginContainer"]
-margin_top = 14.0
-margin_right = 648.0
-margin_bottom = 116.0
+margin_top = 13.0
+margin_right = 840.0
+margin_bottom = 115.0
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_fonts/font = ExtResource( 2 )
 text = "Main Story 1"
@@ -118,7 +119,7 @@ __meta__ = {
 }
 
 [node name="SongSelectScroll" type="ScrollContainer" parent="VBoxContainer"]
-margin_top = 130.0
+margin_top = 128.0
 margin_right = 864.0
 margin_bottom = 936.0
 grow_horizontal = 0
@@ -135,7 +136,7 @@ __meta__ = {
 
 [node name="SongListContainer" type="VBoxContainer" parent="VBoxContainer/SongSelectScroll"]
 margin_right = 864.0
-margin_bottom = 806.0
+margin_bottom = 808.0
 grow_horizontal = 0
 size_flags_horizontal = 3
 size_flags_vertical = 3
