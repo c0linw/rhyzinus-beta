@@ -5,7 +5,7 @@ var data: Dictionary = {
 	"artist": "",
 	"bpm": "",
 	"path": "",
-	"levels": ""
+	"levels": []
 }
 
 var focused_tex = preload("res://textures/ui/song_border_selected.png")
@@ -20,8 +20,8 @@ signal play_song(song_data)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	$VBoxContainer/SongNameContainer/SongName.text = data.title
-	$VBoxContainer/ArtistContainer/ArtistName.text = data.artist
+	find_node("SongName").text = data.title
+	find_node("ArtistName").text = data.artist
 
 func setup(song_data: Dictionary):
 	data = song_data
@@ -31,7 +31,6 @@ func _on_SongListElement_pressed():
 		emit_signal("play_song", data)
 		return
 	set_selected()
-
 
 func set_selected():
 	selected = true
@@ -46,3 +45,7 @@ func _on_SongSelect_difficulty_set(difficulty):
 	curr_anim = anim_names[difficulty]
 	if $AnimationPlayer.current_animation != "glow_none" and $AnimationPlayer.current_animation != "":
 		$AnimationPlayer.play(curr_anim)
+		
+	var diffnumber = find_node("DiffNumber")
+	diffnumber.text = str(int(data.levels[difficulty]))
+	diffnumber.add_color_override("font_color", diff_colors[difficulty])
