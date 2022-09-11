@@ -1,4 +1,4 @@
-extends TextureButton
+extends MarginContainer
 
 var data: Dictionary = {
 	"title": "",
@@ -8,7 +8,7 @@ var data: Dictionary = {
 	"levels": []
 }
 
-var focused_tex = preload("res://textures/ui/song_border_selected.png")
+var extended_tex = preload("res://textures/ui/song_border_extended.png")
 var normal_tex = preload("res://textures/ui/song_border.png")
 var selected: bool = false
 var anim_names: Array = ["glow_green", "glow_orange", "glow_red", "glow_purple"]
@@ -26,26 +26,34 @@ func _ready():
 func setup(song_data: Dictionary):
 	data = song_data
 
-func _on_SongListElement_pressed():
-	if selected:
-		emit_signal("play_song", data)
-		return
-	set_selected()
-
 func set_selected():
 	selected = true
+	$TextureButton.texture_normal = extended_tex
+	var bloom = find_node("GlowEffectBloom").get_canvas_item()
+	VisualServer.canvas_item_set_z_index(bloom, 100)
 	find_node("AnimationPlayer").play(curr_anim)
 	emit_signal("song_selected", self, data)
 
 func set_unselected():
 	selected = false
+	$TextureButton.texture_normal = normal_tex
+	var bloom = find_node("GlowEffectBloom").get_canvas_item()
+	VisualServer.canvas_item_set_z_index(bloom, 0)
 	find_node("AnimationPlayer").play("glow_none")
 	
 func _on_SongSelect_difficulty_set(difficulty):
 	curr_anim = anim_names[difficulty]
-	if $AnimationPlayer.current_animation != "glow_none" and $AnimationPlayer.current_animation != "":
-		$AnimationPlayer.play(curr_anim)
+	var animplayer = find_node("AnimationPlayer")
+	if animplayer.current_animation != "glow_none" and animplayer.current_animation != "":
+		animplayer.play(curr_anim)
 		
 	var diffnumber = find_node("DiffNumber")
 	diffnumber.text = str(int(data.levels[difficulty]))
 	diffnumber.add_color_override("font_color", diff_colors[difficulty])
+
+
+func _on_TextureButton_pressed():
+	if selected:
+		emit_signal("play_song", data)
+		return
+	set_selected()

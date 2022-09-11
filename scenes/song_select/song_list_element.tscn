@@ -18,6 +18,8 @@ font_data = ExtResource( 4 )
 
 [sub_resource type="StyleBoxLine" id=3]
 color = Color( 0.396078, 0.396078, 0.396078, 1 )
+grow_begin = -27.0
+grow_end = -16.0
 thickness = 5
 vertical = true
 
@@ -29,37 +31,45 @@ font_data = ExtResource( 4 )
 size = 32
 font_data = ExtResource( 3 )
 
-[node name="SongListElement" type="TextureButton" groups=["song_list_elements"]]
-anchor_left = 1.0
-anchor_right = 1.0
-margin_left = -458.0
-margin_bottom = 116.0
-grow_horizontal = 0
-focus_mode = 0
-mouse_filter = 1
-size_flags_horizontal = 8
-texture_normal = ExtResource( 2 )
+[node name="SongListElement" type="MarginContainer" groups=["song_list_elements"]]
+margin_right = 40.0
+margin_bottom = 40.0
+custom_constants/margin_bottom = 0
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
-anchor_right = 1.0
-anchor_bottom = 1.0
+[node name="TextureButton" type="TextureButton" parent="."]
+margin_right = 640.0
+margin_bottom = 160.0
+grow_horizontal = 0
+focus_mode = 0
+mouse_filter = 1
+size_flags_horizontal = 8
+texture_normal = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="TextureButton"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_vertical = 0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MarginContainer" type="MarginContainer" parent="TextureButton/HBoxContainer"]
 margin_right = 144.0
 margin_bottom = 160.0
 rect_min_size = Vector2( 144, 0 )
+mouse_filter = 2
 custom_constants/margin_right = 12
 custom_constants/margin_top = 10
 custom_constants/margin_left = 28
 
-[node name="DiffNumber" type="Label" parent="HBoxContainer/MarginContainer"]
+[node name="DiffNumber" type="Label" parent="TextureButton/HBoxContainer/MarginContainer"]
 margin_left = 28.0
 margin_top = 26.0
 margin_right = 132.0
@@ -69,14 +79,15 @@ text = "0"
 align = 1
 valign = 1
 
-[node name="VSeparator" type="VSeparator" parent="HBoxContainer"]
+[node name="VSeparator" type="VSeparator" parent="TextureButton/HBoxContainer"]
 margin_left = 148.0
 margin_right = 152.0
 margin_bottom = 160.0
+mouse_filter = 2
 size_flags_vertical = 3
 custom_styles/separator = SubResource( 3 )
 
-[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="TextureButton/HBoxContainer"]
 margin_left = 156.0
 margin_right = 640.0
 margin_bottom = 160.0
@@ -87,7 +98,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="SongNameContainer" type="MarginContainer" parent="HBoxContainer/VBoxContainer"]
+[node name="SongNameContainer" type="MarginContainer" parent="TextureButton/HBoxContainer/VBoxContainer"]
 margin_right = 484.0
 margin_bottom = 95.0
 mouse_filter = 2
@@ -99,7 +110,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="SongName" type="Label" parent="HBoxContainer/VBoxContainer/SongNameContainer"]
+[node name="SongName" type="Label" parent="TextureButton/HBoxContainer/VBoxContainer/SongNameContainer"]
 margin_left = 16.0
 margin_top = 16.0
 margin_right = 468.0
@@ -107,7 +118,7 @@ margin_bottom = 95.0
 custom_fonts/font = SubResource( 1 )
 text = "Song Name"
 
-[node name="ArtistContainer" type="MarginContainer" parent="HBoxContainer/VBoxContainer"]
+[node name="ArtistContainer" type="MarginContainer" parent="TextureButton/HBoxContainer/VBoxContainer"]
 margin_top = 99.0
 margin_right = 484.0
 margin_bottom = 145.0
@@ -120,21 +131,21 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ArtistName" type="Label" parent="HBoxContainer/VBoxContainer/ArtistContainer"]
+[node name="ArtistName" type="Label" parent="TextureButton/HBoxContainer/VBoxContainer/ArtistContainer"]
 margin_left = 16.0
 margin_right = 468.0
 margin_bottom = 46.0
 custom_fonts/font = SubResource( 2 )
 text = "Artist"
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="TextureButton"]
 anims/glow_green = ExtResource( 10 )
 anims/glow_none = ExtResource( 11 )
 anims/glow_orange = ExtResource( 8 )
 anims/glow_purple = ExtResource( 9 )
 anims/glow_red = ExtResource( 7 )
 
-[node name="GlowEffect" type="Control" parent="."]
+[node name="GlowEffect" type="Control" parent="TextureButton"]
 anchor_left = 1.0
 anchor_top = 0.5
 anchor_right = 1.0
@@ -147,13 +158,13 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="GlowEffectBloom" type="TextureRect" parent="GlowEffect"]
-self_modulate = Color( 0.784314, 0.25098, 1, 1 )
+[node name="GlowEffectBloom" type="TextureRect" parent="TextureButton/GlowEffect"]
+self_modulate = Color( 0.784314, 0.282353, 1, 1 )
 anchor_left = 1.0
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
-margin_left = -672.0
+margin_left = -800.0
 margin_top = -112.0
 margin_bottom = 112.0
 mouse_filter = 2
@@ -162,12 +173,12 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="GlowEffectCore" type="TextureRect" parent="GlowEffect"]
+[node name="GlowEffectCore" type="TextureRect" parent="TextureButton/GlowEffect"]
 anchor_left = 1.0
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
-margin_left = -672.0
+margin_left = -800.0
 margin_top = -112.0
 margin_bottom = 112.0
 mouse_filter = 2
@@ -176,4 +187,4 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[connection signal="pressed" from="." to="." method="_on_SongListElement_pressed"]
+[connection signal="pressed" from="TextureButton" to="." method="_on_TextureButton_pressed"]

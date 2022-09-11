@@ -50,7 +50,7 @@ func _ready():
 	find_node("JacketImage").set_pack(pack_name)
 	emit_signal("difficulty_set", ALPHA) # TODO: find a way to locally save the last selected diff
 	if first_song != null:
-		first_song.emit_signal("pressed")
+		first_song._on_TextureButton_pressed()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):

@@ -30,6 +30,16 @@ func _on_SongSelect_song_selected(song_data: Dictionary):
 		
 func _on_SongSelect_difficulty_set(signal_difficulty):
 	if signal_difficulty == difficulty and $AnimationPlayer.current_animation != anim_names[difficulty]:
-		$AnimationPlayer.play(anim_names[difficulty])
+		set_selected()
 	if signal_difficulty != difficulty:
-		$AnimationPlayer.play("glow_none")
+		set_unselected()
+		
+func set_selected():
+	$AnimationPlayer.play(anim_names[difficulty])
+	var bloom = find_node("GlowEffectBloom").get_canvas_item()
+	VisualServer.canvas_item_set_z_index(bloom, 100)
+	
+func set_unselected():
+	$AnimationPlayer.play("glow_none")
+	var bloom = find_node("GlowEffectBloom").get_canvas_item()
+	VisualServer.canvas_item_set_z_index(bloom, 0)
