@@ -13,6 +13,7 @@ func _ready():
 #	pass
 
 func start_tween():
+	$Tween.remove_all()
 	$Tween.interpolate_property(self, "scroll_horizontal", 
 		0, $SongName.rect_size.x - rect_size.x, 
 		($SongName.rect_size.x - rect_size.x) / PIXELS_PER_SECOND,
@@ -27,3 +28,12 @@ func _on_Timer_timeout():
 func _on_Tween_tween_completed(object, key):
 	$Tween.stop_all()
 	$Timer.start(2.0)
+
+
+func _on_SongListElement_reset_text_scroll():
+	yield(get_tree(), "idle_frame")
+	if $SongName.rect_size.x - rect_size.x > 0:
+		$Tween.stop_all()
+		$Timer.stop()
+		scroll_horizontal = 0
+		start_tween()

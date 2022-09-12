@@ -18,6 +18,8 @@ var curr_anim: String = "glow_none"
 signal song_selected(instance, song_data)
 signal play_song(song_data)
 
+signal reset_text_scroll()
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	find_node("SongName").text = data.title
@@ -33,6 +35,7 @@ func set_selected():
 	VisualServer.canvas_item_set_z_index(bloom, 100)
 	find_node("AnimationPlayer").play(curr_anim)
 	emit_signal("song_selected", self, data)
+	emit_signal("reset_text_scroll")
 
 func set_unselected():
 	selected = false
@@ -40,6 +43,7 @@ func set_unselected():
 	var bloom = find_node("GlowEffectBloom").get_canvas_item()
 	VisualServer.canvas_item_set_z_index(bloom, 0)
 	find_node("AnimationPlayer").play("glow_none")
+	emit_signal("reset_text_scroll")
 	
 func _on_SongSelect_difficulty_set(difficulty):
 	curr_anim = anim_names[difficulty]
