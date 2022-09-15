@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://scenes/song_select/jacket_image.gd" type="Script" id=1]
 [ext_resource path="res://fonts/m_plus_1p_regular_72.tres" type="DynamicFont" id=2]
@@ -13,6 +13,8 @@
 [ext_resource path="res://fonts/MPLUS1p-Regular.ttf" type="DynamicFontData" id=11]
 [ext_resource path="res://textures/result/achievement_noplay.png" type="Texture" id=12]
 [ext_resource path="res://textures/result/score_rank_d_corrupt.png" type="Texture" id=13]
+[ext_resource path="res://scenes/song_select/chart_info_tab.gd" type="Script" id=14]
+[ext_resource path="res://scenes/song_select/song_preview_player.gd" type="Script" id=15]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 1, 1, 1, 1 )
@@ -322,6 +324,7 @@ custom_constants/margin_right = 32
 custom_constants/margin_top = 16
 custom_constants/margin_left = 32
 custom_constants/margin_bottom = 16
+script = ExtResource( 14 )
 
 [node name="GridContainer" type="GridContainer" parent="MarginContainer3/TabContainer/Chart info"]
 margin_left = 32.0
@@ -397,6 +400,7 @@ theme = ExtResource( 8 )
 text = "Options"
 
 [node name="SongPreviewPlayer" type="AudioStreamPlayer" parent="."]
+script = ExtResource( 15 )
 
 [connection signal="song_selected" from="." to="MarginContainer2/VBoxContainer/PanelContainer/JacketImage" method="_on_SongSelect_song_selected"]
 [connection signal="pressed" from="OptionsButton" to="." method="_on_OptionsButton_pressed"]

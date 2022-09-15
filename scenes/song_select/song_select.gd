@@ -65,7 +65,14 @@ func _on_SongListElement_song_selected(instance, song_data):
 			
 	$SongPreviewPlayer.stop()
 	$SongPreviewPlayer.stream = load("%s%s/%s/audio.mp3" % [song_folder, pack_name, song_data.path])
-	$SongPreviewPlayer.play(60.0)
+	if $SongPreviewPlayer.stream != null:
+		var preview_start: float = 0.0
+		var preview_end: float = $SongPreviewPlayer.stream.get_length() - 1.0
+		if song_data.has("preview_start"):
+			preview_start = song_data["preview_start"]
+		if song_data.has("preview_end"):
+			preview_end = song_data["preview_end"]
+		$SongPreviewPlayer.play(preview_start)
 	
 func _on_SongListElement_play_song(song_data: Dictionary):
 	print("%s%s/%s/%s.rznx" % [song_folder, pack_name, song_data.path, selected_difficulty])

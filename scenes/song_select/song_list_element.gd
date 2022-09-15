@@ -29,21 +29,23 @@ func setup(song_data: Dictionary):
 	data = song_data
 
 func set_selected():
-	selected = true
-	$TextureButton.texture_normal = extended_tex
-	var bloom = find_node("GlowEffectBloom").get_canvas_item()
-	VisualServer.canvas_item_set_z_index(bloom, 100)
-	find_node("AnimationPlayer").play(curr_anim)
-	emit_signal("song_selected", self, data)
-	emit_signal("reset_text_scroll")
+	if not selected:
+		selected = true
+		$TextureButton.texture_normal = extended_tex
+		var bloom = find_node("GlowEffectBloom").get_canvas_item()
+		VisualServer.canvas_item_set_z_index(bloom, 100)
+		find_node("AnimationPlayer").play(curr_anim)
+		emit_signal("song_selected", self, data)
+		emit_signal("reset_text_scroll")
 
 func set_unselected():
-	selected = false
-	$TextureButton.texture_normal = normal_tex
-	var bloom = find_node("GlowEffectBloom").get_canvas_item()
-	VisualServer.canvas_item_set_z_index(bloom, 0)
-	find_node("AnimationPlayer").play("glow_none")
-	emit_signal("reset_text_scroll")
+	if selected:
+		selected = false
+		$TextureButton.texture_normal = normal_tex
+		var bloom = find_node("GlowEffectBloom").get_canvas_item()
+		VisualServer.canvas_item_set_z_index(bloom, 0)
+		find_node("AnimationPlayer").play("glow_none")
+		emit_signal("reset_text_scroll")
 	
 func _on_SongSelect_difficulty_set(difficulty):
 	curr_anim = anim_names[difficulty]

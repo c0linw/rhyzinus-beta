@@ -188,6 +188,7 @@ __meta__ = {
 }
 
 [node name="GlowEffectCore" type="TextureRect" parent="TextureButton/GlowEffect"]
+self_modulate = Color( 1, 1, 1, 0 )
 anchor_left = 1.0
 anchor_top = 0.5
 anchor_right = 1.0
@@ -202,7 +203,7 @@ __meta__ = {
 }
 
 [node name="GlowEffectBloom" type="TextureRect" parent="TextureButton/GlowEffect"]
-self_modulate = Color( 0.313726, 1, 0.313726, 1 )
+self_modulate = Color( 1, 1, 1, 0 )
 anchor_left = 1.0
 anchor_top = 0.5
 anchor_right = 1.0

@@ -4,28 +4,36 @@
 		"artist": "SiLiS",
 		"bpm": "175",
 		"path": "neutralizeptbmix",
-		"levels": [2,5,8,10]
+		"levels": [2,5,8,10],
+		"preview_start": 30.25,
+		"preview_end": 58.75
 	},
 	{
 		"title": "Re:LOAD",
 		"artist": "5KiLOBYTE",
 		"bpm": "174",
 		"path": "reload",
-		"levels": [4,6,8,11]
+		"levels": [4,6,8,11],
+		"preview_start": 32.5,
+		"preview_end": 57.0
 	},
 	{
 		"title": "Qos-Break",
 		"artist": "Sosop",
 		"bpm": "172",
 		"path": "qosbreak",
-		"levels": [3,5,9,11]
+		"levels": [3,5,9,11],
+		"preview_start": 39.0,
+		"preview_end": 84.0
 	},
 	{
 		"title": "Trojancourse",
 		"artist": "SiLiS",
 		"bpm": "210",
 		"path": "trojancourse",
-		"levels": [3,6,8,10]
+		"levels": [3,6,8,10],
+		"preview_start": 70.25,
+		"preview_end": 115.5,
 	},
 	{
 		"title": "Autothysis",
