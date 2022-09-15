@@ -23,6 +23,7 @@ signal set_selected_if_same(instance)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	$SongPreviewPlayer.volume_db = linear2db(Settings.setting_values["music_volume"]/100.0)
 	var song_index = read_index(pack_name)
 	var first_song = null
 	if song_index != null:
@@ -61,6 +62,10 @@ func _on_SongListElement_song_selected(instance, song_data):
 	for button in get_tree().get_nodes_in_group("song_list_elements"):
 		if button != instance:
 			button.set_unselected()
+			
+	$SongPreviewPlayer.stop()
+	$SongPreviewPlayer.stream = load("%s%s/%s/audio.mp3" % [song_folder, pack_name, song_data.path])
+	$SongPreviewPlayer.play(60.0)
 	
 func _on_SongListElement_play_song(song_data: Dictionary):
 	print("%s%s/%s/%s.rznx" % [song_folder, pack_name, song_data.path, selected_difficulty])

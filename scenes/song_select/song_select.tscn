@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://scenes/song_select/jacket_image.gd" type="Script" id=1]
 [ext_resource path="res://fonts/m_plus_1p_regular_72.tres" type="DynamicFont" id=2]
@@ -8,8 +8,11 @@
 [ext_resource path="res://scenes/ui/player_info.tscn" type="PackedScene" id=6]
 [ext_resource path="res://scenes/song_select/song_select_scroll.gd" type="Script" id=7]
 [ext_resource path="res://themes/theme1.tres" type="Theme" id=8]
-[ext_resource path="res://songs/beta1/neutralizeptbmix/jacket.png" type="Texture" id=9]
+[ext_resource path="res://fonts/m_plus_1p_regular_28.tres" type="DynamicFont" id=9]
 [ext_resource path="res://textures/ui/pack_select.png" type="Texture" id=10]
+[ext_resource path="res://fonts/MPLUS1p-Regular.ttf" type="DynamicFontData" id=11]
+[ext_resource path="res://textures/result/achievement_noplay.png" type="Texture" id=12]
+[ext_resource path="res://textures/result/score_rank_d_corrupt.png" type="Texture" id=13]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 1, 1, 1, 1 )
@@ -17,6 +20,10 @@ border_width_left = 8
 border_width_top = 8
 border_width_right = 8
 border_width_bottom = 8
+
+[sub_resource type="DynamicFont" id=2]
+size = 32
+font_data = ExtResource( 11 )
 
 [node name="SongSelect" type="Control"]
 anchor_right = 1.0
@@ -182,7 +189,6 @@ margin_right = 408.0
 margin_bottom = 408.0
 rect_min_size = Vector2( 400, 400 )
 mouse_filter = 2
-texture = ExtResource( 9 )
 expand = true
 stretch_mode = 6
 script = ExtResource( 1 )
@@ -232,26 +238,145 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer3"]
+[node name="TabContainer" type="TabContainer" parent="MarginContainer3"]
 margin_right = 598.0
 margin_bottom = 337.0
+theme = ExtResource( 8 )
+custom_constants/top_margin = 0
+tab_align = 0
 
-[node name="ColorRect" type="ColorRect" parent="MarginContainer3/VBoxContainer"]
-margin_right = 598.0
-margin_bottom = 6.0
-rect_min_size = Vector2( 0, 6 )
+[node name="Your Stats" type="MarginContainer" parent="MarginContainer3/TabContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = 56.0
+margin_bottom = -6.0
+custom_constants/margin_right = 32
+custom_constants/margin_top = 16
+custom_constants/margin_left = 32
+custom_constants/margin_bottom = 16
 
-[node name="Control" type="Control" parent="MarginContainer3/VBoxContainer"]
-margin_top = 10.0
-margin_right = 598.0
-margin_bottom = 327.0
-size_flags_vertical = 3
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer3/TabContainer/Your Stats"]
+margin_left = 32.0
+margin_top = 16.0
+margin_right = 566.0
+margin_bottom = 259.0
 
-[node name="ColorRect2" type="ColorRect" parent="MarginContainer3/VBoxContainer"]
-margin_top = 331.0
-margin_right = 598.0
-margin_bottom = 337.0
-rect_min_size = Vector2( 0, 6 )
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer3/TabContainer/Your Stats/VBoxContainer"]
+margin_right = 534.0
+margin_bottom = 90.0
+size_flags_vertical = 0
+custom_constants/separation = 32
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer3/TabContainer/Your Stats/VBoxContainer/HBoxContainer"]
+margin_right = 412.0
+margin_bottom = 90.0
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 10.0
+
+[node name="HiScoreLabel" type="Label" parent="MarginContainer3/TabContainer/Your Stats/VBoxContainer/HBoxContainer/VBoxContainer"]
+margin_right = 412.0
+margin_bottom = 40.0
+custom_fonts/font = ExtResource( 9 )
+text = "High Score"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer3/TabContainer/Your Stats/VBoxContainer/HBoxContainer/VBoxContainer"]
+margin_top = 44.0
+margin_right = 412.0
+margin_bottom = 90.0
+custom_constants/separation = 16
+
+[node name="HiScoreDisplay" type="Label" parent="MarginContainer3/TabContainer/Your Stats/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
+margin_right = 268.0
+margin_bottom = 46.0
+size_flags_horizontal = 3
+custom_colors/font_outline_modulate = Color( 0.376471, 0.698039, 1, 1 )
+custom_fonts/font = SubResource( 2 )
+text = "0,000,000"
+
+[node name="HiScoreAchievementTexture" type="TextureRect" parent="MarginContainer3/TabContainer/Your Stats/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
+margin_left = 284.0
+margin_right = 412.0
+margin_bottom = 46.0
+rect_min_size = Vector2( 128, 32 )
+texture = ExtResource( 12 )
+expand = true
+stretch_mode = 6
+
+[node name="HiScoreRankTexture" type="TextureRect" parent="MarginContainer3/TabContainer/Your Stats/VBoxContainer/HBoxContainer"]
+margin_left = 444.0
+margin_right = 534.0
+margin_bottom = 90.0
+rect_min_size = Vector2( 90, 0 )
+size_flags_horizontal = 3
+texture = ExtResource( 13 )
+expand = true
+stretch_mode = 6
+
+[node name="Chart info" type="MarginContainer" parent="MarginContainer3/TabContainer"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = 56.0
+margin_bottom = -6.0
+custom_constants/margin_right = 32
+custom_constants/margin_top = 16
+custom_constants/margin_left = 32
+custom_constants/margin_bottom = 16
+
+[node name="GridContainer" type="GridContainer" parent="MarginContainer3/TabContainer/Chart info"]
+margin_left = 32.0
+margin_top = 16.0
+margin_right = 566.0
+margin_bottom = 259.0
+columns = 2
+
+[node name="BPMLabel" type="Label" parent="MarginContainer3/TabContainer/Chart info/GridContainer"]
+margin_right = 111.0
+margin_bottom = 40.0
+custom_fonts/font = ExtResource( 9 )
+text = "BPM: "
+
+[node name="BPMDisplay" type="Label" parent="MarginContainer3/TabContainer/Chart info/GridContainer"]
+margin_left = 115.0
+margin_right = 166.0
+margin_bottom = 40.0
+custom_fonts/font = ExtResource( 9 )
+text = "???"
+
+[node name="LengthLabel" type="Label" parent="MarginContainer3/TabContainer/Chart info/GridContainer"]
+margin_top = 44.0
+margin_right = 111.0
+margin_bottom = 84.0
+custom_fonts/font = ExtResource( 9 )
+text = "Length: "
+
+[node name="LengthDisplay" type="Label" parent="MarginContainer3/TabContainer/Chart info/GridContainer"]
+margin_left = 115.0
+margin_top = 44.0
+margin_right = 166.0
+margin_bottom = 84.0
+custom_fonts/font = ExtResource( 9 )
+text = "???"
+
+[node name="Rankings" type="MarginContainer" parent="MarginContainer3/TabContainer"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = 56.0
+margin_bottom = -6.0
+custom_constants/margin_right = 32
+custom_constants/margin_top = 16
+custom_constants/margin_left = 32
+custom_constants/margin_bottom = 16
+
+[node name="Label" type="Label" parent="MarginContainer3/TabContainer/Rankings"]
+margin_left = 32.0
+margin_top = 96.0
+margin_right = 566.0
+margin_bottom = 179.0
+custom_fonts/font = ExtResource( 9 )
+text = "To be implemented in a future update :)"
+autowrap = true
 
 [node name="MarginContainer4" type="MarginContainer" parent="."]
 anchor_left = 1.0
@@ -263,13 +388,15 @@ custom_constants/margin_top = 16
 custom_constants/margin_left = 16
 custom_constants/margin_bottom = 16
 
-[node name="OptionsButton" type="Button" parent="MarginContainer4"]
-margin_left = 16.0
+[node name="OptionsButton" type="Button" parent="."]
+margin_left = 1696.0
 margin_top = 16.0
-margin_right = 224.0
+margin_right = 1904.0
 margin_bottom = 88.0
 theme = ExtResource( 8 )
 text = "Options"
 
+[node name="SongPreviewPlayer" type="AudioStreamPlayer" parent="."]
+
 [connection signal="song_selected" from="." to="MarginContainer2/VBoxContainer/PanelContainer/JacketImage" method="_on_SongSelect_song_selected"]
-[connection signal="pressed" from="MarginContainer4/OptionsButton" to="." method="_on_OptionsButton_pressed"]
+[connection signal="pressed" from="OptionsButton" to="." method="_on_OptionsButton_pressed"]
