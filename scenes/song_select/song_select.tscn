@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://scenes/song_select/jacket_image.gd" type="Script" id=1]
 [ext_resource path="res://fonts/m_plus_1p_regular_72.tres" type="DynamicFont" id=2]
@@ -15,6 +15,7 @@
 [ext_resource path="res://textures/result/score_rank_d_corrupt.png" type="Texture" id=13]
 [ext_resource path="res://scenes/song_select/chart_info_tab.gd" type="Script" id=14]
 [ext_resource path="res://scenes/song_select/song_preview_player.gd" type="Script" id=15]
+[ext_resource path="res://scenes/ui/audio_visualizer.tscn" type="PackedScene" id=16]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 1, 1, 1, 1 )
@@ -80,6 +81,18 @@ stretch_mode = 7
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="AudioVisualizer" parent="." instance=ExtResource( 16 )]
+
+[node name="SongPreviewPlayer" type="AudioStreamPlayer" parent="."]
+bus = "Music"
+script = ExtResource( 15 )
+
+[node name="FadeTween" type="Tween" parent="SongPreviewPlayer"]
+playback_process_mode = 0
+
+[node name="ResetTimer" type="Timer" parent="SongPreviewPlayer"]
+one_shot = true
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 anchor_left = 1.0
@@ -399,16 +412,7 @@ margin_bottom = 88.0
 theme = ExtResource( 8 )
 text = "Options"
 
-[node name="SongPreviewPlayer" type="AudioStreamPlayer" parent="."]
-script = ExtResource( 15 )
-
-[node name="FadeTween" type="Tween" parent="SongPreviewPlayer"]
-playback_process_mode = 0
-
-[node name="ResetTimer" type="Timer" parent="SongPreviewPlayer"]
-one_shot = true
-
 [connection signal="song_selected" from="." to="MarginContainer2/VBoxContainer/PanelContainer/JacketImage" method="_on_SongSelect_song_selected"]
-[connection signal="pressed" from="OptionsButton" to="." method="_on_OptionsButton_pressed"]
 [connection signal="tween_completed" from="SongPreviewPlayer/FadeTween" to="SongPreviewPlayer" method="_on_FadeTween_tween_completed"]
 [connection signal="timeout" from="SongPreviewPlayer/ResetTimer" to="SongPreviewPlayer" method="_on_ResetTimer_timeout"]
+[connection signal="pressed" from="OptionsButton" to="." method="_on_OptionsButton_pressed"]
