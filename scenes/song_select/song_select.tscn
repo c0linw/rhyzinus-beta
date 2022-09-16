@@ -402,5 +402,13 @@ text = "Options"
 [node name="SongPreviewPlayer" type="AudioStreamPlayer" parent="."]
 script = ExtResource( 15 )
 
+[node name="FadeTween" type="Tween" parent="SongPreviewPlayer"]
+playback_process_mode = 0
+
+[node name="ResetTimer" type="Timer" parent="SongPreviewPlayer"]
+one_shot = true
+
 [connection signal="song_selected" from="." to="MarginContainer2/VBoxContainer/PanelContainer/JacketImage" method="_on_SongSelect_song_selected"]
 [connection signal="pressed" from="OptionsButton" to="." method="_on_OptionsButton_pressed"]
+[connection signal="tween_completed" from="SongPreviewPlayer/FadeTween" to="SongPreviewPlayer" method="_on_FadeTween_tween_completed"]
+[connection signal="timeout" from="SongPreviewPlayer/ResetTimer" to="SongPreviewPlayer" method="_on_ResetTimer_timeout"]
