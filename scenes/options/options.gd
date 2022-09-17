@@ -25,3 +25,7 @@ func _on_BackButton_pressed():
 	if prev_scene:
 		Settings.save_settings_file()
 		SceneSwitcher.change_scene(prev_scene)
+
+
+func _on_VolumeSpinBox_value_changed(value_name, new_value):
+	AudioServer.set_bus_volume_db(1, linear2db(new_value)/100.0)

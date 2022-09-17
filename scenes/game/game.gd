@@ -140,7 +140,6 @@ func _ready():
 	
 	$Conductor.stream = load(audio_path)
 	$Conductor.stream.loop = false
-	$Conductor.volume_db = linear2db(Settings.setting_values["music_volume"]/100.0)
 
 	yield(get_tree(), "idle_frame")
 	set_process(true)

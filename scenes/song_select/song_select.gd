@@ -23,7 +23,8 @@ signal set_selected_if_same(instance)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	$SongPreviewPlayer.set_base_volume(linear2db(Settings.setting_values["music_volume"]/100.0))
+	AudioServer.set_bus_volume_db(1, linear2db(Settings.setting_values["music_volume"]/100.0))
+	
 	var song_index = read_index(pack_name)
 	var first_song = null
 	if song_index != null:

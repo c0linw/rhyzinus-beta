@@ -382,3 +382,4 @@ columns = 2
 [connection signal="tab_selected" from="MarginContainer2/CustomTabContainer/VerticalTabs/GameplayTab" to="MarginContainer2/CustomTabContainer" method="_on_custom_tab_selected"]
 [connection signal="tab_selected" from="MarginContainer2/CustomTabContainer/VerticalTabs/AudioTab" to="MarginContainer2/CustomTabContainer" method="_on_custom_tab_selected"]
 [connection signal="tab_selected" from="MarginContainer2/CustomTabContainer/VerticalTabs/SystemTab" to="MarginContainer2/CustomTabContainer" method="_on_custom_tab_selected"]
+[connection signal="value_changed" from="MarginContainer2/CustomTabContainer/TabContainer/Audio/ScrollContainer/GridContainer/VolumeSpinBox" to="." method="_on_VolumeSpinBox_value_changed"]
