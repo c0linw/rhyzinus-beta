@@ -4,5 +4,4 @@
 
 [resource]
 size = 28
-use_filter = true
 font_data = ExtResource( 1 )

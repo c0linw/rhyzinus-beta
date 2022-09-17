@@ -52,6 +52,9 @@ func _ready():
 	emit_signal("difficulty_set", ALPHA) # TODO: find a way to locally save the last selected diff
 	if first_song != null:
 		first_song._on_TextureButton_pressed()
+		
+	if SceneSwitcher.get_param("popup_msg") != null:
+		popup_alert(SceneSwitcher.get_param("popup_msg"))
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
@@ -66,7 +69,13 @@ func _on_SongListElement_song_selected(instance, song_data):
 	$SongPreviewPlayer.start_preview("%s%s/%s/audio.mp3" % [song_folder, pack_name, song_data.path], song_data)
 	
 func _on_SongListElement_play_song(song_data: Dictionary):
-	print("%s%s/%s/%s.rznx" % [song_folder, pack_name, song_data.path, selected_difficulty])
+	var chart_path = "%s%s/%s/%s.rznx" % [song_folder, pack_name, song_data.path, selected_difficulty]
+	var file = File.new()
+	var exists = file.file_exists(chart_path)
+	file.close()
+	if not exists:
+		popup_alert("Chart file not found")
+		return
 	var data: Dictionary = {
 		"chart_path": "%s%s/%s/%s.rznx" % [song_folder, pack_name, song_data.path, selected_difficulty],
 		"audio_path": "%s%s/%s/audio.mp3" % [song_folder, pack_name, song_data.path],
@@ -109,3 +118,9 @@ func _on_OptionsButton_pressed():
 		"prev_scene": "res://scenes/song_select/song_select.tscn"
 	}
 	SceneSwitcher.change_scene("res://scenes/options/options.tscn", data)
+	
+func popup_alert(msg: String):
+	var popup = $AlertPopup.get_canvas_item()
+	VisualServer.canvas_item_set_z_index(popup, 101)
+	$AlertPopup.find_node("Label").text = msg
+	$AlertPopup.popup_centered()

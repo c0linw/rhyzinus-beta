@@ -24,6 +24,8 @@ func _ready():
 		histogram.append(0)
 
 func _process(delta):
+	if spectrum == null:
+		return
 	var freq = min_freq
 	var interval = (max_freq - min_freq) / definition
 	var bar_instances = $HBoxContainer.get_children()
@@ -48,4 +50,4 @@ func _process(delta):
 		
 		histogram[i] = lerp(histogram[i], mag, accel * delta)
 		if i < len(bar_instances):
-			bar_instances[i].rect_min_size.y = histogram[i] * rect_size.y * 0.75
+			bar_instances[i].rect_min_size.y = histogram[i] * rect_size.y * 0.75	
