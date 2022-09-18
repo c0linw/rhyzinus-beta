@@ -1,48 +1,65 @@
-extends TextureButton
+extends MarginContainer
 
 var data: Dictionary = {
 	"title": "",
 	"artist": "",
 	"bpm": "",
 	"path": "",
-	"levels": ""
+	"levels": []
 }
 
-var focused_tex = preload("res://textures/ui/song_border_selected.png")
+var extended_tex = preload("res://textures/ui/song_border_extended.png")
 var normal_tex = preload("res://textures/ui/song_border.png")
+var selected: bool = false
+var anim_names: Array = ["glow_green", "glow_orange", "glow_red", "glow_purple"]
+var diff_colors: Array = [Color(0.31, 1, 0.31), Color(1, 0.67, 0.125), Color(1, 0.25, 0.25), Color(0.78, 0.25, 1)]
+var curr_anim: String = "glow_none"
 
-signal song_selected(song_data)
+signal song_selected(instance, song_data)
 signal play_song(song_data)
+
+signal reset_text_scroll()
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	$VBoxContainer/SongNameContainer/SongName.text = data.title
-	$VBoxContainer/ArtistContainer/ArtistName.text = data.artist
+	find_node("SongName").text = data.title
+	find_node("ArtistName").text = data.artist
 
 func setup(song_data: Dictionary):
 	data = song_data
 
-func _on_SongListElement_pressed():
-	if get_focus_owner() == self:
+func set_selected():
+	if not selected:
+		selected = true
+		$TextureButton.texture_normal = extended_tex
+		var bloom = find_node("GlowEffectBloom").get_canvas_item()
+		VisualServer.canvas_item_set_z_index(bloom, 100)
+		find_node("AnimationPlayer").play(curr_anim)
+		emit_signal("song_selected", self, data)
+		emit_signal("reset_text_scroll")
+
+func set_unselected():
+	if selected:
+		selected = false
+		$TextureButton.texture_normal = normal_tex
+		var bloom = find_node("GlowEffectBloom").get_canvas_item()
+		VisualServer.canvas_item_set_z_index(bloom, 0)
+		find_node("AnimationPlayer").play("glow_none")
+		emit_signal("reset_text_scroll")
+	
+func _on_SongSelect_difficulty_set(difficulty):
+	curr_anim = anim_names[difficulty]
+	var animplayer = find_node("AnimationPlayer")
+	if animplayer.current_animation != "glow_none" and animplayer.current_animation != "":
+		animplayer.play(curr_anim)
+		
+	var diffnumber = find_node("DiffNumber")
+	diffnumber.text = str(int(data.levels[difficulty]))
+	diffnumber.add_color_override("font_color", diff_colors[difficulty])
+
+
+func _on_TextureButton_pressed():
+	if selected:
 		emit_signal("play_song", data)
 		return
-	set_focus_mode(Control.FOCUS_ALL)
-	grab_focus()
-
-
-func _on_SongListElement_focus_entered():
-	set_normal_texture(focused_tex)
-	$VBoxContainer/SongNameContainer.add_constant_override("margin_left", 96)
-	$VBoxContainer/SongNameContainer/SongName.add_color_override("font_color", Color(0, 0, 0, 1))
-	$VBoxContainer/ArtistContainer.add_constant_override("margin_left", 136)
-	$VBoxContainer/ArtistContainer/ArtistName.add_color_override("font_color", Color(0, 0, 0, 1))
-	emit_signal("song_selected", data)
-	
-	
-func _on_SongListElement_focus_exited():
-	set_focus_mode(Control.FOCUS_NONE)
-	$VBoxContainer/SongNameContainer.add_constant_override("margin_left", 32)
-	$VBoxContainer/SongNameContainer/SongName.add_color_override("font_color", Color(1, 1, 1, 1))
-	$VBoxContainer/ArtistContainer.add_constant_override("margin_left", 32)
-	$VBoxContainer/ArtistContainer/ArtistName.add_color_override("font_color", Color(1, 1, 1, 1))
-	set_normal_texture(normal_tex)
+	set_selected()

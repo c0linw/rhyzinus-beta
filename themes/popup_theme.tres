@@ -1,0 +1,13 @@
+[gd_resource type="Theme" load_steps=4 format=2]
+
+[ext_resource path="res://fonts/m_plus_1p_regular_32.tres" type="DynamicFont" id=1]
+[ext_resource path="res://fonts/m_plus_1p_regular_28.tres" type="DynamicFont" id=2]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 1, 1, 1, 0.745098 )
+
+[resource]
+default_font = ExtResource( 1 )
+Button/fonts/font = ExtResource( 2 )
+Button/styles/normal = null
+WindowDialog/styles/panel = SubResource( 1 )

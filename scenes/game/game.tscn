@@ -555,6 +555,7 @@ __meta__ = {
 }
 
 [node name="Conductor" parent="." instance=ExtResource( 4 )]
+bus = "Music"
 
 [node name="result_data" type="Node" parent="."]
 script = ExtResource( 1 )

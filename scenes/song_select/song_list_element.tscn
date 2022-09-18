@@ -1,9 +1,45 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=23 format=2]
 
 [ext_resource path="res://scenes/song_select/song_list_element.gd" type="Script" id=1]
 [ext_resource path="res://textures/ui/song_border.png" type="Texture" id=2]
 [ext_resource path="res://fonts/MPLUS1p-Light.ttf" type="DynamicFontData" id=3]
 [ext_resource path="res://fonts/MPLUS1p-Regular.ttf" type="DynamicFontData" id=4]
+[ext_resource path="res://textures/ui/song_border_glow_core.png" type="Texture" id=5]
+[ext_resource path="res://textures/ui/song_border_glow_bloom.png" type="Texture" id=6]
+[ext_resource path="res://scenes/ui/anim/song_selectglow_red.tres" type="Animation" id=7]
+[ext_resource path="res://scenes/ui/anim/song_selectglow_orange.tres" type="Animation" id=8]
+[ext_resource path="res://scenes/ui/anim/song_selectglow_purple.tres" type="Animation" id=9]
+[ext_resource path="res://scenes/ui/anim/song_selectglow_green.tres" type="Animation" id=10]
+[ext_resource path="res://scenes/ui/anim/song_selectglow_none.tres" type="Animation" id=11]
+[ext_resource path="res://scenes/song_select/text_scroller.gd" type="Script" id=12]
+
+[sub_resource type="DynamicFont" id=4]
+size = 84
+font_data = ExtResource( 4 )
+
+[sub_resource type="StyleBoxLine" id=3]
+color = Color( 0.396078, 0.396078, 0.396078, 1 )
+grow_begin = -27.0
+grow_end = -16.0
+thickness = 5
+vertical = true
+
+[sub_resource type="StyleBoxEmpty" id=5]
+
+[sub_resource type="StyleBoxEmpty" id=6]
+
+[sub_resource type="StyleBoxEmpty" id=7]
+
+[sub_resource type="StyleBoxEmpty" id=8]
+
+[sub_resource type="StyleBoxEmpty" id=9]
+
+[sub_resource type="Theme" id=10]
+HScrollBar/styles/grabber = SubResource( 5 )
+HScrollBar/styles/grabber_highlight = SubResource( 6 )
+HScrollBar/styles/grabber_pressed = SubResource( 7 )
+HScrollBar/styles/scroll = SubResource( 8 )
+HScrollBar/styles/scroll_focus = SubResource( 9 )
 
 [sub_resource type="DynamicFont" id=1]
 size = 56
@@ -13,63 +49,175 @@ font_data = ExtResource( 4 )
 size = 32
 font_data = ExtResource( 3 )
 
-[node name="SongListElement" type="TextureButton"]
-anchor_left = 1.0
-anchor_right = 1.0
-margin_left = -458.0
-margin_bottom = 116.0
+[node name="SongListElement" type="MarginContainer" groups=["song_list_elements"]]
+custom_constants/margin_bottom = 0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureButton" type="TextureButton" parent="."]
+margin_right = 640.0
+margin_bottom = 160.0
 grow_horizontal = 0
 focus_mode = 0
 mouse_filter = 1
 size_flags_horizontal = 8
 texture_normal = ExtResource( 2 )
-script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
-margin_right = 458.0
-margin_bottom = 116.0
+[node name="HBoxContainer" type="HBoxContainer" parent="TextureButton"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_vertical = 0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MarginContainer" type="MarginContainer" parent="TextureButton/HBoxContainer"]
+margin_right = 144.0
+margin_bottom = 160.0
+rect_min_size = Vector2( 144, 0 )
 mouse_filter = 2
+custom_constants/margin_right = 12
+custom_constants/margin_top = 10
+custom_constants/margin_left = 28
 
-[node name="SongNameContainer" type="MarginContainer" parent="VBoxContainer"]
-margin_right = 458.0
+[node name="DiffNumber" type="Label" parent="TextureButton/HBoxContainer/MarginContainer"]
+margin_left = 28.0
+margin_top = 26.0
+margin_right = 132.0
+margin_bottom = 144.0
+custom_fonts/font = SubResource( 4 )
+text = "0"
+align = 1
+valign = 1
+
+[node name="VSeparator" type="VSeparator" parent="TextureButton/HBoxContainer"]
+margin_left = 148.0
+margin_right = 152.0
+margin_bottom = 160.0
+mouse_filter = 2
+size_flags_vertical = 3
+custom_styles/separator = SubResource( 3 )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TextureButton/HBoxContainer"]
+margin_left = 156.0
+margin_right = 640.0
+margin_bottom = 160.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SongNameContainer" type="MarginContainer" parent="TextureButton/HBoxContainer/VBoxContainer"]
+margin_right = 484.0
 margin_bottom = 95.0
 mouse_filter = 2
-custom_constants/margin_right = 16
+custom_constants/margin_right = 8
 custom_constants/margin_top = 16
-custom_constants/margin_left = 32
+custom_constants/margin_left = 24
 custom_constants/margin_bottom = 0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="SongName" type="Label" parent="VBoxContainer/SongNameContainer"]
-margin_left = 32.0
+[node name="ScrollContainer" type="ScrollContainer" parent="TextureButton/HBoxContainer/VBoxContainer/SongNameContainer"]
+margin_left = 24.0
 margin_top = 16.0
-margin_right = 442.0
+margin_right = 476.0
 margin_bottom = 95.0
-custom_fonts/font = SubResource( 1 )
-text = "Song Name"
+mouse_filter = 2
+theme = SubResource( 10 )
+scroll_vertical_enabled = false
+script = ExtResource( 12 )
 
-[node name="ArtistContainer" type="MarginContainer" parent="VBoxContainer"]
+[node name="SongName" type="Label" parent="TextureButton/HBoxContainer/VBoxContainer/SongNameContainer/ScrollContainer"]
+margin_right = 811.0
+margin_bottom = 79.0
+custom_fonts/font = SubResource( 1 )
+text = "A really really long Song Name"
+
+[node name="Tween" type="Tween" parent="TextureButton/HBoxContainer/VBoxContainer/SongNameContainer/ScrollContainer"]
+
+[node name="Timer" type="Timer" parent="TextureButton/HBoxContainer/VBoxContainer/SongNameContainer/ScrollContainer"]
+one_shot = true
+
+[node name="ArtistContainer" type="MarginContainer" parent="TextureButton/HBoxContainer/VBoxContainer"]
 margin_top = 99.0
-margin_right = 458.0
+margin_right = 484.0
 margin_bottom = 145.0
 mouse_filter = 2
-custom_constants/margin_right = 16
+custom_constants/margin_right = 8
 custom_constants/margin_top = 0
-custom_constants/margin_left = 32
+custom_constants/margin_left = 24
 custom_constants/margin_bottom = 0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ArtistName" type="Label" parent="VBoxContainer/ArtistContainer"]
-margin_left = 32.0
-margin_right = 442.0
+[node name="ArtistName" type="Label" parent="TextureButton/HBoxContainer/VBoxContainer/ArtistContainer"]
+margin_left = 24.0
+margin_right = 476.0
 margin_bottom = 46.0
 custom_fonts/font = SubResource( 2 )
 text = "Artist"
 
-[connection signal="focus_entered" from="." to="." method="_on_SongListElement_focus_entered"]
-[connection signal="focus_exited" from="." to="." method="_on_SongListElement_focus_exited"]
-[connection signal="pressed" from="." to="." method="_on_SongListElement_pressed"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="TextureButton"]
+anims/glow_green = ExtResource( 10 )
+anims/glow_none = ExtResource( 11 )
+anims/glow_orange = ExtResource( 8 )
+anims/glow_purple = ExtResource( 9 )
+anims/glow_red = ExtResource( 7 )
+
+[node name="GlowEffect" type="Control" parent="TextureButton"]
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_left = -40.0
+margin_top = -20.0
+margin_bottom = 20.0
+mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GlowEffectCore" type="TextureRect" parent="TextureButton/GlowEffect"]
+self_modulate = Color( 1, 1, 1, 0 )
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_left = -768.0
+margin_top = -112.0
+margin_bottom = 112.0
+mouse_filter = 2
+texture = ExtResource( 5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GlowEffectBloom" type="TextureRect" parent="TextureButton/GlowEffect"]
+self_modulate = Color( 1, 1, 1, 0 )
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_left = -768.0
+margin_top = -112.0
+margin_bottom = 112.0
+mouse_filter = 2
+texture = ExtResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="reset_text_scroll" from="." to="TextureButton/HBoxContainer/VBoxContainer/SongNameContainer/ScrollContainer" method="_on_SongListElement_reset_text_scroll"]
+[connection signal="pressed" from="TextureButton" to="." method="_on_TextureButton_pressed"]
+[connection signal="tween_completed" from="TextureButton/HBoxContainer/VBoxContainer/SongNameContainer/ScrollContainer/Tween" to="TextureButton/HBoxContainer/VBoxContainer/SongNameContainer/ScrollContainer" method="_on_Tween_tween_completed"]
+[connection signal="timeout" from="TextureButton/HBoxContainer/VBoxContainer/SongNameContainer/ScrollContainer/Timer" to="TextureButton/HBoxContainer/VBoxContainer/SongNameContainer/ScrollContainer" method="_on_Timer_timeout"]

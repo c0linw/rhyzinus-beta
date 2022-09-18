@@ -88,6 +88,9 @@ signal pause
 func _ready():
 	set_process(false)
 	
+	var bg_dim_value = 0.125 + (5 - Settings.setting_values["bg_dim"]) * 0.050
+	find_node("Gameplay_bg").self_modulate = Color(bg_dim_value, bg_dim_value, bg_dim_value, 1.0)
+	
 	var chart_data = SceneSwitcher.get_param("chart_data")
 	if chart_data == null :
 		print("failed to load chart data!")
@@ -137,7 +140,6 @@ func _ready():
 	
 	$Conductor.stream = load(audio_path)
 	$Conductor.stream.loop = false
-	$Conductor.volume_db = -10.0
 
 	yield(get_tree(), "idle_frame")
 	set_process(true)

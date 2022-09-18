@@ -1,16 +1,28 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://scenes/ui/horizontal_spin_box.tscn" type="PackedScene" id=1]
 [ext_resource path="res://textures/gameplay-bg.jpg" type="Texture" id=2]
 [ext_resource path="res://scenes/options/options.gd" type="Script" id=3]
 [ext_resource path="res://fonts/new_dynamicfont.tres" type="DynamicFont" id=4]
 [ext_resource path="res://themes/theme1.tres" type="Theme" id=5]
+[ext_resource path="res://textures/ui/vtab_selected.png" type="Texture" id=6]
+[ext_resource path="res://scenes/options/custom_tab_container.gd" type="Script" id=7]
+[ext_resource path="res://fonts/m_plus_1p_regular_48.tres" type="DynamicFont" id=8]
+[ext_resource path="res://textures/ui/vtab_normal.png" type="Texture" id=9]
+[ext_resource path="res://scenes/options/option_tab.gd" type="Script" id=10]
+[ext_resource path="res://fonts/m_plus_1p_regular_32.tres" type="DynamicFont" id=11]
+[ext_resource path="res://scenes/ui/panel_black_translucent.tres" type="StyleBox" id=12]
+
+[sub_resource type="StyleBoxEmpty" id=1]
 
 [node name="Options" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
 script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 margin_right = 215.0
@@ -19,6 +31,9 @@ custom_constants/margin_right = 16
 custom_constants/margin_top = 16
 custom_constants/margin_left = 16
 custom_constants/margin_bottom = 16
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="BackButton" type="Button" parent="MarginContainer"]
 margin_left = 16.0
@@ -33,128 +48,6 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
-anchor_left = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = -653.0
-margin_top = 81.0
-custom_constants/separation = 16
-
-[node name="ColorRect" type="ColorRect" parent="VBoxContainer"]
-margin_right = 653.0
-margin_bottom = 4.0
-rect_min_size = Vector2( 0, 4 )
-
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
-margin_top = 20.0
-margin_right = 653.0
-margin_bottom = 72.0
-custom_constants/margin_right = 32
-custom_constants/margin_left = 32
-
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/MarginContainer"]
-margin_left = 32.0
-margin_right = 621.0
-margin_bottom = 52.0
-
-[node name="Label" type="Label" parent="VBoxContainer/MarginContainer/HBoxContainer"]
-margin_top = 3.0
-margin_right = 459.0
-margin_bottom = 49.0
-size_flags_horizontal = 3
-custom_fonts/font = ExtResource( 4 )
-text = "Note Speed"
-
-[node name="NoteSpeedSpinbox" parent="VBoxContainer/MarginContainer/HBoxContainer" groups=["settings"] instance=ExtResource( 1 )]
-margin_left = 463.0
-margin_right = 589.0
-margin_bottom = 52.0
-step = 0.1
-min_value = 1.0
-decimal_places = 1
-value_name = "note_speed"
-use_extra_buttons = true
-extra_step = 0.5
-
-[node name="ColorRect2" type="ColorRect" parent="VBoxContainer"]
-margin_top = 88.0
-margin_right = 653.0
-margin_bottom = 92.0
-rect_min_size = Vector2( 0, 4 )
-
-[node name="MarginContainer2" type="MarginContainer" parent="VBoxContainer"]
-margin_top = 108.0
-margin_right = 653.0
-margin_bottom = 160.0
-custom_constants/margin_right = 32
-custom_constants/margin_left = 32
-
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/MarginContainer2"]
-margin_left = 32.0
-margin_right = 621.0
-margin_bottom = 52.0
-
-[node name="Label" type="Label" parent="VBoxContainer/MarginContainer2/HBoxContainer"]
-margin_top = 3.0
-margin_right = 459.0
-margin_bottom = 49.0
-size_flags_horizontal = 3
-custom_fonts/font = ExtResource( 4 )
-text = "Audio Offset"
-
-[node name="AudioOffsetSpinBox" parent="VBoxContainer/MarginContainer2/HBoxContainer" groups=["settings"] instance=ExtResource( 1 )]
-margin_left = 463.0
-margin_right = 589.0
-margin_bottom = 52.0
-max_value = 1000.0
-default_value = 0.0
-value_name = "audio_offset"
-use_extra_buttons = true
-extra_step = 10.0
-
-[node name="ColorRect3" type="ColorRect" parent="VBoxContainer"]
-margin_top = 176.0
-margin_right = 653.0
-margin_bottom = 180.0
-rect_min_size = Vector2( 0, 4 )
-
-[node name="MarginContainer3" type="MarginContainer" parent="VBoxContainer"]
-margin_top = 196.0
-margin_right = 653.0
-margin_bottom = 248.0
-custom_constants/margin_right = 32
-custom_constants/margin_left = 32
-
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/MarginContainer3"]
-margin_left = 32.0
-margin_right = 621.0
-margin_bottom = 52.0
-
-[node name="Label" type="Label" parent="VBoxContainer/MarginContainer3/HBoxContainer"]
-margin_top = 3.0
-margin_right = 459.0
-margin_bottom = 49.0
-size_flags_horizontal = 3
-custom_fonts/font = ExtResource( 4 )
-text = "Input Offset"
-
-[node name="InputOffsetSpinBox" parent="VBoxContainer/MarginContainer3/HBoxContainer" groups=["settings"] instance=ExtResource( 1 )]
-margin_left = 463.0
-margin_right = 589.0
-margin_bottom = 52.0
-max_value = 50.0
-default_value = 0.0
-value_name = "input_offset"
-use_extra_buttons = true
-extra_step = 10.0
-
-[node name="ColorRect4" type="ColorRect" parent="VBoxContainer"]
-margin_top = 264.0
-margin_right = 653.0
-margin_bottom = 268.0
-rect_min_size = Vector2( 0, 4 )
-
 [node name="Gameplay_bg" type="TextureRect" parent="."]
 self_modulate = Color( 0.392157, 0.392157, 0.392157, 1 )
 show_behind_parent = true
@@ -164,5 +57,329 @@ mouse_filter = 2
 texture = ExtResource( 2 )
 expand = true
 stretch_mode = 7
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MarginContainer2" type="MarginContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = 123.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/margin_right = 64
+custom_constants/margin_top = 64
+custom_constants/margin_left = 64
+custom_constants/margin_bottom = 64
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CustomTabContainer" type="HBoxContainer" parent="MarginContainer2"]
+margin_left = 64.0
+margin_top = 64.0
+margin_right = 1856.0
+margin_bottom = 893.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource( 7 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VerticalTabs" type="VBoxContainer" parent="MarginContainer2/CustomTabContainer"]
+margin_right = 400.0
+margin_bottom = 829.0
+custom_constants/separation = 16
+
+[node name="GameplayTab" type="TextureButton" parent="MarginContainer2/CustomTabContainer/VerticalTabs"]
+margin_right = 400.0
+margin_bottom = 72.0
+texture_normal = ExtResource( 6 )
+script = ExtResource( 10 )
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer2/CustomTabContainer/VerticalTabs/GameplayTab"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/margin_left = 48
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="MarginContainer2/CustomTabContainer/VerticalTabs/GameplayTab/MarginContainer"]
+margin_left = 48.0
+margin_right = 400.0
+margin_bottom = 72.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_fonts/font = ExtResource( 8 )
+text = "Gameplay"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AudioTab" type="TextureButton" parent="MarginContainer2/CustomTabContainer/VerticalTabs"]
+margin_top = 88.0
+margin_right = 400.0
+margin_bottom = 160.0
+texture_normal = ExtResource( 9 )
+script = ExtResource( 10 )
+tab_index = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer2/CustomTabContainer/VerticalTabs/AudioTab"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+custom_constants/margin_left = 48
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="MarginContainer2/CustomTabContainer/VerticalTabs/AudioTab/MarginContainer"]
+margin_left = 48.0
+margin_top = 6.0
+margin_right = 400.0
+margin_bottom = 66.0
+custom_fonts/font = ExtResource( 8 )
+text = "Audio"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SystemTab" type="TextureButton" parent="MarginContainer2/CustomTabContainer/VerticalTabs"]
+margin_top = 176.0
+margin_right = 400.0
+margin_bottom = 248.0
+texture_normal = ExtResource( 9 )
+script = ExtResource( 10 )
+tab_index = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer2/CustomTabContainer/VerticalTabs/SystemTab"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+custom_constants/margin_left = 48
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="MarginContainer2/CustomTabContainer/VerticalTabs/SystemTab/MarginContainer"]
+margin_left = 48.0
+margin_top = 6.0
+margin_right = 400.0
+margin_bottom = 66.0
+custom_fonts/font = ExtResource( 8 )
+text = "System"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TabContainer" type="TabContainer" parent="MarginContainer2/CustomTabContainer"]
+margin_left = 404.0
+margin_right = 1044.0
+margin_bottom = 829.0
+rect_min_size = Vector2( 640, 0 )
+size_flags_horizontal = 2
+size_flags_vertical = 3
+custom_styles/panel = SubResource( 1 )
+tabs_visible = false
+use_hidden_tabs_for_min_size = true
+
+[node name="Gameplay" type="MarginContainer" parent="MarginContainer2/CustomTabContainer/TabContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/margin_left = 64
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer2/CustomTabContainer/TabContainer/Gameplay"]
+margin_left = 64.0
+margin_right = 640.0
+margin_bottom = 829.0
+size_flags_horizontal = 3
+custom_styles/bg = ExtResource( 12 )
+scroll_horizontal_enabled = false
+scroll_deadzone = 16
+
+[node name="GridContainer" type="GridContainer" parent="MarginContainer2/CustomTabContainer/TabContainer/Gameplay/ScrollContainer"]
+margin_left = 32.0
+margin_top = 32.0
+margin_right = 544.0
+margin_bottom = 797.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/vseparation = 32
+custom_constants/hseparation = 32
+columns = 2
+
+[node name="NoteSpeedLabel" type="Label" parent="MarginContainer2/CustomTabContainer/TabContainer/Gameplay/ScrollContainer/GridContainer"]
+margin_top = 3.0
+margin_right = 245.0
+margin_bottom = 49.0
+size_flags_horizontal = 3
+custom_fonts/font = ExtResource( 11 )
+text = "Note Speed"
+
+[node name="NoteSpeedSpinbox" parent="MarginContainer2/CustomTabContainer/TabContainer/Gameplay/ScrollContainer/GridContainer" groups=["settings"] instance=ExtResource( 1 )]
+margin_left = 277.0
+margin_right = 512.0
+margin_bottom = 52.0
+alignment = 1
+step = 0.1
+min_value = 1.0
+decimal_places = 1
+value_name = "note_speed"
+use_extra_buttons = true
+extra_step = 0.5
+
+[node name="DrawOffsetLabel" type="Label" parent="MarginContainer2/CustomTabContainer/TabContainer/Gameplay/ScrollContainer/GridContainer"]
+margin_top = 87.0
+margin_right = 245.0
+margin_bottom = 133.0
+size_flags_horizontal = 3
+custom_fonts/font = ExtResource( 11 )
+text = "Draw Offset"
+
+[node name="AudioOffsetSpinBox" parent="MarginContainer2/CustomTabContainer/TabContainer/Gameplay/ScrollContainer/GridContainer" groups=["settings"] instance=ExtResource( 1 )]
+margin_left = 277.0
+margin_top = 84.0
+margin_right = 512.0
+margin_bottom = 136.0
+alignment = 1
+max_value = 1000.0
+default_value = 0.0
+value_name = "audio_offset"
+use_extra_buttons = true
+extra_step = 10.0
+
+[node name="InputOffsetLabel" type="Label" parent="MarginContainer2/CustomTabContainer/TabContainer/Gameplay/ScrollContainer/GridContainer"]
+margin_top = 171.0
+margin_right = 245.0
+margin_bottom = 217.0
+size_flags_horizontal = 3
+custom_fonts/font = ExtResource( 11 )
+text = "Input Offset"
+
+[node name="InputOffsetSpinBox" parent="MarginContainer2/CustomTabContainer/TabContainer/Gameplay/ScrollContainer/GridContainer" groups=["settings"] instance=ExtResource( 1 )]
+margin_left = 277.0
+margin_top = 168.0
+margin_right = 512.0
+margin_bottom = 220.0
+alignment = 1
+max_value = 50.0
+default_value = 0.0
+value_name = "input_offset"
+use_extra_buttons = true
+extra_step = 10.0
+
+[node name="BgDimLabel" type="Label" parent="MarginContainer2/CustomTabContainer/TabContainer/Gameplay/ScrollContainer/GridContainer"]
+margin_top = 255.0
+margin_right = 245.0
+margin_bottom = 301.0
+custom_fonts/font = ExtResource( 11 )
+text = "Background Dim"
+
+[node name="BgDimSpinBox" parent="MarginContainer2/CustomTabContainer/TabContainer/Gameplay/ScrollContainer/GridContainer" groups=["settings"] instance=ExtResource( 1 )]
+margin_left = 277.0
+margin_top = 252.0
+margin_right = 512.0
+margin_bottom = 304.0
+size_flags_horizontal = 3
+alignment = 1
+min_value = 1.0
+max_value = 5.0
+value_name = "bg_dim"
+
+[node name="Audio" type="MarginContainer" parent="MarginContainer2/CustomTabContainer/TabContainer"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/margin_left = 64
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer2/CustomTabContainer/TabContainer/Audio"]
+margin_left = 64.0
+margin_right = 640.0
+margin_bottom = 829.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_styles/bg = ExtResource( 12 )
+scroll_horizontal_enabled = false
+scroll_deadzone = 16
+
+[node name="GridContainer" type="GridContainer" parent="MarginContainer2/CustomTabContainer/TabContainer/Audio/ScrollContainer"]
+margin_left = 32.0
+margin_top = 32.0
+margin_right = 544.0
+margin_bottom = 797.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/vseparation = 32
+custom_constants/hseparation = 32
+columns = 2
+
+[node name="VolumeLabel" type="Label" parent="MarginContainer2/CustomTabContainer/TabContainer/Audio/ScrollContainer/GridContainer"]
+margin_top = 3.0
+margin_right = 240.0
+margin_bottom = 49.0
+size_flags_horizontal = 3
+custom_fonts/font = ExtResource( 4 )
+text = "Music Volume"
+
+[node name="VolumeSpinBox" parent="MarginContainer2/CustomTabContainer/TabContainer/Audio/ScrollContainer/GridContainer" groups=["settings"] instance=ExtResource( 1 )]
+margin_left = 272.0
+margin_right = 512.0
+margin_bottom = 52.0
+size_flags_horizontal = 3
+alignment = 1
+step = 5.0
+max_value = 100.0
+default_value = 50.0
+value_name = "music_volume"
+
+[node name="SFXLabel" type="Label" parent="MarginContainer2/CustomTabContainer/TabContainer/Audio/ScrollContainer/GridContainer"]
+margin_top = 84.0
+margin_right = 240.0
+margin_bottom = 130.0
+custom_fonts/font = ExtResource( 11 )
+text = "Effect Volume"
+
+[node name="SFXSpinBox" type="Label" parent="MarginContainer2/CustomTabContainer/TabContainer/Audio/ScrollContainer/GridContainer"]
+margin_left = 272.0
+margin_top = 84.0
+margin_right = 512.0
+margin_bottom = 130.0
+size_flags_horizontal = 3
+custom_fonts/font = ExtResource( 11 )
+text = "N/A"
+align = 1
+
+[node name="System" type="MarginContainer" parent="MarginContainer2/CustomTabContainer/TabContainer"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/margin_left = 64
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer2/CustomTabContainer/TabContainer/System"]
+margin_left = 64.0
+margin_right = 640.0
+margin_bottom = 829.0
+custom_styles/bg = ExtResource( 12 )
+scroll_horizontal_enabled = false
+scroll_deadzone = 16
+
+[node name="GridContainer" type="GridContainer" parent="MarginContainer2/CustomTabContainer/TabContainer/System/ScrollContainer"]
+margin_left = 32.0
+margin_top = 32.0
+margin_right = 32.0
+margin_bottom = 32.0
+columns = 2
 
 [connection signal="pressed" from="MarginContainer/BackButton" to="." method="_on_BackButton_pressed"]
+[connection signal="tab_selected" from="MarginContainer2/CustomTabContainer/VerticalTabs/GameplayTab" to="MarginContainer2/CustomTabContainer" method="_on_custom_tab_selected"]
+[connection signal="tab_selected" from="MarginContainer2/CustomTabContainer/VerticalTabs/AudioTab" to="MarginContainer2/CustomTabContainer" method="_on_custom_tab_selected"]
+[connection signal="tab_selected" from="MarginContainer2/CustomTabContainer/VerticalTabs/SystemTab" to="MarginContainer2/CustomTabContainer" method="_on_custom_tab_selected"]
+[connection signal="value_changed" from="MarginContainer2/CustomTabContainer/TabContainer/Audio/ScrollContainer/GridContainer/VolumeSpinBox" to="." method="_on_VolumeSpinBox_value_changed"]

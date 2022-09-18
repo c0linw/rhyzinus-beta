@@ -1,15 +1,19 @@
 extends Node
 
 const settings_file = "user://settings.cfg"
-var setting_values: Dictionary = {
+var setting_defaults: Dictionary = {
 	"note_speed": 5.0,
 	"audio_offset": 0,
 	"input_offset": 0,
-	"volume": 100
+	"bg_dim": 3,
+	"music_volume": 70,
+	"sfx_volume": 0,
 }
+var setting_values: Dictionary = {}
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	setting_values = setting_defaults
 	read_settings_file()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

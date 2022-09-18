@@ -11,10 +11,13 @@ func _ready():
 	chart_path = SceneSwitcher.get_param("chart_path")
 	audio_path = SceneSwitcher.get_param("audio_path")
 	if not load_chart(chart_path, $chart_data):
-		 # TODO: return to menu if load was unsuccessful
-		print("Chart loading failed!")
-		SceneSwitcher.change_scene("res://scenes/song_select/song_select.tscn")
-	# TODO: switch scene to Game, passing in audio and chart_data object
+		var data: Dictionary = {
+			"popup_msg": "Chart loading failed!"
+		}
+		print("attempting to change to song select")
+		SceneSwitcher.change_scene("res://scenes/song_select/song_select.tscn", data)
+		return
+
 	Settings.read_settings_file()
 	var options: Dictionary = {
 		"audio_offset": Settings.setting_values["audio_offset"] / 1000.0,
@@ -34,6 +37,7 @@ func _ready():
 	yield(get_tree(), "idle_frame")
 	if SceneSwitcher.change_scene("res://scenes/game/game.tscn", data) != OK:
 		print ("Error changing scene to Game")
+		return
 
 
 func load_chart(file_path: String, receiver: Node) -> bool:

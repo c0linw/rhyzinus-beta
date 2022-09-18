@@ -19,9 +19,12 @@ var ObjSongListElement = preload("res://scenes/song_select/song_list_element.tsc
 
 signal difficulty_set(difficulty)
 signal song_selected(song_data)
+signal set_selected_if_same(instance)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	AudioServer.set_bus_volume_db(1, linear2db(Settings.setting_values["music_volume"]/100.0))
+	
 	var song_index = read_index(pack_name)
 	var first_song = null
 	if song_index != null:
@@ -29,8 +32,9 @@ func _ready():
 			var new_element = ObjSongListElement.instance()
 			new_element.connect("song_selected", self, "_on_SongListElement_song_selected")
 			new_element.connect("play_song", self, "_on_SongListElement_play_song")
+			self.connect("difficulty_set", new_element, "_on_SongSelect_difficulty_set")
 			new_element.setup(song)
-			$SongSelectScroll/VBoxContainer.add_child(new_element)
+			find_node("SongListContainer").add_child(new_element)
 			if first_song == null:
 				first_song = new_element
 		
@@ -45,19 +49,34 @@ func _ready():
 		self.connect("difficulty_set", node, "_on_SongSelect_difficulty_set")
 		self.connect("song_selected", node, "_on_SongSelect_song_selected")
 		
-	$MarginContainer2/HBoxContainer/JacketImage.set_pack(pack_name)
-	emit_signal("difficulty_set", ALPHA)
-	first_song.emit_signal("pressed")
+	find_node("JacketImage").set_pack(pack_name)
+	emit_signal("difficulty_set", ALPHA) # TODO: find a way to locally save the last selected diff
+	if first_song != null:
+		first_song._on_TextureButton_pressed()
+		
+	if SceneSwitcher.get_param("popup_msg") != null:
+		popup_alert(SceneSwitcher.get_param("popup_msg"))
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass
 
-func _on_SongListElement_song_selected(song_data: Dictionary):
+func _on_SongListElement_song_selected(instance, song_data):
 	emit_signal("song_selected", song_data)
+	for button in get_tree().get_nodes_in_group("song_list_elements"):
+		if button != instance:
+			button.set_unselected()
+			
+	$SongPreviewPlayer.start_preview("%s%s/%s/audio.mp3" % [song_folder, pack_name, song_data.path], song_data)
 	
 func _on_SongListElement_play_song(song_data: Dictionary):
-	print("%s%s/%s/%s.rznx" % [song_folder, pack_name, song_data.path, selected_difficulty])
+	var chart_path = "%s%s/%s/%s.rznx" % [song_folder, pack_name, song_data.path, selected_difficulty]
+	var file = File.new()
+	var exists = file.file_exists(chart_path)
+	file.close()
+	if not exists:
+		popup_alert("Chart file not found")
+		return
 	var data: Dictionary = {
 		"chart_path": "%s%s/%s/%s.rznx" % [song_folder, pack_name, song_data.path, selected_difficulty],
 		"audio_path": "%s%s/%s/audio.mp3" % [song_folder, pack_name, song_data.path],
@@ -100,3 +119,9 @@ func _on_OptionsButton_pressed():
 		"prev_scene": "res://scenes/song_select/song_select.tscn"
 	}
 	SceneSwitcher.change_scene("res://scenes/options/options.tscn", data)
+	
+func popup_alert(msg: String):
+	var popup = $AlertPopup.get_canvas_item()
+	VisualServer.canvas_item_set_z_index(popup, 101)
+	$AlertPopup.find_node("Label").text = msg
+	$AlertPopup.popup_centered()
