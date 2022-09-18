@@ -5,6 +5,8 @@ const FADEOUT_TIME = 5.0
 var preview_start: float
 var preview_end: float
 
+signal song_stream_loaded(audioplayer)
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
@@ -25,6 +27,7 @@ func set_linear_volume(linear_volume: float):
 func start_preview(audio_path: String, song_data: Dictionary):
 	stream = load(audio_path)
 	if stream != null:
+		emit_signal("song_stream_loaded", self)
 		preview_start = 0.0
 		preview_end = stream.get_length() - FADEOUT_TIME
 		if song_data.has("preview_start"):
