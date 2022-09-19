@@ -188,7 +188,7 @@ func _process(_delta):
 		else:
 			simline.render(chart_position, lane_depth, base_note_screen_time)
 			
-	# reset, then update hold status		
+	# reset, then update hold status
 	var candidate_holds: Array = []
 	for hold in get_tree().get_nodes_in_group("holds"):
 		hold.held = false
@@ -216,11 +216,6 @@ func _process(_delta):
 				emit_signal("note_judged", result)
 				judgement_sources["end_miss"] += 1
 				delete_note(note)
-		elif note.is_in_group("swipes") and note.activated and timestamp < note.time + note.late_cracked + input_offset:
-			var result = {"judgement": FLAWLESS, "offset": 0}
-			draw_judgement(result, note.lane)
-			emit_signal("note_judged", result)
-			delete_note(note)
 		elif timestamp >= note.time + note.late_cracked + input_offset:
 			if note.is_in_group("holds"):
 				if !note.head_judged:
@@ -587,7 +582,10 @@ func _input(event):
 			if note.start_position == null:
 				note.start_position = event.position
 			elif event.position.distance_to(note.start_position) > swipe_threshold_px:
-				note.activated = true
+				var result = {"judgement": FLAWLESS, "offset": 0}
+				draw_judgement(result, note.lane)
+				emit_signal("note_judged", result)
+				delete_note(note)
 		return
 		
 func draw_judgement(data: Dictionary, lane: int):
