@@ -158,31 +158,31 @@ func _process(_delta):
 	
 	chart_position += (timestamp - last_timestamp) * sv_velocity
 	
-	for barline_data in barlines_to_spawn:
+	for barline_data in barlines_to_spawn.duplicate():
 		if chart_position >= barline_data["position"] - base_note_screen_time:
 			spawn_barline(barline_data)
 		else:
 			break # assumes all barlines are stored in ascending time
 	
-	for note_data in notes_to_spawn:
+	for note_data in notes_to_spawn.duplicate():
 		if chart_position >= note_data["position"] - base_note_screen_time:
 			spawn_note(note_data)
 		else:
 			break # assumes all notes are stored in ascending time
 			
-	for simline_data in simlines_to_spawn:
+	for simline_data in simlines_to_spawn.duplicate():
 		if chart_position >= simline_data["position"] - base_note_screen_time:
 			spawn_simline(simline_data)
 		else:
 			break # assumes all simlines are stored in ascending time
 			
-	for barline in onscreen_barlines:
+	for barline in onscreen_barlines.duplicate():
 		if chart_position >= barline.chart_position:
 			remove_barline(barline)
 		else:
 			barline.render(chart_position, lane_depth, base_note_screen_time)
 			
-	for simline in onscreen_simlines:
+	for simline in onscreen_simlines.duplicate():
 		if chart_position >= simline.chart_position:
 			remove_simline(simline)
 		else:
@@ -201,7 +201,7 @@ func _process(_delta):
 				nearest_hold.held = true
 	
 	# check for notes that are too late, then render the rest
-	for note in onscreen_notes:
+	for note in onscreen_notes.duplicate():
 		note.render(chart_position, lane_depth, base_note_screen_time)
 		if note.is_in_group("holds") and timestamp > note.end_time + input_offset:
 			if note.held:
@@ -248,7 +248,7 @@ func _process(_delta):
 			else:
 				break
 		
-	for beat in beat_data:
+	for beat in beat_data.duplicate():
 		if timestamp >= beat["time"]:
 			emit_signal("beat", beat["measure"], beat["beat"])
 			beat_data.erase(beat)
