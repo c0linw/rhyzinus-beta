@@ -14,6 +14,7 @@ var accel = 20
 var histogram = []
 
 func _ready():
+	histogram.resize(definition)
 	yield(get_tree(), "idle_frame")
 	for i in range(definition):
 		var bar_instance = ColorRect.new()
@@ -21,7 +22,7 @@ func _ready():
 		bar_instance.rect_min_size = Vector2(rect_size.x/definition - $HBoxContainer.get_constant("separation"), 0)
 		bar_instance.size_flags_vertical = SIZE_SHRINK_CENTER
 		$HBoxContainer.add_child(bar_instance)
-		histogram.append(0)
+		histogram[i] = 0
 
 func _process(delta):
 	if spectrum == null:
