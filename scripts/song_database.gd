@@ -1,5 +1,16 @@
 extends Node
 
+class RowSorter:
+	var sorting_column: String = ""
+	
+	func sort_ascending(a: Dictionary, b: Dictionary) -> bool:
+		return a[sorting_column] < b[sorting_column]
+		
+	func sort_descending(a: Dictionary, b: Dictionary) -> bool:
+		return a[sorting_column] > b[sorting_column]
+
+var row_sorter = RowSorter.new()
+
 # Database structure
 var db: Dictionary = {
 	"tables": {
@@ -14,18 +25,20 @@ var db: Dictionary = {
 	}
 }
 
-class RowSorter:
-	var sorting_column: String = ""
-	
-	func sort_ascending(a: Dictionary, b: Dictionary) -> bool:
-		return a[sorting_column] < b[sorting_column]
-		
-	func sort_descending(a: Dictionary, b: Dictionary) -> bool:
-		return a[sorting_column] > b[sorting_column]
+# operator structure:
+# {
+# 	"column": "column_name_here",
+# 	"operator": "=", # can be one of "=", "!=", ">", "<", ">=", "<="
+# 	"value": 10, # the value to compare using operator
+# 	"sub_indexes": [3], # optional key. If the column queried is a data container like an array or dictionary, it will index it using this value. Put multiple values in this array for nested indexing.
+# 	"append_previous": true, # optional key. If true, appends this filter's result to the previous filter's result (OR statement). Default behaviour will filter against the previous result (AND statement).
+# }
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+
+	load_database("res://songs/song_db.json")
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -106,39 +119,79 @@ func select(table_name: String, conditionals: Array, order: String) -> Dictionar
 		return result
 	var table = db.tables[table_name]
 	
-	for filter in conditionals:
+	for i in conditionals.size():
+		var filter = conditionals[i]
 		if not is_conditional_valid(filter, table_name):
 			result.error_string = "invalid conditional"
 			return result
+
+		var to_search: Array
+		var new_result_rows: Array = []
+		if i == 0:
+			to_search = table
+		elif filter.has("append_previous") and filter.append_previous == true:
+			to_search = table
+			new_result_rows = result.rows
+		else: 
+			to_search = result.rows
+
+		# do any sub-indexing of a column value if available:
+		var use_sub_index: bool = filter.has("sub_indexes")
+
 		match filter.operator:
 			"=":
-				for row in table:
-					if row[filter.column] == filter.value:
-						result.rows.append(row)
+				for row in to_search:
+					var row_value = row[filter.column]
+					if use_sub_index:
+						for index in filter.sub_indexes:
+							row_value = row_value[index]
+					if row_value == filter.value:
+						new_result_rows.append(row)
 			"!=":
-				for row in table:
-					if row[filter.column] != filter.value:
-						result.rows.append(row)
+				for row in to_search:
+					var row_value = row[filter.column]
+					if use_sub_index:
+						for index in filter.sub_indexes:
+							row_value = row_value[index]
+					if row_value != filter.value:
+						new_result_rows.append(row)
 			">":
-				for row in table:
-					if row[filter.column] > filter.value:
-						result.rows.append(row)
+				for row in to_search:
+					var row_value = row[filter.column]
+					if use_sub_index:
+						for index in filter.sub_indexes:
+							row_value = row_value[index]
+					if row_value > filter.value:
+						new_result_rows.append(row)
 			"<":
-				for row in table:
-					if row[filter.column] < filter.value:
-						result.rows.append(row)
+				for row in to_search:
+					var row_value = row[filter.column]
+					if use_sub_index:
+						for index in filter.sub_indexes:
+							row_value = row_value[index]
+					if row_value < filter.value:
+						new_result_rows.append(row)
 			">=":
-				for row in table:
-					if row[filter.column] >= filter.value:
-						result.rows.append(row)
+				for row in to_search:
+					var row_value = row[filter.column]
+					if use_sub_index:
+						for index in filter.sub_indexes:
+							row_value = row_value[index]
+					if row_value >= filter.value:
+						new_result_rows.append(row)
 			"<=":
-				for row in table:
-					if row[filter.column] <= filter.value:
-						result.rows.append(row)
+				for row in to_search:
+					var row_value = row[filter.column]
+					if use_sub_index:
+						for index in filter.sub_indexes:
+							row_value = row_value[index]
+					if row_value <= filter.value:
+						new_result_rows.append(row)
+		result.rows = new_result_rows
 	
 	var sort_params = order.rsplit(" ", true, 1)
 	if table.schema.has(sort_params[0]):
-		RowSorter.sorting_column = sort_params[0]
+		row_sorter.sorting_column = sort_params[0]
 		if sort_params[1] == "asc":
 			result.rows.sort_custom(RowSorter, "sort_ascending")
 		elif sort_params[1] == "desc": 
