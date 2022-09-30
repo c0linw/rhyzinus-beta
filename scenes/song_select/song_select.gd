@@ -66,7 +66,7 @@ func _on_SongListElement_song_selected(instance, song_data):
 	for button in get_tree().get_nodes_in_group("song_list_elements"):
 		if button != instance:
 			button.set_unselected()
-			
+	
 	$SongPreviewPlayer.start_preview("%s%s/%s/audio.mp3" % [song_folder, pack_name, song_data.path], song_data)
 	
 func _on_SongListElement_play_song(song_data: Dictionary):

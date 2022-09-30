@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=2]
+[gd_scene load_steps=26 format=2]
 
 [ext_resource path="res://scenes/song_select/song_list_element.gd" type="Script" id=1]
 [ext_resource path="res://textures/ui/song_border.png" type="Texture" id=2]
@@ -12,6 +12,53 @@
 [ext_resource path="res://scenes/ui/anim/song_selectglow_green.tres" type="Animation" id=10]
 [ext_resource path="res://scenes/ui/anim/song_selectglow_none.tres" type="Animation" id=11]
 [ext_resource path="res://scenes/song_select/text_scroller.gd" type="Script" id=12]
+
+[sub_resource type="Animation" id=12]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:rect_position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=13]
+resource_name = "slide_hide"
+length = 0.7
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:rect_position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.7 ),
+"transitions": PoolRealArray( 0.258816, 1 ),
+"update": 0,
+"values": [ -86.0, 0.0 ]
+}
+
+[sub_resource type="Animation" id=11]
+resource_name = "slide_show"
+length = 0.7
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:rect_position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.7 ),
+"transitions": PoolRealArray( 0.258816, 1 ),
+"update": 0,
+"values": [ 86.0, 0.0 ]
+}
 
 [sub_resource type="DynamicFont" id=4]
 size = 84
@@ -50,11 +97,15 @@ size = 32
 font_data = ExtResource( 3 )
 
 [node name="SongListElement" type="MarginContainer" groups=["song_list_elements"]]
+margin_right = 640.0
+margin_bottom = 160.0
 custom_constants/margin_bottom = 0
 script = ExtResource( 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+
+[node name="SlideAnim" type="AnimationPlayer" parent="."]
+anims/RESET = SubResource( 12 )
+anims/slide_hide = SubResource( 13 )
+anims/slide_show = SubResource( 11 )
 
 [node name="TextureButton" type="TextureButton" parent="."]
 margin_right = 640.0
@@ -72,9 +123,6 @@ __meta__ = {
 anchor_right = 1.0
 anchor_bottom = 1.0
 size_flags_vertical = 0
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="MarginContainer" type="MarginContainer" parent="TextureButton/HBoxContainer"]
 margin_right = 144.0
@@ -183,9 +231,6 @@ margin_left = -40.0
 margin_top = -20.0
 margin_bottom = 20.0
 mouse_filter = 2
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="GlowEffectCore" type="TextureRect" parent="TextureButton/GlowEffect"]
 self_modulate = Color( 1, 1, 1, 0 )
@@ -198,9 +243,6 @@ margin_top = -112.0
 margin_bottom = 112.0
 mouse_filter = 2
 texture = ExtResource( 5 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="GlowEffectBloom" type="TextureRect" parent="TextureButton/GlowEffect"]
 self_modulate = Color( 1, 1, 1, 0 )
