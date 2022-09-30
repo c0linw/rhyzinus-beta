@@ -49,6 +49,8 @@ func _process(delta):
 		mag += 0.3 * (freq - min_freq) / (max_freq - min_freq)
 		mag = clamp(mag, 0.05, 1)
 		
+		if histogram[i] == null:
+			histogram[i] = 0
 		histogram[i] = lerp(histogram[i], mag, accel * delta)
 		if i < len(bar_instances):
 			bar_instances[i].rect_min_size.y = histogram[i] * rect_size.y * 0.75	

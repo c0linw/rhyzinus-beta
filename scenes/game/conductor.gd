@@ -1,6 +1,13 @@
 extends AudioStreamPlayer
 
+enum sfx_enums {SFX_NONE, SFX_CLICK, SFX_SWIPE}
+
 var bpm
+
+var custom_stream: ShinobuSoundPlayer
+var music_group: ShinobuGroup
+var sfx_group: ShinobuGroup
+
 
 # Tracking the beat and song position
 var time_begin: float
@@ -19,6 +26,9 @@ var beat_data: Array = []
 # Determining how close to the beat an event is
 var closest = 0
 var time_off_beat = 0.0
+
+var sfx_sources: Array
+var played_sfxs: Array = [] # manually free these when each one is done
 
 class TimeSorter:
 	# denotes the order in which these should be sorted, if there are objects with the same time
@@ -45,7 +55,34 @@ class TimeSorter:
 			return false
 
 func _ready():
-	pass
+	Shinobu.initialize()
+	print(Shinobu.get_current_backend_name())
+	
+	# load the note sound effects
+	var click_file = File.new()
+	click_file.open("res://sound/click.wav", File.READ)
+	var buffer = click_file.get_buffer(click_file.get_len())
+	click_file.close()
+	var click_source = Shinobu.register_sound_from_memory("click", buffer)
+	
+	var swipe_file = File.new()
+	swipe_file.open("res://sound/swipe.wav", File.READ)
+	var buffer2 = swipe_file.get_buffer(swipe_file.get_len())
+	swipe_file.close()
+	var swipe_source = Shinobu.register_sound_from_memory("swipe", buffer2)
+	
+	sfx_sources.resize(sfx_enums.size())
+	sfx_sources[sfx_enums.SFX_CLICK] = click_source
+	sfx_sources[sfx_enums.SFX_SWIPE] = swipe_source
+	
+	sfx_group = Shinobu.create_group("sfx_group", null)
+	music_group = Shinobu.create_group("music", null)
+	
+func _process(delta):
+	for sfx_player in played_sfxs.duplicate():
+		if sfx_player.is_at_stream_end():
+			sfx_player.queue_free()
+			played_sfxs.erase(sfx_player)
 	
 func set_bpm(num: float):
 	bpm = num
@@ -100,3 +137,10 @@ func _on_PausePopup_unpause():
 
 func _on_Game_pause():
 	last_paused = OS.get_ticks_usec()
+	
+func play_sfx(sfx_enum_value: int):
+	var sfx_source = sfx_sources[sfx_enum_value]
+	if sfx_source != null:
+		var sfx_player = sfx_source.instantiate(sfx_group)
+		played_sfxs.append(sfx_player)
+		sfx_player.start()

@@ -207,6 +207,7 @@ func _process(_delta):
 			if note.held:
 				var result = {"judgement": FLAWLESS, "offset": 0}
 				draw_judgement(result, note.lane)
+				$Conductor.play_sfx($Conductor.sfx_enums.SFX_CLICK)
 				emit_signal("note_judged", result)
 				judgement_sources["end_hit"] += 1
 				delete_note(note)
@@ -508,6 +509,7 @@ func _input(event):
 					var result = note.judge(event_time)
 					if result != null:
 						draw_judgement(result, note.lane)
+						$Conductor.play_sfx($Conductor.sfx_enums.SFX_CLICK)
 						emit_signal("note_judged", result)
 						if note.is_in_group("holds"):
 							judgement_sources["start_hit"] += 1
@@ -524,6 +526,7 @@ func _input(event):
 					var result = closest_note.judge(event_time)
 					if result != null:
 						draw_judgement(result, closest_note.lane)
+						$Conductor.play_sfx($Conductor.sfx_enums.SFX_CLICK)
 						emit_signal("note_judged", result)
 						if closest_note.is_in_group("holds"):
 							judgement_sources["start_hit_tiebreaker"] += 1
@@ -541,6 +544,7 @@ func _input(event):
 			if judged_note != null:
 				var result = {"judgement": FLAWLESS, "offset": 0}
 				draw_judgement(result, judged_note.lane)
+				$Conductor.play_sfx($Conductor.sfx_enums.SFX_CLICK)
 				emit_signal("note_judged", result)
 				judgement_sources["release"] += 1
 				delete_note(judged_note)
@@ -584,6 +588,7 @@ func _input(event):
 			elif event.position.distance_to(note.start_position) > swipe_threshold_px:
 				var result = {"judgement": FLAWLESS, "offset": 0}
 				draw_judgement(result, note.lane)
+				$Conductor.play_sfx($Conductor.sfx_enums.SFX_SWIPE)
 				emit_signal("note_judged", result)
 				delete_note(note)
 		return
