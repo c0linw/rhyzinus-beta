@@ -138,12 +138,11 @@ func _ready():
 	setup_combo_counter()
 	setup_timing_indicator()
 	
-	$Conductor.stream = load(audio_path)
-	$Conductor.stream.loop = false
+	$Conductor.load_audio(audio_path)
 
 	yield(get_tree(), "idle_frame")
 	set_process(true)
-	$Conductor.play_from_beat(0,0)
+	$Conductor.play_from_position(0)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):

@@ -547,7 +547,6 @@ __meta__ = {
 }
 
 [node name="Conductor" parent="." instance=ExtResource( 4 )]
-bus = "Music"
 
 [node name="result_data" type="Node" parent="."]
 script = ExtResource( 1 )
@@ -577,14 +576,10 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 2, 0 )
 [connection signal="note_judged" from="." to="CanvasLayer/ComboIndicator/TimingLabel" method="_on_Game_note_judged"]
 [connection signal="note_judged" from="." to="CanvasLayer/ComboIndicator/ComboCounterLabel" method="_on_Game_note_judged"]
 [connection signal="note_judged" from="." to="result_data" method="_on_Game_note_judged"]
-[connection signal="pause" from="." to="Conductor" method="_on_Game_pause"]
 [connection signal="pressed" from="CanvasLayer/PauseContainer/PauseButton" to="CanvasLayer/PauseContainer/PauseButton" method="_on_PauseButton_pressed"]
 [connection signal="quit" from="CanvasLayer/PausePopup" to="." method="_on_PausePopup_quit"]
 [connection signal="restart" from="CanvasLayer/PausePopup" to="." method="_on_PausePopup_restart"]
-[connection signal="unpause" from="CanvasLayer/PausePopup" to="Conductor" method="_on_PausePopup_unpause"]
 [connection signal="pressed" from="CanvasLayer/PausePopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/ResumeButton" to="CanvasLayer/PausePopup" method="_on_ResumeButton_pressed"]
 [connection signal="pressed" from="CanvasLayer/PausePopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/RetryButton" to="CanvasLayer/PausePopup" method="_on_RetryButton_pressed"]
 [connection signal="pressed" from="CanvasLayer/PausePopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/QuitButton" to="CanvasLayer/PausePopup" method="_on_QuitButton_pressed"]
-[connection signal="finished" from="Conductor" to="." method="_on_Conductor_finished"]
-[connection signal="finished" from="Conductor" to="CanvasLayer/ComboIndicator/ComboCounterLabel" method="_on_Conductor_finished"]
 [connection signal="score_updated" from="result_data" to="CanvasLayer/InfoContainer/PanelContainer/HBoxContainer/VBoxContainer/HBoxContainer/ScoreLabel" method="_on_result_data_score_updated"]

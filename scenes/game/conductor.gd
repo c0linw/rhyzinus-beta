@@ -1,4 +1,4 @@
-extends AudioStreamPlayer
+extends Node
 
 enum sfx_enums {SFX_NONE, SFX_CLICK, SFX_SWIPE}
 
@@ -15,12 +15,7 @@ var time_delay: float
 var last_paused: float
 
 var song_position: float = 0.0
-var song_position_in_beats = 0
-var sec_per_beat = 0
-var last_reported_beat = 0
-var beats_before_start = 0
-var song_offset = 0
-var audio_offset = 0
+var paused_position: float = 0.0
 var beat_data: Array = []
 
 # Determining how close to the beat an event is
@@ -29,6 +24,9 @@ var time_off_beat = 0.0
 
 var sfx_sources: Array
 var played_sfxs: Array = [] # manually free these when each one is done
+
+var finish_signal_sent: bool = false
+signal finished()
 
 class TimeSorter:
 	# denotes the order in which these should be sorted, if there are objects with the same time
@@ -56,7 +54,6 @@ class TimeSorter:
 
 func _ready():
 	Shinobu.initialize()
-	print(Shinobu.get_current_backend_name())
 	
 	# load the note sound effects
 	var click_file = File.new()
@@ -83,60 +80,110 @@ func _process(delta):
 		if sfx_player.is_at_stream_end():
 			sfx_player.queue_free()
 			played_sfxs.erase(sfx_player)
+	if custom_stream != null and custom_stream.is_at_stream_end() and not finish_signal_sent:
+		emit_signal("finished")
+		finish_signal_sent = true
+			
+func load_audio(path: String) -> int:
+	# shinobu audio will literally try to load any file, so at least check the filetype (maybe try header check when i have more time)
+	if not (path.ends_with(".mp3") or path.ends_with(".wav") or path.ends_with(".ogg")):
+		return FAILED
+		
+	unload_audio()
 	
-func set_bpm(num: float):
-	bpm = num
-	sec_per_beat = 60.0 / bpm
+	var file = File.new()
+	var err = file.open(path, File.READ)
+	if err != OK:
+		return err
+	var buffer = file.get_buffer(file.get_len())
+	file.close()
+	var sound_source := Shinobu.register_sound_from_memory("music", buffer)
+	custom_stream = sound_source.instantiate(music_group)
+	custom_stream.looping_enabled = false
+	add_child(custom_stream)
+
+	song_position = 0.0
+	paused_position = 0.0
+	seek(song_position)
+	#emit_signal("audio_loaded", get_stream_length())
+	#emit_signal("song_position_updated", song_position, get_stream_length())
 	
-func set_beat_length(num: float):
-	sec_per_beat = num
-	bpm = (60.0 / num)
-
-# func _process(_delta):
-
-func play_with_offset(offset: float):
-	#$StartTimer.wait_time = offset
-	audio_offset = offset
-	time_begin = OS.get_ticks_usec()
-	time_delay = AudioServer.get_time_to_next_mix() + AudioServer.get_output_latency()
-	#$StartTimer.start()
+	return OK
 	
+func unload_audio():
+	if custom_stream != null:
+		custom_stream.queue_free()
+		remove_child(custom_stream)
+		custom_stream = null
 
-func closest_beat(nth):
-	closest = int(round((song_position / sec_per_beat) / nth) * nth) 
-	time_off_beat = abs(closest * sec_per_beat - song_position)
-	return Vector2(closest, time_off_beat)
 
+func play_from_position(from_position: float):
+	if custom_stream != null:
+		seek(from_position)
+		song_position = from_position
+		var err = custom_stream.start()
+		if err != OK:
+			print(err)
+			
+func stop():
+	if custom_stream != null:
+		var err = custom_stream.stop()
+		if err != OK:
+			print(err)
+		song_position = 0.0
 
-func play_from_beat(beat, offset):
-	time_begin = OS.get_ticks_usec()
-	time_delay = AudioServer.get_time_to_next_mix() + AudioServer.get_output_latency()
-	play()
-	seek(beat * sec_per_beat)
-
-func _on_StartTimer_timeout():
-	play()
-	$StartTimer.stop()
+func pause():
+	if custom_stream != null:
+		custom_stream.stop()
 
 func update_song_position():
-	var time = (OS.get_ticks_usec() - time_begin) / 1000000.0
-	# Compensate for latency.
-	time -= time_delay
-	song_position = max(0, time)
-#		var new_position = get_playback_position() + AudioServer.get_time_since_last_mix()
-#		new_position -= AudioServer.get_output_latency()
-#		if new_position > song_position:
-#			song_position = new_position
-#		song_position_in_beats = int(floor(song_position / sec_per_beat)) + beats_before_start
+	if custom_stream != null and custom_stream.is_playing() and not custom_stream.is_at_stream_end():
+		var new_position = get_playback_position() - Shinobu.get_actual_buffer_size() / 1000.0
+		if new_position > song_position:
+			song_position = new_position
+			#emit_signal("song_position_updated", song_position, get_stream_length())
 
-func _on_PausePopup_unpause():
-	time_begin = (time_begin + OS.get_ticks_usec() - last_paused)
-	time_delay = AudioServer.get_time_to_next_mix() + AudioServer.get_output_latency()
-	update_song_position()
-	print(song_position)
 
-func _on_Game_pause():
-	last_paused = OS.get_ticks_usec()
+func seek(to_position: float):
+	if custom_stream == null:
+		return
+	var previously_playing = custom_stream.is_playing()
+	var new_position_ms = to_position * 1000
+	var err = custom_stream.seek(new_position_ms)
+	if err != OK:
+		print(err)
+	song_position = to_position
+	
+	if previously_playing:
+		custom_stream.start()
+	
+	if custom_stream.is_at_stream_end() and not finish_signal_sent:
+		emit_signal("finished")
+		finish_signal_sent = true
+	else:
+		finish_signal_sent = false
+		
+func get_playback_position() -> float:
+	if custom_stream == null:
+		return 0.0
+	return (custom_stream.get_playback_position_msec() - Shinobu.get_actual_buffer_size()) / 1000.0
+
+func get_stream_length() -> float:
+	if custom_stream == null:
+		return 0.0
+	return custom_stream.get_length_msec() / 1000.0
+	
+func is_playing() -> bool:
+	if custom_stream == null:
+		return false
+	return custom_stream.is_playing()
+	
+func set_volume(linear_volume: float):
+	if custom_stream != null:
+		custom_stream.set_volume(linear_volume)
+		
+func set_sfx_volume(linear_volume: float):
+	sfx_group.set_volume(linear_volume)
 	
 func play_sfx(sfx_enum_value: int):
 	var sfx_source = sfx_sources[sfx_enum_value]
