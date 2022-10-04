@@ -2,20 +2,66 @@ extends Node
 
 class RowSorter:
 	# sorting_column is a const array because it's a hacky workaround around needing static functions for sorting
-	# the array cannot be reassigned, but it can be modified. Set sorting_column[0] to the desired column's name
+	# the array cannot be reassigned, but it can be modified. Set sorting_column[0] to the desired column's name, 
+	# and any subsequent values will be used to index further into the column's value (like for songs.levels which is an array)
 	const sorting_column: Array = [""]
 	
 	static func sort_ascending(a: Dictionary, b: Dictionary) -> bool:
-		if a.has(sorting_column[0]) and b.has(sorting_column[0]):
-			return a[sorting_column[0]] < b[sorting_column[0]]
+		var a_value = a
+		var b_value = b
+		for index in sorting_column:
+			# invalid keys will always return true, preventing the game from crashing but silently leaving it unsorted
+			if not a_value.has(index):
+				return true
+			if not b_value.has(index):
+				return true
+			a_value = a_value[index]
+			b_value = b_value[index]
+		if is_comparable(typeof(a_value)) and is_comparable(typeof(b_value)):
+			return a_value < b_value
+		elif typeof(a_value) == TYPE_STRING and typeof(b_value) == TYPE_STRING:
+			return a[sorting_column[0]].nocasecmp_to(b[sorting_column[0]]) < 0
 		else:
 			return true
 		
 	static func sort_descending(a: Dictionary, b: Dictionary) -> bool:
-		if a.has(sorting_column[0]) and b.has(sorting_column[0]):
-			return a[sorting_column[0]] > b[sorting_column[0]]
+		var a_value = a
+		var b_value = b
+		for index in sorting_column:
+			# invalid keys will always return true, preventing the game from crashing but silently leaving it unsorted
+			if not a_value.has(index):
+				return true
+			if not b_value.has(index):
+				return true
+			a_value = a_value[index]
+			b_value = b_value[index]
+		if is_comparable(typeof(a_value)) and is_comparable(typeof(b_value)):
+			return a_value > b_value
+		elif typeof(a_value) == TYPE_STRING and typeof(b_value) == TYPE_STRING:
+			return a[sorting_column[0]].nocasecmp_to(b[sorting_column[0]]) > 0
 		else:
 			return true
+			
+	static func is_comparable(type_enum: int) -> bool:
+		match type_enum:
+			TYPE_BOOL: return true
+			TYPE_INT: return true
+			TYPE_REAL: return true
+			TYPE_RID: return true
+		return false
+
+	static func is_container(type_enum: int) -> bool:
+		match type_enum:
+			TYPE_DICTIONARY: return true
+			TYPE_ARRAY: return true
+			TYPE_RAW_ARRAY: return true
+			TYPE_INT_ARRAY: return true
+			TYPE_REAL_ARRAY: return true
+			TYPE_STRING_ARRAY: return true
+			TYPE_VECTOR2_ARRAY: return true
+			TYPE_VECTOR3_ARRAY: return true
+			TYPE_COLOR_ARRAY: return true
+		return false
 
 var row_sorter = RowSorter.new()
 
@@ -41,14 +87,17 @@ var db: Dictionary = {
 	}
 }
 
-# operator structure:
-# {
-# 	"column": "column_name_here",
-# 	"operator": "=", # can be one of "=", "!=", ">", "<", ">=", "<="
-# 	"value": 10, # the value to compare using operator
-# 	"sub_indexes": [3], # optional key. If the column queried is a data container like an array or dictionary, it will index it using this value. Put multiple values in this array for nested indexing.
-# 	"append_previous": true, # optional key. If true, appends this filter's result to the previous filter's result (OR statement). Default behaviour will filter against the previous result (AND statement).
-# }
+class FilterParam:
+	var column: String
+	var operator_enum: int
+	var value
+	var sub_indexes: Array
+	var append_previous: bool
+
+class SortParam:
+	var column: String
+	var descending: bool
+	var sub_indexes: Array
 
 
 # Called when the node enters the scene tree for the first time.
@@ -128,7 +177,7 @@ func is_db_data_valid(data: Dictionary) -> bool:
 	return true
 	
 	
-func select(table_name: String, conditionals: Array, order: String = "") -> Dictionary:
+func select(table_name: String, conditionals: Array, order: SortParam) -> Dictionary:
 	var result: Dictionary = {
 		"success": false,
 		"error_string": "",
@@ -141,7 +190,7 @@ func select(table_name: String, conditionals: Array, order: String = "") -> Dict
 	
 	for i in conditionals.size():
 		var filter = conditionals[i]
-		if not is_conditional_valid(filter, table_name):
+		if not is_filter_valid(filter, table_name):
 			result.error_string = "invalid conditional"
 			result.rows = []
 			return result
@@ -160,7 +209,7 @@ func select(table_name: String, conditionals: Array, order: String = "") -> Dict
 		var use_sub_index: bool = filter.has("sub_indexes")
 
 		match filter.operator:
-			"=":
+			OP_EQUAL:
 				for row in to_search:
 					var row_value = row[filter.column]
 					if use_sub_index:
@@ -168,7 +217,7 @@ func select(table_name: String, conditionals: Array, order: String = "") -> Dict
 							row_value = row_value[index]
 					if row_value == filter.value:
 						new_result_rows.append(row)
-			"!=":
+			OP_NOT_EQUAL:
 				for row in to_search:
 					var row_value = row[filter.column]
 					if use_sub_index:
@@ -176,15 +225,7 @@ func select(table_name: String, conditionals: Array, order: String = "") -> Dict
 							row_value = row_value[index]
 					if row_value != filter.value:
 						new_result_rows.append(row)
-			">":
-				for row in to_search:
-					var row_value = row[filter.column]
-					if use_sub_index:
-						for index in filter.sub_indexes:
-							row_value = row_value[index]
-					if row_value > filter.value:
-						new_result_rows.append(row)
-			"<":
+			OP_LESS:
 				for row in to_search:
 					var row_value = row[filter.column]
 					if use_sub_index:
@@ -192,15 +233,7 @@ func select(table_name: String, conditionals: Array, order: String = "") -> Dict
 							row_value = row_value[index]
 					if row_value < filter.value:
 						new_result_rows.append(row)
-			">=":
-				for row in to_search:
-					var row_value = row[filter.column]
-					if use_sub_index:
-						for index in filter.sub_indexes:
-							row_value = row_value[index]
-					if row_value >= filter.value:
-						new_result_rows.append(row)
-			"<=":
+			OP_LESS_EQUAL:
 				for row in to_search:
 					var row_value = row[filter.column]
 					if use_sub_index:
@@ -208,38 +241,80 @@ func select(table_name: String, conditionals: Array, order: String = "") -> Dict
 							row_value = row_value[index]
 					if row_value <= filter.value:
 						new_result_rows.append(row)
+			OP_GREATER:
+				for row in to_search:
+					var row_value = row[filter.column]
+					if use_sub_index:
+						for index in filter.sub_indexes:
+							row_value = row_value[index]
+					if row_value > filter.value:
+						new_result_rows.append(row)
+			OP_GREATER_EQUAL:
+				for row in to_search:
+					var row_value = row[filter.column]
+					if use_sub_index:
+						for index in filter.sub_indexes:
+							row_value = row_value[index]
+					if row_value >= filter.value:
+						new_result_rows.append(row)
 		result.rows = new_result_rows
 	
-	var sort_params = order.rsplit(" ", true, 1)
-	if table.schema.has(sort_params[0]):
+	if table.schema.has(order.column):
 		RowSorter.sorting_column.clear()
-		RowSorter.sorting_column.append(sort_params[0])
-		if sort_params[1] == "asc":
+		RowSorter.sorting_column.append(order.column)
+		if RowSorter.is_container(table.schema[order.column]):
+			RowSorter.sorting_column.append_array(order.sub_indexes)
+		if order.descending:
+				result.rows.sort_custom(row_sorter, "sort_descending")
+		else: 
 			result.rows.sort_custom(row_sorter, "sort_ascending")
-		elif sort_params[1] == "desc": 
-			result.rows.sort_custom(row_sorter, "sort_descending")
-	# default behaviour: invalid order string silently leaves the result unsorted
 	result.success = true
 	return result
 	
-func is_conditional_valid(conditional: Dictionary, table_name: String) -> bool:
-	if not conditional.has("column"):
-		return false
-	if not db.tables[table_name].schema.has(conditional.column):
-		return false
-		
-	if not conditional.has("value"):
-		return false
-	if not conditional.has("operator"):
+func new_filter_param(column: String, operator_enum: int, value, sub_indexes: Array, append_previous: bool = false) -> FilterParam:
+	var filter_param = FilterParam.new()
+	filter_param.column = column
+	filter_param.operator_enum = operator_enum
+	filter_param.value = value
+	filter_param.sub_indexes = sub_indexes
+	filter_param.append_previous = append_previous
+	return filter_param
+
+func new_sort_param(column: String, descending: bool = false, sub_indexes: Array = []) -> SortParam:
+	var sort_param = SortParam.new()
+	sort_param.column = column
+	sort_param.descending = descending
+	sort_param.sub_indexes = sub_indexes
+	return sort_param
+
+func is_filter_valid(filter: FilterParam, table_name: String) -> bool:
+	if not db.tables[table_name].schema.has(filter.column):
 		return false
 	
-	# TODO: typecheck the lesser/greater-type operators for numerical columns only? Requires types to be bound to schema columns
+	var column_type: int = db.tables[table_name].schema[filter.column]
 	var operator_valid = false
-	match conditional.operator:
-		"=": operator_valid = true
-		"!=": operator_valid = true
-		">": operator_valid = true
-		"<": operator_valid = true
-		">=": operator_valid = true
-		"<=": operator_valid = true
+
+	if typeof(filter.value) != column_type:
+		return false
+
+	if RowSorter.is_container(column_type):
+		operator_valid = true # if column contains array or dictionary, bypass the check. It can be checked later when querying sub-index.
+	else:
+		match filter.operator:
+			OP_EQUAL: 
+				operator_valid = true
+			OP_NOT_EQUAL: 
+				operator_valid = true
+			OP_LESS: 
+				if RowSorter.is_comparable(column_type): 
+					operator_valid = true
+			OP_LESS_EQUAL: 
+				if RowSorter.is_comparable(column_type): 
+					operator_valid = true
+			OP_GREATER: 
+				if RowSorter.is_comparable(column_type): 
+					operator_valid = true
+			OP_GREATER_EQUAL: 
+				if RowSorter.is_comparable(column_type): 
+					operator_valid = true
 	return operator_valid
