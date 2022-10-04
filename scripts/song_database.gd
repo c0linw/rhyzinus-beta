@@ -15,11 +15,19 @@ var row_sorter = RowSorter.new()
 var db: Dictionary = {
 	"tables": {
 		"songs": {
-			"schema": ["title", "artist", "bpm", "path", "levels", "preview_start", "preview_end", "pack"],
+			"schema": {
+				"title": TYPE_STRING, 
+				"artist": TYPE_STRING, 
+				"bpm": TYPE_STRING, 
+				"path": TYPE_STRING, 
+				"levels": TYPE_ARRAY, 
+				"preview_start": TYPE_REAL, 
+				"preview_end": TYPE_REAL, 
+				"pack": TYPE_STRING},
 			"rows": [] # each row is a dictionary with keys matching schema
 		},
 		"packs": {
-			"schema": ["name"],
+			"schema": {"name": TYPE_STRING},
 			"rows": [],
 		}
 	}
@@ -104,6 +112,9 @@ func is_db_data_valid(data: Dictionary) -> bool:
 		for row in data_table.rows:
 			for column_name in db_table.schema:
 				if not row.has(column_name):
+					return false
+			for column_name in row.keys():
+				if typeof(row[column_name]) != typeof(db_table.schema[column_name]):
 					return false
 	return true
 	
