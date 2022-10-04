@@ -1,13 +1,21 @@
 extends Node
 
 class RowSorter:
-	var sorting_column: String = ""
+	# sorting_column is a const array because it's a hacky workaround around needing static functions for sorting
+	# the array cannot be reassigned, but it can be modified. Set sorting_column[0] to the desired column's name
+	const sorting_column: Array = [""]
 	
-	func sort_ascending(a: Dictionary, b: Dictionary) -> bool:
-		return a[sorting_column] < b[sorting_column]
+	static func sort_ascending(a: Dictionary, b: Dictionary) -> bool:
+		if a.has(sorting_column[0]) and b.has(sorting_column[0]):
+			return a[sorting_column[0]] < b[sorting_column[0]]
+		else:
+			return true
 		
-	func sort_descending(a: Dictionary, b: Dictionary) -> bool:
-		return a[sorting_column] > b[sorting_column]
+	static func sort_descending(a: Dictionary, b: Dictionary) -> bool:
+		if a.has(sorting_column[0]) and b.has(sorting_column[0]):
+			return a[sorting_column[0]] > b[sorting_column[0]]
+		else:
+			return true
 
 var row_sorter = RowSorter.new()
 
@@ -58,7 +66,7 @@ func load_database(path) -> int:
 	var file = File.new()
 	if not file.file_exists(path):
 		return ERR_FILE_NOT_FOUND
-	var err = file.open(path, _File.READ)
+	var err = file.open(path, File.READ)
 	if err != OK:
 		return err
 	var db_json = file.get_as_text()
@@ -72,8 +80,8 @@ func load_database(path) -> int:
 		return FAILED
 	if not is_db_data_valid(result.result):
 		return FAILED
-	db.tables.songs.rows = result.tables.songs.rows
-	db.tables.packs.rows = result.tables.packs.rows
+	db.tables.songs.rows = result.result.tables.songs.rows
+	db.tables.packs.rows = result.result.tables.packs.rows
 	return OK
 
 
@@ -96,7 +104,7 @@ func is_db_data_valid(data: Dictionary) -> bool:
 		# check that the table has a schema
 		if not data_table.has("schema"):
 			return false
-		if typeof(data_table.schema) != TYPE_ARRAY:
+		if typeof(data_table.schema) != TYPE_DICTIONARY:
 			return false
 		# check schema matches
 		if not len(data_table.schema) == len(db_table.schema):
@@ -114,12 +122,13 @@ func is_db_data_valid(data: Dictionary) -> bool:
 				if not row.has(column_name):
 					return false
 			for column_name in row.keys():
-				if typeof(row[column_name]) != typeof(db_table.schema[column_name]):
+				if typeof(row[column_name]) != db_table.schema[column_name]:
+					print("row type mismatched against schema with value %s" % row[column_name])
 					return false
 	return true
 	
 	
-func select(table_name: String, conditionals: Array, order: String) -> Dictionary:
+func select(table_name: String, conditionals: Array, order: String = "") -> Dictionary:
 	var result: Dictionary = {
 		"success": false,
 		"error_string": "",
@@ -134,12 +143,13 @@ func select(table_name: String, conditionals: Array, order: String) -> Dictionar
 		var filter = conditionals[i]
 		if not is_conditional_valid(filter, table_name):
 			result.error_string = "invalid conditional"
+			result.rows = []
 			return result
 
 		var to_search: Array
 		var new_result_rows: Array = []
 		if i == 0:
-			to_search = table
+			to_search = table.rows
 		elif filter.has("append_previous") and filter.append_previous == true:
 			to_search = table
 			new_result_rows = result.rows
@@ -202,12 +212,14 @@ func select(table_name: String, conditionals: Array, order: String) -> Dictionar
 	
 	var sort_params = order.rsplit(" ", true, 1)
 	if table.schema.has(sort_params[0]):
-		row_sorter.sorting_column = sort_params[0]
+		RowSorter.sorting_column.clear()
+		RowSorter.sorting_column.append(sort_params[0])
 		if sort_params[1] == "asc":
-			result.rows.sort_custom(RowSorter, "sort_ascending")
+			result.rows.sort_custom(row_sorter, "sort_ascending")
 		elif sort_params[1] == "desc": 
-			result.rows.sort_custom(RowSorter, "sort_descending")
+			result.rows.sort_custom(row_sorter, "sort_descending")
 	# default behaviour: invalid order string silently leaves the result unsorted
+	result.success = true
 	return result
 	
 func is_conditional_valid(conditional: Dictionary, table_name: String) -> bool:
