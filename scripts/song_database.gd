@@ -189,7 +189,7 @@ func select(table_name: String, conditionals: Array, order: SortParam) -> Dictio
 	var table = db.tables[table_name]
 	
 	for i in conditionals.size():
-		var filter = conditionals[i]
+		var filter: FilterParam = conditionals[i]
 		if not is_filter_valid(filter, table_name):
 			result.error_string = "invalid conditional"
 			result.rows = []
@@ -205,56 +205,47 @@ func select(table_name: String, conditionals: Array, order: SortParam) -> Dictio
 		else: 
 			to_search = result.rows
 
-		# do any sub-indexing of a column value if available:
-		var use_sub_index: bool = filter.has("sub_indexes")
-
-		match filter.operator:
+		match filter.operator_enum:
 			OP_EQUAL:
 				for row in to_search:
 					var row_value = row[filter.column]
-					if use_sub_index:
-						for index in filter.sub_indexes:
-							row_value = row_value[index]
+					for index in filter.sub_indexes:
+						row_value = row_value[index]
 					if row_value == filter.value:
 						new_result_rows.append(row)
 			OP_NOT_EQUAL:
 				for row in to_search:
 					var row_value = row[filter.column]
-					if use_sub_index:
-						for index in filter.sub_indexes:
-							row_value = row_value[index]
+					for index in filter.sub_indexes:
+						row_value = row_value[index]
 					if row_value != filter.value:
 						new_result_rows.append(row)
 			OP_LESS:
 				for row in to_search:
 					var row_value = row[filter.column]
-					if use_sub_index:
-						for index in filter.sub_indexes:
-							row_value = row_value[index]
+					for index in filter.sub_indexes:
+						row_value = row_value[index]
 					if row_value < filter.value:
 						new_result_rows.append(row)
 			OP_LESS_EQUAL:
 				for row in to_search:
 					var row_value = row[filter.column]
-					if use_sub_index:
-						for index in filter.sub_indexes:
-							row_value = row_value[index]
+					for index in filter.sub_indexes:
+						row_value = row_value[index]
 					if row_value <= filter.value:
 						new_result_rows.append(row)
 			OP_GREATER:
 				for row in to_search:
 					var row_value = row[filter.column]
-					if use_sub_index:
-						for index in filter.sub_indexes:
-							row_value = row_value[index]
+					for index in filter.sub_indexes:
+						row_value = row_value[index]
 					if row_value > filter.value:
 						new_result_rows.append(row)
 			OP_GREATER_EQUAL:
 				for row in to_search:
 					var row_value = row[filter.column]
-					if use_sub_index:
-						for index in filter.sub_indexes:
-							row_value = row_value[index]
+					for index in filter.sub_indexes:
+						row_value = row_value[index]
 					if row_value >= filter.value:
 						new_result_rows.append(row)
 		result.rows = new_result_rows
@@ -294,7 +285,7 @@ func is_filter_valid(filter: FilterParam, table_name: String) -> bool:
 	var column_type: int = db.tables[table_name].schema[filter.column]
 	var operator_valid = false
 
-	if typeof(filter.value) != column_type:
+	if len(filter.sub_indexes) == 0 and typeof(filter.value) != column_type:
 		return false
 
 	if RowSorter.is_container(column_type):
