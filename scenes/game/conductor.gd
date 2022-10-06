@@ -1,12 +1,8 @@
 extends Node
 
-enum sfx_enums {SFX_NONE, SFX_CLICK, SFX_SWIPE}
-
 var bpm
 
 var custom_stream: ShinobuSoundPlayer
-var music_group: ShinobuGroup
-var sfx_group: ShinobuGroup
 
 
 # Tracking the beat and song position
@@ -18,11 +14,7 @@ var song_position: float = 0.0
 var paused_position: float = 0.0
 var beat_data: Array = []
 
-# Determining how close to the beat an event is
-var closest = 0
-var time_off_beat = 0.0
 
-var sfx_sources: Array
 var played_sfxs: Array = [] # manually free these when each one is done
 
 var finish_signal_sent: bool = false
@@ -53,27 +45,7 @@ class TimeSorter:
 			return false
 
 func _ready():
-	Shinobu.initialize()
-	
-	# load the note sound effects
-	var click_file = File.new()
-	click_file.open("res://sound/click.wav", File.READ)
-	var buffer = click_file.get_buffer(click_file.get_len())
-	click_file.close()
-	var click_source = Shinobu.register_sound_from_memory("click", buffer)
-	
-	var swipe_file = File.new()
-	swipe_file.open("res://sound/swipe.wav", File.READ)
-	var buffer2 = swipe_file.get_buffer(swipe_file.get_len())
-	swipe_file.close()
-	var swipe_source = Shinobu.register_sound_from_memory("swipe", buffer2)
-	
-	sfx_sources.resize(sfx_enums.size())
-	sfx_sources[sfx_enums.SFX_CLICK] = click_source
-	sfx_sources[sfx_enums.SFX_SWIPE] = swipe_source
-	
-	sfx_group = Shinobu.create_group("sfx_group", null)
-	music_group = Shinobu.create_group("music", null)
+	pass
 	
 func _process(delta):
 	for sfx_player in played_sfxs.duplicate():
@@ -98,7 +70,7 @@ func load_audio(path: String) -> int:
 	var buffer = file.get_buffer(file.get_len())
 	file.close()
 	var sound_source := Shinobu.register_sound_from_memory("music", buffer)
-	custom_stream = sound_source.instantiate(music_group)
+	custom_stream = sound_source.instantiate(ShinobuGlobals.music_group)
 	custom_stream.looping_enabled = false
 	add_child(custom_stream)
 
@@ -177,17 +149,11 @@ func is_playing() -> bool:
 	if custom_stream == null:
 		return false
 	return custom_stream.is_playing()
-	
-func set_volume(linear_volume: float):
-	if custom_stream != null:
-		custom_stream.set_volume(linear_volume)
-		
-func set_sfx_volume(linear_volume: float):
-	sfx_group.set_volume(linear_volume)
-	
+
+
 func play_sfx(sfx_enum_value: int):
-	var sfx_source = sfx_sources[sfx_enum_value]
+	var sfx_source = ShinobuGlobals.sfx_sources[sfx_enum_value]
 	if sfx_source != null:
-		var sfx_player = sfx_source.instantiate(sfx_group)
+		var sfx_player = sfx_source.instantiate(ShinobuGlobals.sfx_group)
 		played_sfxs.append(sfx_player)
 		sfx_player.start()

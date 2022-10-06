@@ -87,6 +87,7 @@ output_latency=10
 
 SceneSwitcher="*res://scripts/scene_switcher.gd"
 Settings="*res://scripts/settings.gd"
+ShinobuGlobals="*res://scripts/shinobu_globals.gd"
 
 [display]
 

@@ -582,4 +582,5 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 2, 0 )
 [connection signal="pressed" from="CanvasLayer/PausePopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/ResumeButton" to="CanvasLayer/PausePopup" method="_on_ResumeButton_pressed"]
 [connection signal="pressed" from="CanvasLayer/PausePopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/RetryButton" to="CanvasLayer/PausePopup" method="_on_RetryButton_pressed"]
 [connection signal="pressed" from="CanvasLayer/PausePopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/QuitButton" to="CanvasLayer/PausePopup" method="_on_QuitButton_pressed"]
+[connection signal="finished" from="Conductor" to="." method="_on_Conductor_finished"]
 [connection signal="score_updated" from="result_data" to="CanvasLayer/InfoContainer/PanelContainer/HBoxContainer/VBoxContainer/HBoxContainer/ScoreLabel" method="_on_result_data_score_updated"]

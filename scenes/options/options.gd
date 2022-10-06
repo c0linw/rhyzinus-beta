@@ -28,4 +28,5 @@ func _on_BackButton_pressed():
 
 
 func _on_VolumeSpinBox_value_changed(value_name, new_value):
-	AudioServer.set_bus_volume_db(1, linear2db(new_value)/100.0)
+	AudioServer.set_bus_volume_db(1, linear2db(new_value/100.0))
+	ShinobuGlobals.set_music_volume(new_value/100.0)
