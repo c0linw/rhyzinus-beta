@@ -9,6 +9,11 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "Node",
+"class": "AudioStreamPlayerShinobu",
+"language": "GDScript",
+"path": "res://audio_stream_player_shinobu.gd"
+}, {
 "base": "Spatial",
 "class": "Note",
 "language": "GDScript",
@@ -60,6 +65,7 @@ _global_script_classes=[ {
 "path": "res://scenes/game/notes/note_tap_upper.gd"
 } ]
 _global_script_class_icons={
+"AudioStreamPlayerShinobu": "",
 "Note": "",
 "NoteHitbox": "",
 "NoteHold": "",
