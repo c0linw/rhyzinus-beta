@@ -28,7 +28,7 @@ func read_settings_file():
 	if config.has_section("options"):
 		for key in config.get_section_keys("options"):
 			if setting_values.has(key):
-				print("setting found: %s = %s" % [key, config.get_value("options", key)])
+				#print("setting found: %s = %s" % [key, config.get_value("options", key)])
 				setting_values[key] = config.get_value("options", key)
 	
 	
