@@ -5,6 +5,7 @@ enum sfx_enums {SFX_NONE, SFX_CLICK, SFX_SWIPE}
 # Declare member variables here. Examples:
 var music_group: ShinobuGroup
 var sfx_group: ShinobuGroup
+var spectrum_analyzer: ShinobuSpectrumAnalyzerEffect
 
 var sfx_sources: Array
 
@@ -31,6 +32,11 @@ func _ready():
 	sfx_sources.resize(sfx_enums.size())
 	sfx_sources[sfx_enums.SFX_CLICK] = click_source
 	sfx_sources[sfx_enums.SFX_SWIPE] = swipe_source
+	
+	# audio spectrum analyzer
+	spectrum_analyzer = Shinobu.instantiate_spectrum_analyzer_effect()
+	spectrum_analyzer.connect_to_endpoint()
+	music_group.connect_to_effect(spectrum_analyzer)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

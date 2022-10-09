@@ -1,7 +1,7 @@
 extends Control
 
 # based on Gonkee's audio visualiser for Godot 3.2
-onready var spectrum = AudioServer.get_bus_effect_instance(1, 0)
+onready var spectrum: ShinobuSpectrumAnalyzerEffect = ShinobuGlobals.spectrum_analyzer
 
 var definition = 20
 var min_freq = 20

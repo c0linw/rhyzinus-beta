@@ -110,3 +110,7 @@ func is_playing() -> bool:
 	if stream == null:
 		return false
 	return stream.is_playing()
+	
+func set_volume(linear_volume: float):
+	if stream != null:
+		stream.volume = linear_volume
