@@ -420,56 +420,48 @@ transform = Transform( 0.225743, 0.984808, 0, -1.28025, 0.173648, 0, 0, 0, 16, -
 visible = false
 material_override = SubResource( 14 )
 mesh = SubResource( 15 )
-material/0 = null
 
 [node name="LaneEffect1" type="MeshInstance" parent="Lanes_lower"]
 transform = Transform( 0.95, 0, 0, 0, 1, 0, 0, 0, 16, 0.5, -0.02, -8 )
 visible = false
 material_override = SubResource( 2 )
 mesh = SubResource( 3 )
-material/0 = null
 
 [node name="LaneEffect2" type="MeshInstance" parent="Lanes_lower"]
 transform = Transform( 0.95, 0, 0, 0, 1, 0, 0, 0, 16, 1.5, -0.02, -8 )
 visible = false
 material_override = SubResource( 4 )
 mesh = SubResource( 5 )
-material/0 = null
 
 [node name="LaneEffect3" type="MeshInstance" parent="Lanes_lower"]
 transform = Transform( 0.95, 0, 0, 0, 1, 0, 0, 0, 16, 2.5, -0.02, -8 )
 visible = false
 material_override = SubResource( 6 )
 mesh = SubResource( 7 )
-material/0 = null
 
 [node name="LaneEffect4" type="MeshInstance" parent="Lanes_lower"]
 transform = Transform( 0.95, 0, 0, 0, 1, 0, 0, 0, 16, 3.5, -0.02, -8 )
 visible = false
 material_override = SubResource( 8 )
 mesh = SubResource( 9 )
-material/0 = null
 
 [node name="LaneEffect5" type="MeshInstance" parent="Lanes_lower"]
 transform = Transform( 0.95, 0, 0, 0, 1, 0, 0, 0, 16, 4.5, -0.02, -8 )
 visible = false
 material_override = SubResource( 10 )
 mesh = SubResource( 11 )
-material/0 = null
 
 [node name="LaneEffect6" type="MeshInstance" parent="Lanes_lower"]
 transform = Transform( 0.95, 0, 0, 0, 1, 0, 0, 0, 16, 5.5, -0.02, -8 )
 visible = false
 material_override = SubResource( 12 )
 mesh = SubResource( 13 )
-material/0 = null
 
 [node name="LaneEffect7" type="MeshInstance" parent="Lanes_lower"]
 transform = Transform( 0.225743, -0.984808, 0, 1.28025, 0.173648, 0, 0, 0, 16, 6.13, 0.625, -8 )
 visible = false
 material_override = SubResource( 16 )
 mesh = SubResource( 17 )
-material/0 = null
 
 [node name="LaneArea0" type="Area" parent="Lanes_lower"]
 transform = Transform( 0.225743, 0.00984808, 0, -1.28025, 0.00173648, 0, 0, 0, 6, -0.13, 0.625, -0.5 )
@@ -555,7 +547,6 @@ __meta__ = {
 }
 
 [node name="Conductor" parent="." instance=ExtResource( 4 )]
-bus = "Music"
 
 [node name="result_data" type="Node" parent="."]
 script = ExtResource( 1 )
@@ -585,14 +576,11 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 2, 0 )
 [connection signal="note_judged" from="." to="CanvasLayer/ComboIndicator/TimingLabel" method="_on_Game_note_judged"]
 [connection signal="note_judged" from="." to="CanvasLayer/ComboIndicator/ComboCounterLabel" method="_on_Game_note_judged"]
 [connection signal="note_judged" from="." to="result_data" method="_on_Game_note_judged"]
-[connection signal="pause" from="." to="Conductor" method="_on_Game_pause"]
 [connection signal="pressed" from="CanvasLayer/PauseContainer/PauseButton" to="CanvasLayer/PauseContainer/PauseButton" method="_on_PauseButton_pressed"]
 [connection signal="quit" from="CanvasLayer/PausePopup" to="." method="_on_PausePopup_quit"]
 [connection signal="restart" from="CanvasLayer/PausePopup" to="." method="_on_PausePopup_restart"]
-[connection signal="unpause" from="CanvasLayer/PausePopup" to="Conductor" method="_on_PausePopup_unpause"]
 [connection signal="pressed" from="CanvasLayer/PausePopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/ResumeButton" to="CanvasLayer/PausePopup" method="_on_ResumeButton_pressed"]
 [connection signal="pressed" from="CanvasLayer/PausePopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/RetryButton" to="CanvasLayer/PausePopup" method="_on_RetryButton_pressed"]
 [connection signal="pressed" from="CanvasLayer/PausePopup/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/QuitButton" to="CanvasLayer/PausePopup" method="_on_QuitButton_pressed"]
 [connection signal="finished" from="Conductor" to="." method="_on_Conductor_finished"]
-[connection signal="finished" from="Conductor" to="CanvasLayer/ComboIndicator/ComboCounterLabel" method="_on_Conductor_finished"]
 [connection signal="score_updated" from="result_data" to="CanvasLayer/InfoContainer/PanelContainer/HBoxContainer/VBoxContainer/HBoxContainer/ScoreLabel" method="_on_result_data_score_updated"]

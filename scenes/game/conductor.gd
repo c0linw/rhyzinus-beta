@@ -1,24 +1,16 @@
-extends AudioStreamPlayer
+extends AudioStreamPlayerShinobu
 
 var bpm
+
 
 # Tracking the beat and song position
 var time_begin: float
 var time_delay: float
 var last_paused: float
 
-var song_position: float = 0.0
-var song_position_in_beats = 0
-var sec_per_beat = 0
-var last_reported_beat = 0
-var beats_before_start = 0
-var song_offset = 0
-var audio_offset = 0
 var beat_data: Array = []
 
-# Determining how close to the beat an event is
-var closest = 0
-var time_off_beat = 0.0
+var played_sfxs: Array = [] # manually free these when each one is done
 
 class TimeSorter:
 	# denotes the order in which these should be sorted, if there are objects with the same time
@@ -47,56 +39,20 @@ class TimeSorter:
 func _ready():
 	pass
 	
-func set_bpm(num: float):
-	bpm = num
-	sec_per_beat = 60.0 / bpm
-	
-func set_beat_length(num: float):
-	sec_per_beat = num
-	bpm = (60.0 / num)
-
-# func _process(_delta):
-
-func play_with_offset(offset: float):
-	#$StartTimer.wait_time = offset
-	audio_offset = offset
-	time_begin = OS.get_ticks_usec()
-	time_delay = AudioServer.get_time_to_next_mix() + AudioServer.get_output_latency()
-	#$StartTimer.start()
-	
-
-func closest_beat(nth):
-	closest = int(round((song_position / sec_per_beat) / nth) * nth) 
-	time_off_beat = abs(closest * sec_per_beat - song_position)
-	return Vector2(closest, time_off_beat)
+func _process(delta):
+	if len(played_sfxs) > 0:
+		for sfx_player in played_sfxs.duplicate():
+			if sfx_player.is_at_stream_end():
+				sfx_player.queue_free()
+				played_sfxs.erase(sfx_player)
+	if stream != null and stream.is_at_stream_end() and not finish_signal_sent:
+		emit_signal("finished")
+		finish_signal_sent = true
 
 
-func play_from_beat(beat, offset):
-	time_begin = OS.get_ticks_usec()
-	time_delay = AudioServer.get_time_to_next_mix() + AudioServer.get_output_latency()
-	play()
-	seek(beat * sec_per_beat)
-
-func _on_StartTimer_timeout():
-	play()
-	$StartTimer.stop()
-
-func update_song_position():
-	var time = (OS.get_ticks_usec() - time_begin) / 1000000.0
-	# Compensate for latency.
-	time -= time_delay
-	song_position = max(0, time)
-#		var new_position = get_playback_position() + AudioServer.get_time_since_last_mix()
-#		new_position -= AudioServer.get_output_latency()
-#		if new_position > song_position:
-#			song_position = new_position
-#		song_position_in_beats = int(floor(song_position / sec_per_beat)) + beats_before_start
-
-func _on_PausePopup_unpause():
-	time_begin = (time_begin + OS.get_ticks_usec() - last_paused)
-	time_delay = AudioServer.get_time_to_next_mix() + AudioServer.get_output_latency()
-	update_song_position()
-	print(song_position)
-
-func _on_Game_pause():
-	last_paused = OS.get_ticks_usec()
+func play_sfx(sfx_enum_value: int):
+	var sfx_source = ShinobuGlobals.sfx_sources[sfx_enum_value]
+	if sfx_source != null:
+		var sfx_player = sfx_source.instantiate(ShinobuGlobals.sfx_group)
+		played_sfxs.append(sfx_player)
+		sfx_player.start()

@@ -1,7 +1,7 @@
 extends Control
 
 # based on Gonkee's audio visualiser for Godot 3.2
-onready var spectrum = AudioServer.get_bus_effect_instance(1, 0)
+onready var spectrum: ShinobuSpectrumAnalyzerEffect = ShinobuGlobals.spectrum_analyzer
 
 var definition = 20
 var min_freq = 20
@@ -14,6 +14,7 @@ var accel = 20
 var histogram = []
 
 func _ready():
+	histogram.resize(definition)
 	yield(get_tree(), "idle_frame")
 	for i in range(definition):
 		var bar_instance = ColorRect.new()
@@ -21,7 +22,7 @@ func _ready():
 		bar_instance.rect_min_size = Vector2(rect_size.x/definition - $HBoxContainer.get_constant("separation"), 0)
 		bar_instance.size_flags_vertical = SIZE_SHRINK_CENTER
 		$HBoxContainer.add_child(bar_instance)
-		histogram.append(0)
+		histogram[i] = 0
 
 func _process(delta):
 	if spectrum == null:
@@ -48,6 +49,8 @@ func _process(delta):
 		mag += 0.3 * (freq - min_freq) / (max_freq - min_freq)
 		mag = clamp(mag, 0.05, 1)
 		
+		if histogram[i] == null:
+			histogram[i] = 0
 		histogram[i] = lerp(histogram[i], mag, accel * delta)
 		if i < len(bar_instances):
 			bar_instances[i].rect_min_size.y = histogram[i] * rect_size.y * 0.75	

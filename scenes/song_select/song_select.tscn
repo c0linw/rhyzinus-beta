@@ -35,9 +35,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 1
 script = ExtResource( 5 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 margin_right = 215.0
@@ -86,8 +83,7 @@ __meta__ = {
 
 [node name="AudioVisualizer" parent="." instance=ExtResource( 16 )]
 
-[node name="SongPreviewPlayer" type="AudioStreamPlayer" parent="."]
-bus = "Music"
+[node name="SongPreviewPlayer" type="Node" parent="."]
 script = ExtResource( 15 )
 
 [node name="FadeTween" type="Tween" parent="SongPreviewPlayer"]
@@ -159,8 +155,7 @@ __meta__ = {
 }
 
 [node name="SongListContainer" type="VBoxContainer" parent="VBoxContainer/SongSelectScroll"]
-margin_right = 864.0
-margin_bottom = 808.0
+margin_right = 852.0
 grow_horizontal = 0
 size_flags_horizontal = 3
 size_flags_vertical = 3

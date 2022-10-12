@@ -24,5 +24,5 @@ func _on_SongSelect_song_selected(song_data):
 
 func _on_SongPreviewPlayer_song_stream_loaded(audioplayer):
 	if audioplayer.stream != null:
-		var length = audioplayer.stream.get_length()
+		var length = audioplayer.get_stream_length()
 		get_node("GridContainer/LengthDisplay").text = "%s:%02d" % [int(length)/60, int(length)%60]

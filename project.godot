@@ -9,6 +9,11 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "Node",
+"class": "AudioStreamPlayerShinobu",
+"language": "GDScript",
+"path": "res://audio_stream_player_shinobu.gd"
+}, {
 "base": "Spatial",
 "class": "Note",
 "language": "GDScript",
@@ -60,6 +65,7 @@ _global_script_classes=[ {
 "path": "res://scenes/game/notes/note_tap_upper.gd"
 } ]
 _global_script_class_icons={
+"AudioStreamPlayerShinobu": "",
 "Note": "",
 "NoteHitbox": "",
 "NoteHold": "",
@@ -87,6 +93,7 @@ output_latency=10
 
 SceneSwitcher="*res://scripts/scene_switcher.gd"
 Settings="*res://scripts/settings.gd"
+ShinobuGlobals="*res://scripts/shinobu_globals.gd"
 
 [display]
 
@@ -97,6 +104,10 @@ window/size/test_height=576
 window/handheld/orientation="sensor_landscape"
 window/stretch/mode="2d"
 window/stretch/aspect="expand"
+
+[global]
+
+audio=false
 
 [input_devices]
 
