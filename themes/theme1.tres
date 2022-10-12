@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=8 format=2]
+[gd_resource type="Theme" load_steps=10 format=2]
 
 [ext_resource path="res://fonts/m_plus_1p_regular_48.tres" type="DynamicFont" id=1]
 [ext_resource path="res://fonts/m_plus_1p_regular_28.tres" type="DynamicFont" id=2]
@@ -63,6 +63,24 @@ border_width_bottom = 6
 shadow_color = Color( 0, 0, 0, 0.313726 )
 shadow_size = 2
 
+[sub_resource type="StyleBoxFlat" id=9]
+bg_color = Color( 1, 1, 1, 0.313726 )
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+shadow_color = Color( 0, 0, 0, 0.313726 )
+shadow_size = 2
+
+[sub_resource type="StyleBoxFlat" id=8]
+content_margin_left = 20.0
+content_margin_right = 20.0
+bg_color = Color( 0, 0, 0, 0.313726 )
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+shadow_color = Color( 0, 0, 0, 0.313726 )
+shadow_size = 2
+
 [resource]
 default_font = ExtResource( 1 )
 Button/styles/hover = SubResource( 5 )
@@ -71,6 +89,8 @@ Button/styles/pressed = SubResource( 4 )
 PopupDialog/styles/panel = SubResource( 7 )
 TabContainer/fonts/font = ExtResource( 2 )
 TabContainer/styles/panel = SubResource( 6 )
+TabContainer/styles/tab_bg = SubResource( 9 )
+TabContainer/styles/tab_fg = SubResource( 8 )
 WindowDialog/constants/close_h_ofs = 0
 WindowDialog/constants/close_v_ofs = 0
 WindowDialog/constants/scaleborder_size = 6
