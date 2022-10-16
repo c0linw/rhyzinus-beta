@@ -535,10 +535,16 @@ func _input(event):
 						delete_note(closest_note)
 					return
 		else: # touch release
+			# reset swipes that are incomplete
+			for swipe in get_tree().get_nodes_in_group("swipes"):
+				if not swipe.completed:
+					swipe.touch_indices[event.index].activated = false
+			
+			# judge any holds that were released near its end
 			var candidate_holds: Array
-			for note in onscreen_notes:
-				if note.is_in_group("holds") and event_time >= note.end_time - note.early_release + input_offset and note.activated:
-					candidate_holds.append(note)
+			for hold in get_tree().get_nodes_in_group("holds"):
+				if event_time >= hold.end_time - hold.early_release + input_offset and hold.activated:
+					candidate_holds.append(hold)
 			var judged_note = pop_nearest_note(event, candidate_holds)
 			if judged_note != null:
 				var result = {"judgement": FLAWLESS, "offset": 0}
@@ -554,11 +560,16 @@ func _input(event):
 		var event_time = $Conductor.song_position - input_offset
 		var candidate_notes: Array # use this to improve hit registration for notes with overlapping hitboxes
 		# multiple notes can be candidates if they have the same timestamp and have a hitbox that covers the touch
-		for note in onscreen_notes:
+		for note in get_tree().get_nodes_in_group("swipes"):
 			if note.can_judge(event_time):
-				if note.is_in_group("swipes") and input_zones[note.lane].area.has_point(event.position):
-					candidate_notes.append(note)
-			elif note.time > event_time:
+				if note.is_in_group("swipes"):
+					if note.touch_indices[event.index].activated:
+						candidate_notes.append(note)
+					elif input_zones[note.lane].area.has_point(event.position):
+						note.touch_indices[event.index].activated = true
+						note.touch_indices[event.index].start_position = event.position
+						candidate_notes.append(note)
+			elif note.time - note.early_swipe > event_time:
 				break
 		
 #		match len(candidate_notes):
@@ -582,9 +593,10 @@ func _input(event):
 #				return
 	
 		for note in candidate_notes:
-			if note.start_position == null:
-				note.start_position = event.position
-			elif event.position.distance_to(note.start_position) > swipe_threshold_px:
+			if note.touch_indices[event.index].start_position == null:
+				note.touch_indices[event.index].start_position = event.position
+			elif event.position.distance_to(note.touch_indices[event.index].start_position) > swipe_threshold_px:
+				note.completed = true
 				var result = {"judgement": FLAWLESS, "offset": 0}
 				draw_judgement(result, note.lane)
 				$Conductor.play_sfx(ShinobuGlobals.sfx_enums.SFX_SWIPE)

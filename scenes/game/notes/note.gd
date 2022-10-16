@@ -14,8 +14,7 @@ const late_cracked: float = 0.090
 
 const early_release: float = 0.120
 
-const early_swipe: float = 0.090
-const late_swipe: float = 0.090
+
 
 enum {ENCRYPTED, CRACKED, DECRYPTED, FLAWLESS}
 
