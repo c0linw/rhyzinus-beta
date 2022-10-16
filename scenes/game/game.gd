@@ -157,35 +157,50 @@ func _process(_delta):
 	
 	chart_position += (timestamp - last_timestamp) * sv_velocity
 	
-	for barline_data in barlines_to_spawn.duplicate():
+	var spawnable_barlines: Array
+	for barline_data in barlines_to_spawn:
 		if chart_position >= barline_data["position"] - base_note_screen_time:
-			spawn_barline(barline_data)
+			spawnable_barlines.append(barline_data)
 		else:
 			break # assumes all barlines are stored in ascending time
+	for barline_data in spawnable_barlines:
+		spawn_barline(barline_data)
 	
-	for note_data in notes_to_spawn.duplicate():
+	var spawnable_notes: Array
+	for note_data in notes_to_spawn:
 		if chart_position >= note_data["position"] - base_note_screen_time:
-			spawn_note(note_data)
+			spawnable_notes.append(note_data)
 		else:
 			break # assumes all notes are stored in ascending time
+	for note_data in spawnable_notes:
+		spawn_note(note_data)
 			
-	for simline_data in simlines_to_spawn.duplicate():
+	var spawnable_simlines: Array
+	for simline_data in simlines_to_spawn:
 		if chart_position >= simline_data["position"] - base_note_screen_time:
-			spawn_simline(simline_data)
+			spawnable_simlines.append(simline_data)
 		else:
 			break # assumes all simlines are stored in ascending time
+	for simline_data in spawnable_simlines:
+		spawn_simline(simline_data)
 			
-	for barline in onscreen_barlines.duplicate():
+	var barlines_to_delete: Array
+	for barline in onscreen_barlines:
 		if chart_position >= barline.chart_position:
-			remove_barline(barline)
+			barlines_to_delete.append(barline)
 		else:
 			barline.render(chart_position, lane_depth, base_note_screen_time)
+	for barline in barlines_to_delete:
+		remove_barline(barline)
 			
-	for simline in onscreen_simlines.duplicate():
+	var simlines_to_delete: Array
+	for simline in onscreen_simlines:
 		if chart_position >= simline.chart_position:
-			remove_simline(simline)
+			simlines_to_delete.append(simline)
 		else:
 			simline.render(chart_position, lane_depth, base_note_screen_time)
+	for simline in simlines_to_delete:
+		remove_simline(simline)
 			
 	# reset, then update hold status
 	var candidate_holds: Array = []
@@ -199,15 +214,16 @@ func _process(_delta):
 			if nearest_hold != null:
 				nearest_hold.held = true
 	
+	var notes_to_delete: Array
 	# check for notes that are too late, then render the rest
-	for note in onscreen_notes.duplicate():
+	for note in onscreen_notes:
 		note.render(chart_position, lane_depth, base_note_screen_time)
 		if note.is_in_group("swipes") and timestamp >= note.time + input_offset and note.completed:
 			var result = {"judgement": FLAWLESS, "offset": 0}
 			draw_judgement(result, note.lane)
 			$Conductor.play_sfx(ShinobuGlobals.sfx_enums.SFX_SWIPE)
 			emit_signal("note_judged", result)
-			delete_note(note)
+			notes_to_delete.append(note)
 		if note.is_in_group("holds") and timestamp > note.end_time + input_offset:
 			if note.held:
 				var result = {"judgement": FLAWLESS, "offset": 0}
@@ -215,13 +231,13 @@ func _process(_delta):
 				#$Conductor.play_sfx(ShinobuGlobals.sfx_enums.SFX_CLICK)
 				emit_signal("note_judged", result)
 				judgement_sources["end_hit"] += 1
-				delete_note(note)
+				notes_to_delete.append(note)
 			if !note.held and timestamp > note.end_time + note.late_cracked + input_offset:
 				var result = {"judgement": CORRUPTED, "offset": 0}
 				draw_judgement(result, note.lane)
 				emit_signal("note_judged", result)
 				judgement_sources["end_miss"] += 1
-				delete_note(note)
+				notes_to_delete.append(note)
 		elif timestamp >= note.time + note.late_cracked + input_offset:
 			if note.is_in_group("holds"):
 				if !note.head_judged:
@@ -236,10 +252,13 @@ func _process(_delta):
 				draw_judgement(result, note.lane)
 				emit_signal("note_judged", result)
 				judgement_sources["note_pass"] += 1
-				delete_note(note)
+				notes_to_delete.append(note)
+	for note in notes_to_delete:
+		delete_note(note)
 		
 	# check hold ticks
 	for hold in get_tree().get_nodes_in_group("holds"):
+		var ticks_to_delete: Array
 		for tick in hold.ticks:
 			if timestamp >= tick:
 				var result: Dictionary
@@ -250,16 +269,21 @@ func _process(_delta):
 				draw_judgement(result, hold.lane)
 				emit_signal("note_judged", result)
 				judgement_sources["hold_tick"] += 1
-				hold.ticks.erase(tick)
+				ticks_to_delete.append(tick)
 			else:
 				break
+		for tick in ticks_to_delete:
+			hold.ticks.erase(tick)
 		
-	for beat in beat_data.duplicate():
+	var beats_to_delete: Array
+	for beat in beat_data:
 		if timestamp >= beat["time"]:
 			emit_signal("beat", beat["measure"], beat["beat"])
-			beat_data.erase(beat)
+			beats_to_delete.append(beat)
 		else: 
 			break
+	for beat in beats_to_delete:
+		beat_data.erase(beat)
 		
 	# reset then update lane effects
 	for effect in lane_effects:
