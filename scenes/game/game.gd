@@ -202,6 +202,12 @@ func _process(_delta):
 	# check for notes that are too late, then render the rest
 	for note in onscreen_notes.duplicate():
 		note.render(chart_position, lane_depth, base_note_screen_time)
+		if note.is_in_group("swipes") and timestamp >= note.time + input_offset and note.completed:
+			var result = {"judgement": FLAWLESS, "offset": 0}
+			draw_judgement(result, note.lane)
+			$Conductor.play_sfx(ShinobuGlobals.sfx_enums.SFX_SWIPE)
+			emit_signal("note_judged", result)
+			delete_note(note)
 		if note.is_in_group("holds") and timestamp > note.end_time + input_offset:
 			if note.held:
 				var result = {"judgement": FLAWLESS, "offset": 0}
@@ -597,11 +603,12 @@ func _input(event):
 				note.touch_indices[event.index].start_position = event.position
 			elif event.position.distance_to(note.touch_indices[event.index].start_position) > swipe_threshold_px:
 				note.completed = true
-				var result = {"judgement": FLAWLESS, "offset": 0}
-				draw_judgement(result, note.lane)
-				$Conductor.play_sfx(ShinobuGlobals.sfx_enums.SFX_SWIPE)
-				emit_signal("note_judged", result)
-				delete_note(note)
+				if event_time >= note.time:
+					var result = {"judgement": FLAWLESS, "offset": 0}
+					draw_judgement(result, note.lane)
+					$Conductor.play_sfx(ShinobuGlobals.sfx_enums.SFX_SWIPE)
+					emit_signal("note_judged", result)
+					delete_note(note)
 		return
 		
 func draw_judgement(data: Dictionary, lane: int):

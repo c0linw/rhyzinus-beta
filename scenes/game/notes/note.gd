@@ -14,8 +14,6 @@ const late_cracked: float = 0.090
 
 const early_release: float = 0.120
 
-
-
 enum {ENCRYPTED, CRACKED, DECRYPTED, FLAWLESS}
 
 # Called when the node enters the scene tree for the first time.
