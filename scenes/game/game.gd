@@ -462,14 +462,14 @@ func setup_input():
 		
 	var left_hitbox: NoteHitbox = ObjNoteHitbox.instance()
 	var top_left = Vector2(lower_lane_left.x - lower_lane_width*1.5, upper_lane_left.y)
-	var bottom_right = Vector2(lower_lane_left.x + lower_lane_width, lower_lane_bottom)
+	var bottom_right = Vector2(lower_lane_left.x + lower_lane_width*1.5, lower_lane_bottom)
 	var center = Vector2(lower_lane_left.x - lower_lane_width*0.25, lower_lane_left.y + (upper_lane_left.y - lower_lane_left.y)*0.3)
 	left_hitbox.set_points(top_left, bottom_right, center)
 	input_zones[0] = left_hitbox
 	$CanvasLayer.add_child(left_hitbox)
 	
 	var right_hitbox: NoteHitbox = ObjNoteHitbox.instance()
-	top_left = Vector2(lower_lane_right.x - lower_lane_width, upper_lane_right.y)
+	top_left = Vector2(lower_lane_right.x - lower_lane_width*1.5, upper_lane_right.y)
 	bottom_right = Vector2(lower_lane_right.x + lower_lane_width*1.5, lower_lane_bottom)
 	center = Vector2(lower_lane_right.x + lower_lane_width*0.25, lower_lane_right.y + (upper_lane_right.y - lower_lane_right.y)*0.3)
 	right_hitbox.set_points(top_left, bottom_right, center)
